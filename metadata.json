@@ -1,0 +1,6 @@
+{
+  "name": "Story Narrative Game Maker",
+  "description": "An interactive storytelling platform to play branching narrative games and use AI to convert stories, scripts, or outlines into custom playable games.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
