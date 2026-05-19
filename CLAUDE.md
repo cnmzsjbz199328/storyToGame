@@ -2,10 +2,11 @@
 
 ## 项目概览
 
-**Story-to-Game** 是一个将小说、剧本、大纲通过 AI 一键转化为可交互分支文字游戏（文游）的全栈应用。
+**Story-to-Game** 是以 [Shanyin-ai/Story-to-game](https://github.com/Shanyin-ai/Story-to-game) 为核心的分支叙事游戏平台。
 
-- **核心理念**：来源于 [Shanyin-ai/Story-to-game](https://github.com/Shanyin-ai/Story-to-game) 的叙事游戏设计哲学——段落改编→分支演播→多结局互动。
-- **技术升级**：在原项目单 HTML 文件基础上，本仓库以 React 19 + TypeScript + Express + Gemini API 重构为现代全栈工程，保持并强化了分支叙事 JSON 规范与 RPG 变量系统。
+**核心机制**：通过内置的 `/story-to-game` Claude Code Skill（终端驱动），将任意叙事文本（小说/剧本/大纲）经过 9 步 AI 改写工作流生成标准 JSON 剧本，再由 React 前端承载演播与编辑。
+
+**无服务端、无外部 API**：纯静态 Vite SPA，无需 Gemini/OpenAI 等云服务。
 
 ---
 
@@ -14,13 +15,12 @@
 | 层次 | 技术 |
 |---|---|
 | 前端框架 | React 19 + TypeScript 5.8 |
-| 构建工具 | Vite 6（SPA 模式） |
-| 样式 | Tailwind CSS 4（`@tailwindcss/vite` 插件） |
+| 构建工具 | Vite 6（纯静态 SPA） |
+| 样式 | Tailwind CSS 4（`@tailwindcss/vite`） |
 | 动画 | Framer Motion（`motion/react`） |
 | 图标 | lucide-react |
-| 后端 | Express 4（Node.js，`tsx` 热重载） |
-| AI 引擎 | Google Gemini API（`@google/genai`）|
-| 语言 | TypeScript（全栈统一） |
+| 核心 Skill | `.claude/commands/story-to-game.md`（Claude Code 命令） |
+| JSON 验证 | `scripts/validate.py`（Python 3，8 项连通性检验） |
 
 ---
 
@@ -28,112 +28,133 @@
 
 ```
 storyToGame/
-├── server.ts              # Express 服务入口：API 路由 + Vite 中间件
+├── .claude/
+│   └── commands/
+│       ├── story-to-game.md          # /story-to-game 技能主文件（Shanyin-ai 原版）
+│       └── references/               # 技能工作流 6 个参考文档
+│           ├── json-format-spec.md   # JSON 格式速查（所有字段定义）
+│           ├── step1-ingestion.md    # 原作摄入与记忆索引
+│           ├── step2-style.md        # 风格指纹提取
+│           ├── step3-structure.md    # 结构拆解与分支点识别
+│           ├── step4-system.md       # 状态系统与结局矩阵设计
+│           ├── step5-writing.md      # 分段写作（9 步中最长）
+│           └── step6-validation.md  # 连通性验证
+├── scripts/
+│   └── validate.py                   # 8 项 JSON 自动验证脚本
+├── public/
+│   └── stories/                      # 静态预置剧本（新格式 JSON）
+│       └── midnight-castle.json
 ├── src/
-│   ├── main.tsx           # React 应用挂载点
-│   ├── App.tsx            # 根组件：四页签路由 + 全局状态
-│   ├── types.ts           # 核心 TypeScript 类型定义（Story / StoryNode / GameState）
-│   ├── default_story.ts   # 本地默认示例剧本
-│   ├── index.css          # Tailwind 基础样式
+│   ├── main.tsx
+│   ├── App.tsx                       # 四页签路由（library/play/edit/skill）
+│   ├── types.ts                      # 核心 TypeScript 类型（原项目标准格式）
 │   └── components/
-│       ├── StoryLib.tsx       # 剧本大厅：加载预置剧本、快捷导航
-│       ├── StoryPlayer.tsx    # 文游演播厅：游戏核心引擎 + AI 场景插画
-│       ├── StoryEditor.tsx    # 剧本编译器：可视化编辑、JSON 导入导出、逻辑验证
-│       └── StoryGenerator.tsx # AI 编织炉：Gemini 驱动的剧本生成界面
-├── vite.config.ts         # Vite 配置（含 HMR 环境控制）
+│       ├── StoryLib.tsx              # 剧本大厅：预置加载 + 本地 JSON 导入
+│       ├── StoryPlayer.tsx           # 演播厅：segments/routes/val/flags/achievements
+│       ├── StoryEditor.tsx           # 编译器：节点编辑 + 逻辑验证 + JSON 导入导出
+│       └── SkillWorkshop.tsx         # 技能工坊：/story-to-game 使用指南
+├── vite.config.ts
 ├── tsconfig.json
-├── package.json
-└── .env.example           # 环境变量模板
+└── package.json
 ```
 
 ---
 
-## 核心数据模型
+## 核心 JSON 格式（原项目标准）
 
-所有数据模型定义在 `src/types.ts`，是整个系统的合约基础，**修改前必须评估对 API schema、AI prompt 和各组件的影响**。
+所有剧本 JSON 必须遵循此格式，由 `src/types.ts` 的 TypeScript 类型定义保证。
 
-```typescript
-// 故事剧本根结构
-interface Story {
-  id?: string;
-  title: string;
-  description: string;
-  author: string;
-  initialNodeId: string;      // 指向起始节点的 ID（通常为 "start"）
-  variables: Variable[];      // 全局 RPG 变量初始值
-  nodes: StoryNode[];
-}
-
-// 单个剧情场景节点
-interface StoryNode {
-  id: string;                 // snake_case 唯一标识，如 "library_room"
-  text: string;               // 第二人称叙述文本（100-250 字最佳）
-  imagePrompt: string;        // 供 Gemini 生成背景插画的英文提示词
-  choices: Choice[];          // 空数组 = 终章节点（游戏结束）
-  imageUrl?: string;          // 动态生成的 base64 图片缓存
-}
-
-// 玩家选择分支
-interface Choice {
-  text: string;               // 选项按钮文字
-  nextNodeId: string;         // 跳转目标节点 ID（必须在同一 story.nodes 中存在）
-  condition?: Condition;      // 解锁条件（满足才显示/可点击）
-  variableEffect?: VariableEffect; // 选择后对变量的修改
-}
-
-// RPG 变量（两种类型）
-interface Variable {
-  name: string;               // snake_case，如 "health", "has_key"
-  type: "number" | "boolean";
-  value: string;              // 统一用字符串存储，运行时解析
-}
-
-// 游戏运行时状态（StoryPlayer 内部管理）
-interface GameState {
-  currentNodeId: string;
-  variables: Record<string, number | boolean>;
-  history: string[];          // 序列化快照，支持回溯
-  logs: string[];
-}
-```
-
----
-
-## API 端点
-
-所有 API 在 `server.ts` 中定义，前端通过相对路径调用（Vite 代理 + Express 同源）。
-
-| Method | Path | 说明 |
-|---|---|---|
-| `GET` | `/api/health` | 健康检查 |
-| `GET` | `/api/stories/preloaded` | 返回内置示例剧本列表 |
-| `POST` | `/api/gemini/generate-story` | Gemini 生成分支剧本 JSON |
-| `POST` | `/api/gemini/generate-image` | Gemini 生成场景背景插画（base64） |
-
-### `/api/gemini/generate-story` 请求体
+### 顶层结构
 
 ```json
 {
-  "prompt": "主线构想描述（必填）",
-  "sourceText": "原著素材片段（选填）",
-  "options": {
-    "model": "flash | pro",
-    "language": "中文 | English | 日本語",
-    "style": "immersive gothic dark fantasy",
-    "targetNodes": 10
+  "meta": {
+    "title": "作品标题",
+    "author": "作者名",
+    "version": "1.0.0",
+    "description": "作品简介",
+    "theme": "noir",
+    "ambient": "rain",
+    "variableName": "缝线",
+    "initialVariable": 38
+  },
+  "startNodeId": "start",
+  "variables": { "has_key": false, "trust": 0 },
+  "achievements": {
+    "ach_id": { "title": "成就标题", "description": "成就描述。" }
+  },
+  "nodes": { ... }
+}
+```
+
+### 节点结构
+
+```json
+{
+  "node_id": {
+    "chapterTitle": "第一章：...",
+    "title": "场景标题",
+    "scene": {
+      "id": "scene_id",
+      "name": "场景名",
+      "type": "major",
+      "description": "环境描述",
+      "arrival": "到达时的叙述"
+    },
+    "progress": 5,
+    "segments": [
+      { "text": "叙述文本。" },
+      { "speaker": "角色名", "text": "对白。", "effect": "glitch" }
+    ],
+    "choices": [
+      {
+        "text": "选项文字",
+        "next": "目标节点ID",
+        "condition": "val >= 60",
+        "changes": {
+          "val": 10,
+          "set": { "has_key": true },
+          "addFlag": "key_taken",
+          "importantFlag": { "flag": "key_taken", "label": "拾起了钥匙" },
+          "unlockAchievement": "ach_id"
+        }
+      }
+    ],
+    "routes": [
+      { "condition": "hasFlag 'key_taken'", "next": "win_node" },
+      { "condition": "default", "next": "normal_path" }
+    ],
+    "next": "auto_next_node_id"
   }
 }
 ```
 
-响应：`{ "story": Story }` — 结构严格匹配 `Story` 类型。
-
-### `/api/gemini/generate-image` 请求体
+### 结局节点
 
 ```json
-{ "prompt": "环境插画英文提示词" }
+{
+  "ending_id": {
+    "isEnding": true,
+    "title_end": "结局标题",
+    "type": "TRUE ENDING",
+    "progress": 100,
+    "description": "结局正文（发生了什么）。",
+    "closing": "收束语（留给玩家的感受）。",
+    "achievement": "ach_id"
+  }
+}
 ```
 
-响应：`{ "imageUrl": "data:image/png;base64,..." }`
+### 条件格式（字符串）
+
+```
+val >= 60       val <= 30       val > 50
+val < 20        val == 80       val != 0
+trust >= 2      route == 'true'
+hasFlag 'flag_name'
+!hasFlag 'flag_name'
+default
+```
 
 ---
 
@@ -142,136 +163,128 @@ interface GameState {
 ### 启动开发服务器
 
 ```bash
-npm run dev
-# Express + Vite 在 http://0.0.0.0:3000 同时启动
-# tsx 提供 server.ts 热重载
+npm run dev    # Vite 热重载，http://localhost:5173
 ```
 
 ### 构建生产包
 
 ```bash
-npm run build
-# Vite 构建前端 → dist/
-# esbuild 打包 server.ts → dist/server.cjs
-npm start
+npm run build  # 输出到 dist/
+npm run preview
 ```
 
 ### 类型检查
 
 ```bash
-npm run lint     # tsc --noEmit，无编译输出
+npm run lint   # tsc --noEmit
 ```
 
-### 环境变量
+### 验证剧本 JSON
 
-复制 `.env.example` 为 `.env`，填写 `GEMINI_API_KEY`。
-
----
-
-## 分支剧本 JSON 规范（来源于 Shanyin-ai/Story-to-game）
-
-本项目继承并扩展了原项目的 13 点剧本验证规则，在 `StoryEditor` 中通过 BFS 验证实现。
-
-**合法 JSON 剧本必须满足：**
-
-1. 存在 `initialNodeId` 所指向的节点
-2. 所有 `choice.nextNodeId` 必须指向 `nodes` 中已存在的节点（无断链）
-3. 所有节点从起始节点出发可达（无孤岛节点）
-4. 至少存在 1 个终章节点（`choices: []`）
-5. `variables` 中的名称全局唯一，使用 snake_case
-6. `condition` 和 `variableEffect` 中的 `name` 必须匹配 `variables` 中声明的变量
-7. `imagePrompt` 应为英文，仅描述环境场景，不含角色/UI/文字元素
+```bash
+npm run validate          # 需要手动指定文件（修改 validate.py 路径）
+python3 scripts/validate.py <剧本>.json
+```
 
 ---
 
-## 四大核心模块职责
+## Skill 使用流程
+
+在 Claude Code 中使用 `/story-to-game` 命令触发完整的 9 步改写工作流：
+
+| 步骤 | 名称 | 参考文档 |
+|------|------|----------|
+| 1 | 原作摄入与记忆索引构建 | `references/step1-ingestion.md` |
+| 2 | 风格指纹提取 | `references/step2-style.md` |
+| ✋ A | 确认点 A（方向对齐） | 必须等用户确认 |
+| 3 | 结构拆解与分支点识别 | `references/step3-structure.md` |
+| 4 | 状态系统与结局矩阵设计 | `references/step4-system.md` |
+| ✋ B | 确认点 B（系统确认，可选） | — |
+| 5-7 | 分段写作（按章推进） | `references/step5-writing.md` |
+| 8 | 连通性验证与 JSON 输出 | `references/step6-validation.md` |
+
+**节点量基准**：每千字原文约 35-40 节点。短篇 (<1万字) → 200-400 节点；中篇 → 750-1500 节点。
+
+生成的 JSON 保存到 `public/stories/` 后，刷新页面即可在「剧本大厅」看到。
+
+---
+
+## 四大组件职责
 
 ### `StoryLib`（剧本大厅）
-- 从 `/api/stories/preloaded` 异步加载预置剧本
-- 展示剧本卡片，提供「直接游玩」和「进编辑器」两个入口
-- **注意**：不持有 story state，通过 `onSelectStory` 向上传递
+- 从 `public/stories/` 静态路径按需加载预置剧本（`fetch`）
+- 支持本地 `.json` 文件上传（`FileReader` API），自动导航到演播厅
+- **格式校验**：检查 `meta` / `startNodeId` / `nodes` 三个必填根字段
 
-### `StoryPlayer`（文游演播厅）
-- 持有并管理 `GameState`（不持久化，仅内存）
-- 条件判断逻辑在 `evaluateCondition()`，变量变更在 `handleSelectChoice()`
-- 图片为懒加载：点击「AI 唤醒插绘」触发，结果缓存在 `nodeImages` state
-- `history` 为序列化的 `{ nodeId, vars }` 快照数组，支持逐步回溯
+### `StoryPlayer`（演播厅）
+- 持有 `GameState`（仅内存，不持久化）
+- 核心逻辑：
+  - `evalCondition(cond, state)` — 解析字符串条件表达式
+  - `applyChanges(state, changes)` — 处理 val/set/flag/achievement 变更
+  - `resolveRoutes(node)` — 按序求值 routes，返回第一个满足条件的 next
+- 支持：回溯（HistorySnapshot）、重要 flag 浮动提示（importantFlag）、成就解锁展示
 
-### `StoryEditor`（剧本编译器）
-- 持有 `localStory`（深拷贝自 prop），编辑后通过 `onStorySaved` 同步到父组件
-- 节点 ID 重命名会同步更新所有 `choice.nextNodeId` 引用（见 `handleNodePropertyChange`）
-- 逻辑验证通过 BFS 实现，生成 `ValidationReport`（error/warning/success）
-- 支持 JSON 导入（粘贴）、导出为文件、复制到剪贴板
+### `StoryEditor`（编译器）
+- 编辑 `meta`、`startNodeId`、节点 segments/choices/isEnding
+- 本地验证（BFS 可达性 + 引用完整性 + 结局检查）
+- JSON 导入（粘贴文本）、导出为文件、复制到剪贴板
+- **注意**：编辑器不处理 `routes`/`condition` 的复杂建造（建议直接编辑 JSON）
 
-### `StoryGenerator`（AI 编织炉）
-- 左侧配置表单 + 右侧实时预览，12列栅格布局
-- 请求过程中循环展示 7 条进度提示（Framer Motion `AnimatePresence`）
-- 生成成功后展示节点拓扑预览图，提供「立即游玩」/「调出编辑器」两条导航
+### `SkillWorkshop`（技能工坊）
+- 纯静态说明页：6 步上手流程 + 9 步工作流可视化 + JSON 格式概览 + 参考文档目录
+- 无状态，无 API 调用
 
 ---
 
 ## 前端设计规范
 
-### 色彩系统
-- 主色（`brand`）：暖金色调，用于激活态、重点按钮、边框高亮
-- 背景层级：`bg-darker` → `bg-dark` → `bg-medium` → `bg-light`（深色优先）
-- 辅助色：violet（AI 相关操作）、emerald（成功/终章）、red（危险/失败）、amber（警告）
+### 色彩系统（暗色优先）
+- 主色：`amber-500`（品牌色，替代原 brand/金色调）
+- 背景层级：`zinc-950` > `zinc-900` > `zinc-800`
+- 辅助色：`emerald`（成功/结局）、`red`（错误/危险）、`zinc`（中性）
 
-### 组件规范
-- 所有交互按钮加 `id` 属性（便于自动化测试和无障碍访问）
-- 卡片统一用 `rounded-2xl` 或 `rounded-3xl`，内边距 `p-5` / `p-6`
-- 过渡动画用 Framer Motion `AnimatePresence` + `motion.div`（切换用 `mode="wait"`）
-- 文本层级：`font-display`（标题）/ `font-serif`（叙述）/ `font-mono`（代码/标签）/ `font-sans`（正文）
+### 动画规范
+- 节点切换：`AnimatePresence` + `mode="wait"`，`duration: 0.35s`
+- 浮动提示：`opacity + y` 组合，`duration: 0.3s`
+- val 进度条：`motion.div` `animate={{ width }}` + `transition: 0.5s`
 
 ### 响应式布局
-- 全局最大宽度 `max-w-7xl`，左右 `px-6`
-- 编辑器/生成器：`lg:grid-cols-12` 拆分为 4+8 或 5+7 栅格
-- 播放器：`lg:grid-cols-4`，主视口 3 列 + 侧边 HUD 1 列
-- `sm:` 断点用于折叠按钮文字，`md:` 断点用于布局切换
+- 演播厅：`lg:grid-cols-4`（主视口 3 列 + HUD 1 列）
+- 编辑器：`lg:grid-cols-12`（侧边 4 列 + 主编辑 8 列）
+- 移动端：单列堆叠
 
 ---
 
-## 最佳实践与优化方向
+## 最佳实践清单
 
-### 1. 新增剧本时
-- 在 `server.ts` 的 `/api/stories/preloaded` 路由的 `stories` 数组中追加
-- 必须包含唯一 `id`、合法的 `initialNodeId`、至少 1 个终章节点
-- `imagePrompt` 使用英文，风格参考现有两个示例（电影化、无角色描写）
+### 新增预置剧本
+1. 将 JSON 文件放入 `public/stories/`
+2. 在 `StoryLib.tsx` 的 `PRELOADED_MANIFESTS` 数组中追加路径
 
-### 2. 新增 API 端点时
-- 在 `server.ts` 中添加路由，保持所有路由在 `setupServer()` 调用前定义
-- Gemini 调用统一使用 `getGeminiClient()` 工厂函数获取客户端
-- 错误响应统一格式：`res.status(xxx).json({ error: "..." })`
+### 新增 Skill 参考文档
+在 `.claude/commands/references/` 中创建 `.md` 文件，并在 `story-to-game.md` 中引用。
 
-### 3. 修改类型时
-- `src/types.ts` 改动后需同步更新：`server.ts` 中的 `storyResponseSchema`、各组件的类型标注
-- `Variable.value` 统一为字符串，运行时在 `StoryPlayer` 解析为对应类型
+### 修改 JSON 类型
+`src/types.ts` 改动后需同步检查：
+- `StoryPlayer.tsx` 的 `evalCondition` / `applyChanges` 函数
+- `StoryEditor.tsx` 的字段编辑 UI
+- `StoryLib.tsx` 的格式校验逻辑
 
-### 4. 添加新主题/流派时
-- 在 `StoryGenerator.tsx` 的 `styleMap` 中追加键值对
-- 在 `<select>` 的 `option` 列表中追加对应选项
+### 条件表达式扩展
+在 `StoryPlayer.tsx` 的 `evalCondition` 函数中添加新的正则分支（当前支持：val 比较、hasFlag、变量比较、字符串比较）。
 
-### 5. 性能注意事项
-- 图片生成结果缓存在 `nodeImages` state（`Record<nodeId, base64>`），切换节点不重新生成
-- 大型剧本（>20 节点）在编辑器节点列表中启用了 `max-h` + `overflow-y-auto` 滚动，保持渲染性能
-- 服务端 `express.json` payload 限制为 15MB，适配大型剧本数据
-
-### 6. Gemini 模型选择
-- 默认：`gemini-3.5-flash`（快速、低消耗，适合生产）
-- Pro 模式：`gemini-3.1-pro-preview`（精密推理，适合复杂解谜剧本）
-- 图像生成：`gemini-2.5-flash-image`（固定，宽高比 16:9）
+### 验证脚本使用
+```bash
+python3 scripts/validate.py 你的剧本.json
+```
+检查 8 项：节点可达性 · 引用完整性 · 变量一致性 · 无死胡同 · 结局可达 · progress 单调 · 成就数>结局数 · JSON 合法性
 
 ---
 
-## 与 Shanyin-ai/Story-to-game 的关系
+## 原项目归属
 
-| 维度 | 原项目（Shanyin-ai） | 本项目（cnmzsjbz199328） |
-|---|---|---|
-| 技术栈 | 单 HTML 文件 + 纯 JS | React 19 + TS + Express |
-| 部署 | 本地浏览器直开 | Node.js 服务（支持云部署） |
-| AI 集成 | 独立 `.skill` 文件 | 服务端 Gemini API 直接调用 |
-| 数据规范 | JSON + Python 验证 | TypeScript 类型 + BFS 验证 |
-| 编辑能力 | 无可视化编辑器 | 完整可视化编辑器（StoryEditor） |
-| 叙事哲学 | 13 点规范，多结局设计 | 完全继承并在 AI prompt 中强制执行 |
+Skill 核心（`.claude/commands/story-to-game.md` 及 `references/`）来源：
 
-本项目以原项目的叙事游戏设计理念为核心，利用现代前端工程化能力（组件化、TypeScript 类型安全、动画系统）大幅提升了用户体验和可维护性。
+**Shanyin-ai/Story-to-game**（MIT License）  
+作者：@山音（电影导演/编剧/AI创作者）  
+叙事游戏最高创作原则：*每一个选择都必须从当前场景自然长出，每一个后果都必须被世界认真承接，每一个结局都必须在充分变化后以判词收束。*
