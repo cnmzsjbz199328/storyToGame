@@ -10,6 +10,7 @@ interface StoryLibProps {
 const PRELOADED_MANIFESTS = [
   { id: "midnight-castle", path: "/stories/midnight-castle.json" },
   { id: "monte-cristo", path: "/stories/monte-cristo.json" },
+  { id: "hamlet", path: "/stories/hamlet.json" },
 ];
 
 export default function StoryLib({ onSelectStory, onNavigateToTab }: StoryLibProps) {
