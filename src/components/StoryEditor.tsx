@@ -261,7 +261,7 @@ export default function StoryEditor({ story, onStorySaved, activeNodeId }: Story
                       {isStart ? "🏁 " : isEnding ? "🏆 " : "◈ "}{id}
                     </span>
                     <span className="text-[10px] text-zinc-600 truncate mt-0.5">
-                      {node.chapterTitle ?? node.segments[0]?.text?.slice(0, 30) ?? ""}
+                      {node.chapterTitle ?? node.segments?.[0]?.text?.slice(0, 30) ?? ""}
                     </span>
                   </div>
                   <div className="flex items-center gap-1 shrink-0">
@@ -321,17 +321,17 @@ export default function StoryEditor({ story, onStorySaved, activeNodeId }: Story
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <label className="text-[10px] font-semibold text-zinc-400 font-mono uppercase flex items-center gap-1.5">
-                  <BookOpen className="w-3.5 h-3.5 text-zinc-600" />段落 segments ({activeNode.segments.length})
+                  <BookOpen className="w-3.5 h-3.5 text-zinc-600" />段落 segments ({(activeNode.segments ?? []).length})
                 </label>
                 <button
-                  onClick={() => updateNode(selectedId!, { segments: [...activeNode.segments, { text: "" }] })}
+                  onClick={() => updateNode(selectedId!, { segments: [...(activeNode.segments ?? []), { text: "" }] })}
                   className="text-amber-400 hover:text-amber-300 text-[11px] font-mono flex items-center gap-1"
                 >
                   <Plus className="w-3.5 h-3.5" />添加段落
                 </button>
               </div>
               <div className="space-y-2 max-h-52 overflow-y-auto pr-1">
-                {activeNode.segments.map((seg, i) => (
+                {(activeNode.segments ?? []).map((seg, i) => (
                   <div key={i} className="grid grid-cols-12 gap-2 bg-zinc-950/80 p-3 rounded-xl border border-zinc-800">
                     <div className="col-span-3">
                       <input
