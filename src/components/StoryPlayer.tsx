@@ -346,7 +346,7 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
               transition={{ duration: 0.35 }}
               className="space-y-3 max-h-64 overflow-y-auto pr-1"
             >
-              {currentNode.segments.map((seg, i) => {
+              {(currentNode.segments ?? []).map((seg, i) => {
                 const isNarrator = !seg.speaker || ["系统", "旁白", "System", "Narrator"].includes(seg.speaker);
                 return (
                   <div key={i} className={isNarrator ? "" : "pl-4 border-l-2 border-zinc-700"}>
