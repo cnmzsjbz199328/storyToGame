@@ -1,0 +1,1094 @@
+{
+  "meta": {
+    "title": "罪与罚",
+    "author": "费奥多尔·陀思妥耶夫斯基",
+    "version": "1.0.0",
+    "description": "你杀了一个人，用一套理论为自己辩护。现在那套理论正在碎裂。改编自陀思妥耶夫斯基1866年原著。",
+    "theme": "noir",
+    "ambient": "rain",
+    "variableName": "裂纹",
+    "initialVariable": 45
+  },
+  "startNodeId": "cr_start",
+  "variables": {
+    "sonya_bond": 0
+  },
+  "achievements": {
+    "ach_theory": {
+      "title": "非凡人",
+      "description": "你在脑海中推导出了那套理论的全貌。"
+    },
+    "ach_marmeladov": {
+      "title": "怜悯者",
+      "description": "你把最后的钱给了一个陌生人的家庭。"
+    },
+    "ach_lazarus": {
+      "title": "拉撒路",
+      "description": "你听索尼娅读完了《约翰福音》第十一章。"
+    },
+    "ach_porfiry": {
+      "title": "棋局",
+      "description": "你和波尔菲里完成了第一次对话。"
+    },
+    "ach_nikolai": {
+      "title": "沉默的受益者",
+      "description": "你选择了沉默，让另一个人替你承担。"
+    },
+    "ach_confession_sonya": {
+      "title": "我杀了她",
+      "description": "你把那件事告诉了索尼娅。"
+    },
+    "ach_kiss_earth": {
+      "title": "大地之吻",
+      "description": "你在广场上跪了下来。"
+    },
+    "ach_surrender": {
+      "title": "自首者",
+      "description": "你走进了警察局。"
+    },
+    "ach_siberia": {
+      "title": "西伯利亚的晨光",
+      "description": "你在劳改营里看到了第一道光。"
+    },
+    "ach_hidden": {
+      "title": "理论成立",
+      "description": "你找到了那条从未被人走完的路。"
+    }
+  },
+  "nodes": {
+    "cr_start": {
+      "chapterTitle": "序章：圣彼得堡，七月",
+      "title": "阁楼",
+      "scene": {
+        "id": "attic",
+        "name": "阁楼",
+        "type": "major",
+        "description": "圣彼得堡，夏天。五层楼顶的阁楼，天花板斜压下来，热得像烤箱。窗外是灰色的天空和屋顶。",
+        "arrival": "你已经两个月没交房租了。"
+      },
+      "progress": 2,
+      "segments": [
+        { "text": "七月，圣彼得堡。热浪把城市里所有东西的气味都烤了出来——下水道，腐鱼，汗，石灰。" },
+        { "text": "你的阁楼比棺材大不了多少。大衣当了，书当了，连茶炊也当了。" },
+        { "text": "你还在想一件事。想了很久了。" }
+      ],
+      "choices": [
+        { "text": "继续", "next": "cr_attic" }
+      ]
+    },
+
+    "cr_attic": {
+      "title": "那个想法",
+      "scene": { "id": "attic", "name": "阁楼", "type": "major" },
+      "progress": 4,
+      "segments": [
+        { "text": "你在脑子里把它转了一遍又一遍。不是第一次，但今天转得特别清楚。" },
+        { "text": "世界上有两种人。普通人，受规则约束，活在道德的笼子里。还有非凡人——拿破仑那样的，他们有权利逾越，因为他们的目的更大。" },
+        { "text": "问题只有一个：你是哪一种？" }
+      ],
+      "choices": [
+        {
+          "text": "「我是非凡人。」",
+          "next": "cr_walk_out",
+          "changes": { "val": -5, "unlockAchievement": "ach_theory" }
+        },
+        {
+          "text": "「我不知道。」",
+          "next": "cr_walk_out",
+          "changes": { "val": 5, "unlockAchievement": "ach_theory" }
+        }
+      ]
+    },
+
+    "cr_walk_out": {
+      "title": "出门",
+      "scene": { "id": "street", "name": "圣彼得堡街头", "type": "major", "description": "运河边，石板路，人群，热浪，气味。", "arrival": "你出了门，往典当铺方向走。" },
+      "progress": 6,
+      "segments": [
+        { "text": "街上的人把你挤来挤去。马车溅起泥水。一个醉汉靠着墙唱歌。" },
+        { "text": "你朝爱-巷走去，那里住着一个老典当商。你之前去过一次，典当了手表。" },
+        { "text": "这次你不是去典当东西的。" }
+      ],
+      "choices": [
+        { "text": "走进那条巷子", "next": "cr_pawnbroker" }
+      ]
+    },
+
+    "cr_pawnbroker": {
+      "chapterTitle": "第一章：理论",
+      "title": "典当商",
+      "scene": { "id": "pawnshop", "name": "典当铺", "type": "minor", "description": "昏暗的公寓，挂满东西，气味混合着陈旧和霉味。" },
+      "progress": 9,
+      "segments": [
+        { "text": "阿廖娜·伊万诺夫娜，六十多岁，身材矮小，眼睛像老鼠一样机警。她看了看你带来的东西，出了个压低的价。" },
+        { "speaker": "阿廖娜", "text": "「这个，一卢布半。上次的利息你也欠着。」" },
+        { "text": "你接过钱，什么都没说。你在心里记下了：两把锁，门的布局，什么时候她一个人在家。" }
+      ],
+      "choices": [
+        {
+          "text": "把细节再记清楚一些",
+          "next": "cr_theory_born",
+          "changes": { "val": -5 }
+        },
+        {
+          "text": "走出去，在楼道里站了一会儿",
+          "next": "cr_theory_born"
+        }
+      ]
+    },
+
+    "cr_theory_born": {
+      "title": "理论成形",
+      "scene": { "id": "street", "name": "圣彼得堡街头", "type": "major" },
+      "progress": 11,
+      "segments": [
+        { "text": "她是虱子，你在走回阁楼的路上这样想。吸人血的虱子，没有任何用处，只会把穷人的最后一点东西压低了要走。" },
+        { "text": "如果你把她的钱拿来，用在真正有意义的事情上——救母亲，完成学业，帮助一百个穷人——这算犯罪吗？" },
+        { "text": "一个虱子的命，换一百人的前途。数学题。" }
+      ],
+      "choices": [
+        {
+          "text": "这个逻辑没有问题",
+          "next": "cr_tavern",
+          "changes": { "val": -5 }
+        },
+        {
+          "text": "但有什么东西让你停下来",
+          "next": "cr_tavern",
+          "changes": { "val": 5 }
+        }
+      ]
+    },
+
+    "cr_tavern": {
+      "title": "小酒馆",
+      "scene": { "id": "tavern", "name": "小酒馆", "type": "minor", "description": "嘈杂，蜡烛，烟，大桌子。" },
+      "progress": 13,
+      "segments": [
+        { "text": "你进了一家小酒馆，要了一杯啤酒，找了个角落坐下。" },
+        { "text": "旁边那桌有个男人，穿着旧官服，眼睛通红，一看就是喝了很久的那种喝法。他扫了你一眼，像是要找个人说话。" },
+        { "speaker": "玛尔美拉多夫", "text": "「年轻人，你愿意听一个可悲的人说话吗？」" }
+      ],
+      "choices": [
+        {
+          "text": "「说吧。」",
+          "next": "cr_marmeladov_story"
+        },
+        {
+          "text": "扭过头去",
+          "next": "cr_marmeladov_story"
+        }
+      ]
+    },
+
+    "cr_marmeladov_story": {
+      "title": "玛尔美拉多夫",
+      "scene": { "id": "tavern", "name": "小酒馆", "type": "minor" },
+      "progress": 15,
+      "segments": [
+        { "text": "他叫玛尔美拉多夫，前九等文官，如今什么都不是。他说他有个女儿索尼娅，为了供一家人吃饭，走了一条让他羞愧的路。" },
+        { "speaker": "玛尔美拉多夫", "text": "「她去那里，是为了我这个废物，是为了她的继母和弟弟妹妹们。她把钱放在桌上，什么都没说，走了。」" },
+        { "text": "他喝了一口，把酒杯重重地放下来。" },
+        { "speaker": "玛尔美拉多夫", "text": "「我又把那些钱喝掉了。」" }
+      ],
+      "choices": [
+        { "text": "继续听", "next": "cr_letter" }
+      ]
+    },
+
+    "cr_letter": {
+      "title": "母亲的信",
+      "scene": { "id": "attic", "name": "阁楼", "type": "major" },
+      "progress": 17,
+      "segments": [
+        { "text": "回到阁楼，桌上有一封信。母亲的字迹，从省里寄来的。" },
+        { "text": "信里说，妹妹杜尼亚找到了工作，在一个叫斯维德里盖洛夫的地主家做家庭教师，但出了一些让人不安的事，现在她打算嫁给一个叫卢任的律师——" },
+        { "text": "母亲写道：「他不算年轻，但有地位，可以保护我们的杜尼亚，也许也能帮你。」" }
+      ],
+      "choices": [
+        {
+          "text": "「她是为了我。」",
+          "next": "cr_decision_forming",
+          "changes": { "val": 5 }
+        },
+        {
+          "text": "把信折起来，不再想",
+          "next": "cr_decision_forming",
+          "changes": { "val": -5 }
+        }
+      ]
+    },
+
+    "cr_decision_forming": {
+      "title": "决定",
+      "scene": { "id": "attic", "name": "阁楼", "type": "major" },
+      "progress": 19,
+      "segments": [
+        { "text": "你躺在床上，盯着斜压下来的天花板。" },
+        { "text": "妹妹要嫁给一个她不爱的人，是为了你。母亲在省里数着每一戈比，是为了你。" },
+        { "text": "而你，有一个可以改变一切的方法，你只是还没有做。" }
+      ],
+      "choices": [
+        {
+          "text": "「明天去排练一遍路线。」",
+          "next": "cr_rehearsal",
+          "changes": { "val": -5 }
+        }
+      ]
+    },
+
+    "cr_rehearsal": {
+      "title": "预演",
+      "scene": { "id": "pawnshop", "name": "典当铺", "type": "minor" },
+      "progress": 21,
+      "segments": [
+        { "text": "你再去了一次，典当了一个旧怀表。确认了一切：她一个人，妹妹丽莎韦塔出去了，傍晚七点前会回来。" },
+        { "text": "楼道，楼梯，出口，几步，几秒。你都数过了。" }
+      ],
+      "choices": [
+        {
+          "text": "定在明天傍晚",
+          "next": "cr_commit"
+        }
+      ]
+    },
+
+    "cr_commit": {
+      "title": "承诺",
+      "scene": { "id": "attic", "name": "阁楼", "type": "major" },
+      "progress": 23,
+      "segments": [
+        { "text": "你从阁楼的墙缝里取出一把斧头——是你提前准备好的，借口修东西。你把它藏在外套里。" },
+        { "text": "你在心里最后问了自己一次。" },
+        { "text": "然后你下楼了。" }
+      ],
+      "choices": [
+        { "text": "走出去", "next": "cr_night" }
+      ]
+    },
+
+    "cr_night": {
+      "chapterTitle": "第二章：那个傍晚",
+      "title": "前往",
+      "scene": {
+        "id": "street_evening",
+        "name": "傍晚的街道",
+        "type": "major",
+        "description": "日光还没有完全退去。街上的人少了些。",
+        "arrival": "七月傍晚，圣彼得堡。"
+      },
+      "progress": 26,
+      "segments": [
+        { "text": "你走在路上，脑子很空。" },
+        { "text": "不是你想的那种空。不是平静。是一种很奇怪的东西——像是你只剩下脚步，其他的都不在了。" }
+      ],
+      "choices": [
+        { "text": "继续走", "next": "cr_approach" }
+      ]
+    },
+
+    "cr_approach": {
+      "title": "楼道",
+      "scene": { "id": "staircase", "name": "楼道", "type": "minor", "description": "昏暗，气味，石梯，沉默。" },
+      "progress": 28,
+      "segments": [
+        { "text": "楼道里没有人。你的鞋踩在石梯上，你特意踩得轻。" },
+        { "text": "四楼，五楼。她的门。" }
+      ],
+      "choices": [
+        { "text": "敲门", "next": "cr_ring_bell" }
+      ]
+    },
+
+    "cr_ring_bell": {
+      "title": "门铃",
+      "scene": { "id": "staircase", "name": "楼道", "type": "minor" },
+      "progress": 29,
+      "segments": [
+        { "text": "门铃拉了两下。脚步声。" },
+        { "speaker": "阿廖娜", "text": "「谁？」" },
+        { "text": "「来典当，」你说，「上次来过。」" },
+        { "text": "门开了。" }
+      ],
+      "choices": [
+        { "text": "进去", "next": "cr_inside" }
+      ]
+    },
+
+    "cr_inside": {
+      "title": "屋内",
+      "scene": { "id": "pawnshop_room", "name": "典当铺内室", "type": "minor", "description": "昏暗，堆满东西，蜡烛的光。" },
+      "progress": 30,
+      "segments": [
+        { "text": "她转过身，要去看你带来的东西。" },
+        { "text": "你从外套里取出斧头。" }
+      ],
+      "choices": [
+        { "text": "继续", "next": "cr_axe" }
+      ]
+    },
+
+    "cr_axe": {
+      "title": "斧头",
+      "scene": { "id": "pawnshop_room", "name": "典当铺内室", "type": "minor" },
+      "progress": 31,
+      "segments": [
+        { "text": "你做了那件事。" },
+        { "text": "她倒下了。" },
+        { "text": "你的手在抖，但脑子还是空的。你翻了抽屉，找到钱包，拿了几样东西——然后听到了楼道里的脚步声。" }
+      ],
+      "choices": [
+        { "text": "躲到门后", "next": "cr_lizaveta" }
+      ]
+    },
+
+    "cr_lizaveta": {
+      "title": "丽莎韦塔",
+      "scene": { "id": "pawnshop_room", "name": "典当铺内室", "type": "minor" },
+      "progress": 32,
+      "segments": [
+        { "text": "门开了。进来的不是任何你预料中的人——是丽莎韦塔，老太太的妹妹，手里拎着一个包，脸是那种看到什么都来不及叫出声的表情。" },
+        { "text": "你没有停下来。" },
+        { "text": "她也倒下了。" }
+      ],
+      "choices": [
+        { "text": "继续", "next": "cr_escape" }
+      ]
+    },
+
+    "cr_escape": {
+      "title": "逃脱",
+      "scene": { "id": "staircase", "name": "楼道", "type": "minor" },
+      "progress": 33,
+      "segments": [
+        { "text": "楼道里有人在上楼。你退回去，躲进了一间空着的公寓，贴着墙，屏住呼吸。" },
+        { "text": "脚步声上去了，停在更高的楼层。" },
+        { "text": "你下楼，出了门，走进人群，走，走，走。" }
+      ],
+      "choices": [
+        { "text": "回阁楼", "next": "cr_attic_return" }
+      ]
+    },
+
+    "cr_attic_return": {
+      "title": "回来",
+      "scene": { "id": "attic", "name": "阁楼", "type": "major" },
+      "progress": 35,
+      "segments": [
+        { "text": "你把斧头放回墙缝里，脱掉外套，躺下。" },
+        { "text": "那些拿来的东西藏在了阁楼的某个角落——你后来几乎不记得藏在哪里。" },
+        { "text": "然后你病倒了。" }
+      ],
+      "choices": [
+        { "text": "继续", "next": "cr_fever" }
+      ]
+    },
+
+    "cr_fever": {
+      "chapterTitle": "第三章：发烧",
+      "title": "高烧",
+      "scene": { "id": "attic", "name": "阁楼", "type": "major" },
+      "progress": 38,
+      "segments": [
+        { "text": "你烧了好几天。时间模糊，昼夜模糊。有时你以为有人在敲门，但门没有开。" },
+        { "text": "有时你以为你已经被抓了，但早上睁开眼还是那个阁楼，那个天花板。" }
+      ],
+      "choices": [
+        { "text": "继续", "next": "cr_razumikhin" }
+      ]
+    },
+
+    "cr_razumikhin": {
+      "title": "拉祖米欣",
+      "scene": { "id": "attic", "name": "阁楼", "type": "major" },
+      "progress": 40,
+      "segments": [
+        { "text": "某一天，门开了，进来的是拉祖米欣——你的前同学，高大，声音爽朗，有一种让人厌倦的活力。" },
+        { "speaker": "拉祖米欣", "text": "「你怎么没死？我以为你死了。来，喝点东西。」" },
+        { "text": "他找来了医生，送来了吃的。你躺着，让这一切发生。" }
+      ],
+      "choices": [
+        { "text": "继续", "next": "cr_marmeladov_death" }
+      ]
+    },
+
+    "cr_marmeladov_death": {
+      "title": "玛尔美拉多夫",
+      "scene": { "id": "street", "name": "街道", "type": "major" },
+      "progress": 42,
+      "segments": [
+        { "text": "烧退了几天后，你出门。街角有人群在围观——一个被马车撞倒的男人，奄奄一息。" },
+        { "text": "你认出了他。玛尔美拉多夫。" },
+        { "text": "有人去叫了他的家人。一个年轻女子穿着破旧的衣服跑过来，跪在他身边。" }
+      ],
+      "choices": [
+        { "text": "继续看", "next": "cr_gives_money" }
+      ]
+    },
+
+    "cr_gives_money": {
+      "title": "钱",
+      "scene": { "id": "street", "name": "街道", "type": "major" },
+      "progress": 44,
+      "segments": [
+        { "text": "玛尔美拉多夫在众人面前死去了。他的家人在哭，那个女子——索尼娅，他提到过——脸色像石膏一样。" },
+        { "text": "你不知道为什么，你把口袋里所有的零钱都拿出来，塞到了那个继母手里。" },
+        { "text": "走了出去，才发现你几乎把所有钱都给了出去。" }
+      ],
+      "choices": [
+        {
+          "text": "没什么感觉",
+          "next": "cr_police_summons",
+          "changes": { "val": 5, "unlockAchievement": "ach_marmeladov" }
+        }
+      ]
+    },
+
+    "cr_police_summons": {
+      "title": "传唤",
+      "scene": { "id": "attic", "name": "阁楼", "type": "major" },
+      "progress": 46,
+      "segments": [
+        { "text": "第二天早晨，一张纸条被塞进门缝：警察局传唤你，事由：欠房租。" },
+        { "text": "但你站在那张纸条前站了很久。" }
+      ],
+      "choices": [
+        {
+          "text": "去",
+          "next": "cr_police_station",
+          "changes": { "val": -5 }
+        },
+        {
+          "text": "去",
+          "next": "cr_police_station"
+        }
+      ]
+    },
+
+    "cr_police_station": {
+      "title": "警察局",
+      "scene": { "id": "police", "name": "警察局", "type": "minor", "description": "旧桌椅，纸堆，一个书记员，气味混杂。" },
+      "progress": 48,
+      "segments": [
+        { "text": "警察局里，书记员在处理你的欠租通知，漫不经心。然后你听到旁边两个警官在聊天，说的是爱-巷的那桩案子。" },
+        { "text": "他们在说典当商被杀的事。说嫌疑人还没找到。说那天晚上不知道有没有目击者。" },
+        { "text": "你的脑子嗡了一下。书记员在叫你签字，你的手在颤。" }
+      ],
+      "choices": [
+        {
+          "text": "签完字，走出去",
+          "next": "cr_porfiry_1"
+        }
+      ]
+    },
+
+    "cr_porfiry_1": {
+      "chapterTitle": "第四章：波尔菲里",
+      "title": "第一次审讯",
+      "scene": {
+        "id": "porfiry_office",
+        "name": "波尔菲里的办公室",
+        "type": "major",
+        "description": "一个圆脸的四十多岁男人，办公室里乱而不脏，他喜欢站着说话。",
+        "arrival": "几天后，你收到另一张传唤——去预审官波尔菲里·彼得罗维奇那里，说是为了你典当东西的手续。"
+      },
+      "progress": 51,
+      "segments": [
+        { "text": "波尔菲里·彼得罗维奇，圆脸，四十出头，眼睛里有一种快活的神气，但快活里面还有另一种东西。" },
+        { "speaker": "波尔菲里", "text": "「您来了，罗季昂·罗曼诺维奇，请坐，请坐——我听说您是学法律的，在投稿写文章？」" },
+        { "text": "你坐下，不知道他为什么提到文章。" }
+      ],
+      "choices": [
+        {
+          "text": "「写过一篇关于犯罪心理学的文章。」",
+          "next": "cr_theory_article",
+          "changes": { "unlockAchievement": "ach_porfiry" }
+        }
+      ]
+    },
+
+    "cr_theory_article": {
+      "title": "那篇文章",
+      "scene": { "id": "porfiry_office", "name": "波尔菲里的办公室", "type": "major" },
+      "progress": 53,
+      "segments": [
+        { "speaker": "波尔菲里", "text": "「正是那篇，我拜读了——有个非常有趣的想法，说人分两种，是吗？」他笑着，「普通人和……非凡人。」" },
+        { "text": "你盯着他，不知道这是哪里来的。那篇文章发在一个没什么人看的杂志上，你以为没人注意。" },
+        { "speaker": "波尔菲里", "text": "「非凡人有权利逾越，」他若有所思地重复，「您是这个意思吗？」" }
+      ],
+      "choices": [
+        {
+          "text": "「那只是一个理论框架。」",
+          "next": "cr_extraordinary_debate",
+          "changes": { "val": 5 }
+        },
+        {
+          "text": "「是的，基本上是这个意思。」",
+          "next": "cr_extraordinary_debate",
+          "changes": { "val": -5 }
+        }
+      ]
+    },
+
+    "cr_extraordinary_debate": {
+      "title": "辩论",
+      "scene": { "id": "porfiry_office", "name": "波尔菲里的办公室", "type": "major" },
+      "progress": 55,
+      "segments": [
+        { "speaker": "波尔菲里", "text": "「那么，」他突然停下来，脸上的笑没了，「按您的理论，您怎么知道自己属于哪种人？」" },
+        { "text": "你没有立刻回答。" },
+        { "speaker": "波尔菲里", "text": "「这是个实践问题，是吗？」他重新笑起来，「一个人只有做了，才知道自己是不是。」" },
+        { "text": "你们又聊了一会儿，他让你回去了，态度很好，好得让你不安。" }
+      ],
+      "choices": [
+        { "text": "离开他的办公室", "next": "cr_nikolai_news" }
+      ]
+    },
+
+    "cr_nikolai_news": {
+      "title": "尼古拉认罪",
+      "scene": { "id": "street", "name": "街道", "type": "major" },
+      "progress": 57,
+      "segments": [
+        { "text": "两天后，城里传来消息：一个叫尼古拉的油漆工向警察认罪，说那桩谋杀案是他干的。" },
+        { "text": "你在街上听到的，站在原地愣了很久。" },
+        { "text": "尼古拉不是凶手。你知道，因为凶手是你。但他认罪了。" }
+      ],
+      "choices": [
+        {
+          "text": "去核实消息是否属实",
+          "next": "cr_nikolai_choice"
+        }
+      ]
+    },
+
+    "cr_nikolai_choice": {
+      "title": "选择",
+      "scene": { "id": "attic", "name": "阁楼", "type": "major" },
+      "progress": 59,
+      "segments": [
+        { "text": "消息是真的。尼古拉·杜什金，画匠，不知为何，向警察认罪，供词非常详细，显然是胡说的，但警察暂时信了。" },
+        { "text": "你现在安全了——至少是暂时的。" },
+        { "text": "而一个无辜的人在等待审判。" }
+      ],
+      "choices": [
+        {
+          "text": "沉默。这是他自己的事。",
+          "next": "cr_nikolai_silent",
+          "changes": {
+            "val": -15,
+            "addFlag": "nikolai_betrayed",
+            "unlockAchievement": "ach_nikolai",
+            "importantFlag": { "flag": "nikolai_betrayed", "label": "让无辜者替你受审" }
+          }
+        },
+        {
+          "text": "这让你感到很不安",
+          "next": "cr_nikolai_uneasy",
+          "changes": { "val": 5 }
+        }
+      ]
+    },
+
+    "cr_nikolai_silent": {
+      "title": "安全",
+      "scene": { "id": "attic", "name": "阁楼", "type": "major" },
+      "progress": 60,
+      "segments": [
+        { "text": "你把窗户推开一条缝，城市的声音漫进来。" },
+        { "text": "你告诉自己：这没有关系，这只是意外，他会被释放的，最终总会查清楚。" },
+        { "text": "但你没有去查清楚。" }
+      ],
+      "choices": [
+        { "text": "继续", "next": "cr_sonya_first" }
+      ]
+    },
+
+    "cr_nikolai_uneasy": {
+      "title": "不安",
+      "scene": { "id": "attic", "name": "阁楼", "type": "major" },
+      "progress": 60,
+      "segments": [
+        { "text": "你在阁楼里走来走去，想了很久。" },
+        { "text": "你没有去警察局。你没有做任何事。但你记住了尼古拉这个名字。" }
+      ],
+      "choices": [
+        { "text": "继续", "next": "cr_sonya_first" }
+      ]
+    },
+
+    "cr_sonya_first": {
+      "chapterTitle": "第五章：索尼娅",
+      "title": "第一次拜访",
+      "scene": {
+        "id": "sonya_room",
+        "name": "索尼娅的房间",
+        "type": "major",
+        "description": "一个大而奇异的房间，墙壁不规则，像是隔出来的一角，光线奇特，但有某种干净的东西。",
+        "arrival": "你找到了索尼娅·玛尔美拉多娃的住处，按了她的门。"
+      },
+      "progress": 63,
+      "segments": [
+        { "text": "开门的是一个年轻女子，不超过十八岁，金发，脸很苍白，眼睛浅绿，里面有一种他见过的最平静的东西。" },
+        { "speaker": "索尼娅", "text": "「请进。」她说，退到一旁。" },
+        { "text": "你说你来是为了她父亲——你在场，你付了丧葬费的一部分。她谢了你，声音很轻。" }
+      ],
+      "choices": [
+        {
+          "text": "「我有话想和你说。」",
+          "next": "cr_sonya_room",
+          "changes": { "val": 5, "set": { "sonya_bond": 1 } }
+        }
+      ]
+    },
+
+    "cr_sonya_room": {
+      "title": "她的房间",
+      "scene": { "id": "sonya_room", "name": "索尼娅的房间", "type": "major" },
+      "progress": 65,
+      "segments": [
+        { "text": "房间里几乎没有家具。桌上有一本书——圣经，皮面已经磨损。" },
+        { "text": "你们面对面坐着。你不知道你来这里是为了什么。" },
+        { "text": "她也没有催你。" }
+      ],
+      "choices": [
+        { "text": "指向那本书", "next": "cr_lazarus_ask" }
+      ]
+    },
+
+    "cr_lazarus_ask": {
+      "title": "圣经",
+      "scene": { "id": "sonya_room", "name": "索尼娅的房间", "type": "major" },
+      "progress": 67,
+      "segments": [
+        { "speaker": "你", "text": "「那本书是你的？」" },
+        { "speaker": "索尼娅", "text": "「是丽莎韦塔给我的。」她停了一下。「您认识丽莎韦塔吗？」" },
+        { "text": "你的喉咙里有什么东西收紧了。丽莎韦塔——老典当商的妹妹——你杀死的第二个人。" },
+        { "speaker": "你", "text": "「不认识，」你说，「能不能……把拉撒路的故事读给我听？」" }
+      ],
+      "choices": [
+        {
+          "text": "等她读",
+          "next": "cr_lazarus_read",
+          "changes": { "val": 5, "unlockAchievement": "ach_lazarus" }
+        }
+      ]
+    },
+
+    "cr_lazarus_read": {
+      "title": "拉撒路",
+      "scene": { "id": "sonya_room", "name": "索尼娅的房间", "type": "major" },
+      "progress": 69,
+      "segments": [
+        { "text": "她找到那一页，开始读。声音很低，但清晰。" },
+        { "speaker": "索尼娅", "text": "「耶稣说：复活在我，生命也在我。信我的人，虽然死了，也必复活；凡活着信我的人，必永远不死。」" },
+        { "text": "她读到拉撒路从坟墓里走出来那一段时，声音微微颤抖了一下，但没有停。" },
+        { "text": "房间里很安静。" }
+      ],
+      "choices": [
+        {
+          "text": "继续听",
+          "next": "cr_after_lazarus",
+          "changes": { "val": 10 }
+        }
+      ]
+    },
+
+    "cr_after_lazarus": {
+      "title": "读完之后",
+      "scene": { "id": "sonya_room", "name": "索尼娅的房间", "type": "major" },
+      "progress": 71,
+      "segments": [
+        { "text": "她合上书，把手放在上面。" },
+        { "speaker": "索尼娅", "text": "「您为什么要我读这个？」" },
+        { "text": "你没有回答。你站起来，说你改天再来，出了门。" },
+        { "text": "在楼道里，你站了一会儿，手放在墙上。" }
+      ],
+      "choices": [
+        {
+          "text": "继续",
+          "next": "cr_porfiry_2",
+          "changes": { "val": 5 }
+        }
+      ]
+    },
+
+    "cr_porfiry_2": {
+      "title": "第二次审讯",
+      "scene": { "id": "porfiry_office", "name": "波尔菲里的办公室", "type": "major" },
+      "progress": 73,
+      "segments": [
+        { "text": "波尔菲里再次传唤你。这一次他没有笑。" },
+        { "speaker": "波尔菲里", "text": "「罗季昂·罗曼诺维奇，我直说吧——那个尼古拉·杜什金认了罪，但他说的是假的。我们都知道。」" },
+        { "text": "他看着你，眼睛里那种快活的东西消失了。" },
+        { "speaker": "波尔菲里", "text": "「我没有证据。但我了解的事情比我说出来的要多。给您一点时间，您自己来。」" }
+      ],
+      "choices": [
+        {
+          "text": "「您在说什么？」",
+          "next": "cr_pressure_choice",
+          "changes": { "val": -5 }
+        },
+        {
+          "text": "沉默地看着他",
+          "next": "cr_pressure_choice"
+        }
+      ]
+    },
+
+    "cr_pressure_choice": {
+      "title": "压力",
+      "scene": { "id": "porfiry_office", "name": "波尔菲里的办公室", "type": "major" },
+      "progress": 74,
+      "segments": [
+        { "text": "你出了他的办公室，在街上站着，身边是人群，人群是噪音，噪音是某种让你喘不过气来的东西。" },
+        { "text": "已经太久了。发烧，隐瞒，波尔菲里的眼睛，拉撒路，索尼娅的声音。" },
+        { "text": "你感到那个一直在撑着的东西要断掉了。" }
+      ],
+      "choices": [
+        {
+          "text": "撑住",
+          "next": "cr_hold",
+          "changes": { "val": 5 }
+        },
+        {
+          "text": "什么都撑不住了",
+          "next": "cr_breakdown",
+          "changes": { "val": -15 }
+        }
+      ]
+    },
+
+    "cr_breakdown": {
+      "title": "崩溃",
+      "scene": { "id": "street", "name": "街道", "type": "major" },
+      "progress": 75,
+      "segments": [
+        { "text": "你在一个陌生的街角坐了下来，不知道坐了多久。" },
+        { "text": "有人认出你叫了拉祖米欣。拉祖米欣送你回阁楼，叫了医生，说你又烧起来了。" },
+        { "text": "这次烧的时间更长，烧得更深。" }
+      ],
+      "choices": [
+        { "text": "继续", "next": "rash_fever_end" }
+      ]
+    },
+
+    "rash_fever_end": {
+      "isEnding": true,
+      "title_end": "阁楼里的发烧",
+      "type": "RASH ENDING",
+      "progress": 76,
+      "description": "你没有再出门了。拉祖米欣告诉你母亲和杜尼亚到了彼得堡，她们来看你，你大多数时候认不出她们。波尔菲里停止了传唤，不知道是因为尼古拉的案子有了进展，还是因为他已经不需要再问你了。你的脑子在发烧和清醒之间漂移，那套理论有时候还在，有时候就散掉了，你已经分不清楚哪个更真实。",
+      "closing": "有些问题，一直不回答，最终会由身体来回答。"
+    },
+
+    "cr_hold": {
+      "title": "撑住",
+      "scene": { "id": "street", "name": "街道", "type": "major" },
+      "progress": 75,
+      "segments": [
+        { "text": "你走回阁楼，把门关上，在床上躺了两个小时。" },
+        { "text": "然后你坐起来。" },
+        { "text": "那个东西还没有断。但你听到了它在断。" }
+      ],
+      "choices": [
+        { "text": "继续", "next": "cr_svidrigailov" }
+      ]
+    },
+
+    "cr_svidrigailov": {
+      "chapterTitle": "第六章：告白",
+      "title": "斯维德里盖洛夫",
+      "scene": {
+        "id": "street",
+        "name": "街道",
+        "type": "major"
+      },
+      "progress": 78,
+      "segments": [
+        { "text": "母亲和杜尼亚到了彼得堡。你见到杜尼亚时，她身边站着一个陌生人，健壮，有魅力，眼神里有种你不喜欢的东西。" },
+        { "text": "他叫斯维德里盖洛夫，就是杜尼亚之前当家庭教师的那家的男主人。" },
+        { "speaker": "斯维德里盖洛夫", "text": "「罗季昂·罗曼诺维奇，」他微笑，「我听说过您很多，从索尼娅那里。」" }
+      ],
+      "choices": [
+        { "text": "「你和索尼娅认识？」", "next": "cr_tell_sonya_choice" }
+      ]
+    },
+
+    "cr_tell_sonya_choice": {
+      "title": "告诉她",
+      "scene": { "id": "sonya_room", "name": "索尼娅的房间", "type": "major" },
+      "progress": 80,
+      "segments": [
+        { "text": "你第二次去找索尼娅。这次你知道你为什么来。" },
+        { "text": "你在门口站了很久，然后进去了，坐下来，看着她。" },
+        { "speaker": "你", "text": "「我有话要告诉你，关于一件事。」" }
+      ],
+      "choices": [
+        {
+          "text": "「我杀了她。典当商和她妹妹。」",
+          "next": "cr_tell_sonya_yes",
+          "changes": {
+            "val": 15,
+            "addFlag": "told_sonya",
+            "unlockAchievement": "ach_confession_sonya",
+            "importantFlag": { "flag": "told_sonya", "label": "向索尼娅说出了真相" }
+          }
+        },
+        {
+          "text": "「没什么，我想清楚了一件事。」",
+          "next": "cr_no_tell_sonya",
+          "changes": { "val": -10 }
+        }
+      ]
+    },
+
+    "cr_tell_sonya_yes": {
+      "title": "说出来",
+      "scene": { "id": "sonya_room", "name": "索尼娅的房间", "type": "major" },
+      "progress": 81,
+      "segments": [
+        { "text": "她没有动，也没有叫出声，只是把手放在胸口，脸上出现了某种他说不清楚的东西。" },
+        { "speaker": "索尼娅", "text": "「你怎么……能做到。」她说，不是指责，是真的不明白。" },
+        { "speaker": "你", "text": "「我有一个理论，」你说，「我想知道我是哪种人。」" },
+        { "speaker": "索尼娅", "text": "「那你知道了吗？」" }
+      ],
+      "choices": [
+        { "text": "继续", "next": "cr_sonya_listens" }
+      ]
+    },
+
+    "cr_sonya_listens": {
+      "title": "索尼娅听着",
+      "scene": { "id": "sonya_room", "name": "索尼娅的房间", "type": "major" },
+      "progress": 82,
+      "segments": [
+        { "text": "你把一切都说了，关于理论，关于虱子，关于非凡人，关于那个傍晚。" },
+        { "text": "她听着，全程没有离开你的眼睛。当你说完，她沉默了很久。" },
+        { "speaker": "索尼娅", "text": "「去，」她说，「现在就去。站在十字路口，向人群鞠躬，说出来：『我是杀人犯。』然后去自首。」" }
+      ],
+      "choices": [
+        {
+          "text": "「还没到时候。」",
+          "next": "cr_sonya_urges",
+          "changes": { "val": 5 }
+        }
+      ]
+    },
+
+    "cr_sonya_urges": {
+      "title": "她说",
+      "scene": { "id": "sonya_room", "name": "索尼娅的房间", "type": "major" },
+      "progress": 83,
+      "segments": [
+        { "speaker": "索尼娅", "text": "「你在受苦，」她说，「你已经受了很久了。去吧，接受你的苦难，用苦难赎回。」" },
+        { "text": "她把自己脖子上的一个十字架摘下来，放到你手里。" },
+        { "speaker": "索尼娅", "text": "「我们一起去，」她说，「我跟着你。」" }
+      ],
+      "choices": [
+        { "text": "「不是现在。」", "next": "cr_svid_end" }
+      ]
+    },
+
+    "cr_no_tell_sonya": {
+      "title": "没说",
+      "scene": { "id": "sonya_room", "name": "索尼娅的房间", "type": "major" },
+      "progress": 81,
+      "segments": [
+        { "text": "你什么都没说，坐了一会儿就走了。" },
+        { "text": "索尼娅送你到门口，没有问。" }
+      ],
+      "choices": [
+        { "text": "继续", "next": "cr_svid_end" }
+      ]
+    },
+
+    "cr_svid_end": {
+      "title": "斯维德里盖洛夫",
+      "scene": { "id": "street", "name": "街道", "type": "major" },
+      "progress": 84,
+      "segments": [
+        { "text": "斯维德里盖洛夫在一个早晨被发现死在街头，太阳穴一枪。没有遗书。" },
+        { "text": "杜尼亚告诉你这件事的时候，你点了点头，什么都没说。" }
+      ],
+      "choices": [
+        { "text": "继续", "next": "cr_last_day" }
+      ]
+    },
+
+    "cr_last_day": {
+      "chapterTitle": "第七章：广场",
+      "title": "最后的早晨",
+      "scene": {
+        "id": "attic",
+        "name": "阁楼",
+        "type": "major"
+      },
+      "progress": 87,
+      "segments": [
+        { "text": "你很早就醒了。" },
+        { "text": "阁楼的天花板还是压下来的那个样子。夏末，光已经有点不同了，不那么白，有点黄。" },
+        { "text": "你知道今天要去做什么，就像你当时知道那个傍晚要去做什么一样。" }
+      ],
+      "choices": [
+        { "text": "先去见母亲", "next": "cr_farewell" }
+      ]
+    },
+
+    "cr_farewell": {
+      "title": "告别",
+      "scene": { "id": "geneva_home", "name": "母亲的住处", "type": "minor" },
+      "progress": 89,
+      "segments": [
+        { "text": "母亲在房间里，看到你进来就笑了，是那种已经很小心地控制过的笑。" },
+        { "text": "你抱了抱她，很久。" },
+        { "text": "你什么都没说，她也什么都没问，好像她在等着什么，她一直都在等。" }
+      ],
+      "choices": [
+        { "text": "出门", "next": "cr_square" }
+      ]
+    },
+
+    "cr_square": {
+      "title": "广场",
+      "scene": {
+        "id": "square",
+        "name": "十字路口广场",
+        "type": "major",
+        "description": "市集广场，人群，摊贩，噪音，夏末的阳光。",
+        "arrival": "你走到了十字路口的广场。"
+      },
+      "progress": 91,
+      "segments": [
+        { "text": "广场上很多人。卖东西的，买东西的，路过的，停着的。" },
+        { "text": "太阳还很高。你站在广场中央，人群从你身边流过。" }
+      ],
+      "choices": [
+        {
+          "text": "跪下来",
+          "next": "cr_kiss_earth",
+          "changes": { "val": 10, "unlockAchievement": "ach_kiss_earth" }
+        },
+        {
+          "text": "直接走向警察局",
+          "next": "cr_toward_police"
+        }
+      ]
+    },
+
+    "cr_kiss_earth": {
+      "title": "大地之吻",
+      "scene": { "id": "square", "name": "十字路口广场", "type": "major" },
+      "progress": 92,
+      "segments": [
+        { "text": "你跪下来，在广场的石板上，弯腰，把额头贴在地上。" },
+        { "text": "有人笑了，有人走开了，有人停下来看。" },
+        { "text": "你在那里停了一会儿，然后站起来。" }
+      ],
+      "choices": [
+        {
+          "text": "走向警察局",
+          "next": "cr_toward_police"
+        }
+      ]
+    },
+
+    "cr_toward_police": {
+      "title": "走去",
+      "scene": { "id": "street", "name": "街道", "type": "major" },
+      "progress": 93,
+      "segments": [
+        { "text": "你走着，街上的人和平时一样多，一样吵，一样不知道你是谁。" },
+        { "text": "索尼娅在后面跟着，你知道，但你没有回头。" }
+      ],
+      "choices": [
+        { "text": "走进去", "next": "cr_confession" }
+      ]
+    },
+
+    "cr_confession": {
+      "title": "自首",
+      "scene": { "id": "police", "name": "警察局", "type": "minor" },
+      "progress": 95,
+      "segments": [
+        { "text": "接待处有个书记员，低着头写东西。" },
+        { "speaker": "你", "text": "「我来自首。爱-巷的案子，典当商阿廖娜·伊万诺夫娜和她妹妹丽莎韦塔，是我杀的。」" },
+        { "text": "书记员抬起头，看了你一会儿，放下笔，叫人。" }
+      ],
+      "choices": [
+        {
+          "text": "等在那里",
+          "next": "cr_porfiry_final",
+          "changes": { "val": 10, "unlockAchievement": "ach_surrender" }
+        }
+      ]
+    },
+
+    "cr_porfiry_final": {
+      "title": "波尔菲里",
+      "scene": { "id": "police", "name": "警察局", "type": "minor" },
+      "progress": 97,
+      "segments": [
+        { "text": "他们叫来了波尔菲里。他走进来，看到你，脸上出现了他第一次见到你时那种快活的神气，但这次里面有别的东西。" },
+        { "speaker": "波尔菲里", "text": "「我知道您会来的，」他说，「我一直在等。」" },
+        { "text": "他在笔记本上记着什么，然后让人把你带走了。" }
+      ],
+      "choices": [
+        { "text": "继续", "next": "cr_epilogue_routes" }
+      ]
+    },
+
+    "cr_epilogue_routes": {
+      "title": "尾声",
+      "scene": { "id": "siberia", "name": "西伯利亚", "type": "major", "description": "劳改营，冬天，河，天空。", "arrival": "判决：八年苦役，西伯利亚。" },
+      "progress": 99,
+      "segments": [
+        { "text": "审判结束了，很快，比你预期的要快。" }
+      ],
+      "routes": [
+        { "condition": "hasFlag 'nikolai_betrayed'", "next": "ending_hidden" },
+        { "condition": "hasFlag 'told_sonya'", "next": "ending_true" },
+        { "condition": "val >= 50", "next": "ending_normal" },
+        { "condition": "default", "next": "ending_branch" }
+      ]
+    },
+
+    "ending_true": {
+      "isEnding": true,
+      "title_end": "土地之吻",
+      "type": "TRUE ENDING",
+      "progress": 100,
+      "description": "西伯利亚，春天来了第二年。索尼娅跟着你来了，在营地附近住下，每隔几天来看你。有一天，你坐在河边，看她走过来，忽然——忽然之间，没有原因，没有任何前兆——什么东西在你胸口开了。不是解脱，不是快乐，是一种更原始的东西，像是一块被压了很久的石头底下有水在渗出来。你把脸埋在她手里，她没有说话。河水在流。天还是那个天，营地还是那个营地，但有什么东西永远改变了。",
+      "closing": "复活不是一个时刻，是一个开始。",
+      "achievement": "ach_siberia"
+    },
+
+    "ending_normal": {
+      "isEnding": true,
+      "title_end": "西伯利亚的晨光",
+      "type": "NORMAL ENDING",
+      "progress": 100,
+      "description": "西伯利亚，第三年。你做完规定的劳动，回到营房，躺下，第二天起来，再做。索尼娅来看你，你很高兴看到她，但你们之间有一堵说不清楚的墙。你不知道那套理论是否彻底错了，你只知道它不再在你脑子里转了。有一个冬天的清晨，天还黑，你出去做工，看到东方的那条光，站了很久，不知道自己在感觉什么。",
+      "closing": "苦役是一个地方。从那里也能看到晨光。"
+    },
+
+    "ending_branch": {
+      "isEnding": true,
+      "title_end": "理论未死",
+      "type": "BRANCH ENDING",
+      "progress": 100,
+      "description": "西伯利亚，你到了，做着该做的事，但脑子里那套东西没有停过。非凡人。拿破仑不会悔恨。你做了什么错事了吗？——不，错的是你被抓到了。这个想法在营地的夜晚里越来越清晰。其他犯人离你远远的，他们说你眼神不对。波尔菲里在彼得堡，审着别的案子。那套理论在你脑子里完好无损，像一块从未被敲开过的石头。",
+      "closing": "有些问题，答案是另一个更沉默的问题。"
+    },
+
+    "ending_hidden": {
+      "isEnding": true,
+      "title_end": "尼古拉的八年",
+      "type": "HIDDEN ENDING",
+      "progress": 100,
+      "description": "你在服刑，尼古拉·杜什金也在服刑——不同的营地，但同样的年限。他不知道你是谁，你知道他是谁。第五年，有消息传来：案子重审，新证据，尼古拉被平反，释放。你继续服你的八年。有一天傍晚，你坐在营房外，想起了那个在典当铺门口的傍晚，想起了理论，想起了虱子，想起了非凡人——然后你想到了尼古拉。你想了很久，想不出任何一句话可以解释你对他做的事。",
+      "closing": "有些代价，由别人支付，你自己账上没有记录。",
+      "achievement": "ach_hidden"
+    }
+  }
+}

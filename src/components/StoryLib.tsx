@@ -12,6 +12,7 @@ const PRELOADED_MANIFESTS = [
   { id: "monte-cristo", path: "/stories/monte-cristo.json" },
   { id: "hamlet", path: "/stories/hamlet.json" },
   { id: "frankenstein", path: "/stories/frankenstein.json" },
+  { id: "crime-punishment", path: "/stories/crime-punishment.json" },
 ];
 
 export default function StoryLib({ onSelectStory, onNavigateToTab }: StoryLibProps) {
