@@ -160,6 +160,25 @@ python3 scripts/validate.py <你的剧本>.json
 
 完整格式规范见 `.claude/commands/references/json-format-spec.md`。
 
+> **格式陷阱**：结局节点（`isEnding: true`）不能包含 `segments` 字段，否则演播引擎会抛出 TypeError 导致空白屏。结局节点只允许 `isEnding / title_end / type / progress / description / closing / achievement` 这几个字段。
+
+---
+
+## 预置剧本
+
+剧本大厅内置 6 部经典文学改编，均由 `/story-to-game` Skill 生成：
+
+| 剧本 | 原著 | 主状态值 | 节点 | 结局 |
+|------|------|----------|------|------|
+| 神曲 | 但丁·阿利吉耶里 | 光照 | 66 | 6 |
+| 基督山伯爵 | 大仲马 | — | — | — |
+| 哈姆雷特 | 莎士比亚 | — | — | — |
+| 弗兰肯斯坦 | 玛丽·雪莱 | 缝线 | 65 | 6 |
+| 罪与罚 | 陀思妥耶夫斯基 | 裂纹 | 61 | 5 |
+| 道林·格雷的画像 | 奥斯卡·王尔德 | 腐蚀 | 66 | 6 |
+
+将自己生成的 `.json` 放入 `public/stories/` 并在 `StoryLib.tsx` 的 `PRELOADED_MANIFESTS` 数组中追加路径，即可在剧本大厅显示。
+
 ---
 
 ## 技术栈
