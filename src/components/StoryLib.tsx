@@ -213,31 +213,28 @@ export default function StoryLib({ onPlay, onEdit, onOpenSkillWorkshop }: StoryL
       {/* 生成并导入你的剧本 */}
       <section className="space-y-3">
         <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest font-mono">生成并导入你的剧本</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* 技能工坊 */}
-          <div
-            onClick={onOpenSkillWorkshop}
-            className="border border-dashed border-zinc-800 hover:border-amber-500/30 rounded-2xl p-6 flex items-center justify-center cursor-pointer transition-colors group"
-          >
-            <code className="text-sm font-mono text-amber-500/60 group-hover:text-amber-400 transition-colors">
-              /story-to-game
-            </code>
+        {/* 合并卡片：整体点击上传，/story-to-game 单独拦截打开弹窗 */}
+        <div
+          onClick={() => fileInputRef.current?.click()}
+          className="border-2 border-dashed border-zinc-800 hover:border-amber-500/40 rounded-2xl p-6 flex flex-col items-center gap-3 text-center cursor-pointer transition-colors group"
+        >
+          <Upload className="w-7 h-7 text-zinc-600 group-hover:text-amber-500 transition-colors" />
+          <div>
+            <p className="text-sm font-medium text-zinc-300">上传 JSON 剧本文件</p>
+            <p className="text-xs text-zinc-500 mt-1">
+              由{" "}
+              <code
+                onClick={(e) => { e.stopPropagation(); onOpenSkillWorkshop(); }}
+                className="text-amber-400 font-mono hover:text-amber-300 underline underline-offset-2 cursor-pointer"
+              >
+                /story-to-game
+              </code>
+              {" "}Skill 生成的标准格式
+            </p>
           </div>
-
-          {/* 本地导入 */}
-          <div
-            onClick={() => fileInputRef.current?.click()}
-            className="border-2 border-dashed border-zinc-800 hover:border-amber-500/40 rounded-2xl p-6 flex flex-col items-center gap-3 text-center cursor-pointer transition-colors group"
-          >
-            <Upload className="w-7 h-7 text-zinc-600 group-hover:text-amber-500 transition-colors" />
-            <div>
-              <p className="text-sm font-medium text-zinc-300">上传 JSON 剧本文件</p>
-              <p className="text-xs text-zinc-500 mt-1">由 /story-to-game Skill 生成的标准格式</p>
-            </div>
-            <div className="flex items-center gap-1.5 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-1.5 text-[10px] font-mono text-zinc-400">
-              <FileJson className="w-3.5 h-3.5" />
-              <span>.json · meta + startNodeId + nodes</span>
-            </div>
+          <div className="flex items-center gap-1.5 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-1.5 text-[10px] font-mono text-zinc-400">
+            <FileJson className="w-3.5 h-3.5" />
+            <span>.json · meta + startNodeId + nodes</span>
           </div>
         </div>
         <input ref={fileInputRef} type="file" accept=".json" className="hidden" onChange={handleFileImport} />
