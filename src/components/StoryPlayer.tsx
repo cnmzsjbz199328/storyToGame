@@ -104,9 +104,19 @@ function initState(story: Story): GameState {
 }
 
 const NARRATOR_SPEAKERS = ["系统", "旁白", "System", "Narrator"];
+const GLITCH_CHARS = "!@#%&░▒▓│█▌◆●□▪╫╪";
+const GLITCH_FRAMES = 10;
 
 function isNarratorSeg(speaker: string | undefined) {
   return !speaker || NARRATOR_SPEAKERS.includes(speaker);
+}
+
+function scrambleText(text: string, resolveRatio: number): string {
+  return Array.from(text).map(c => {
+    if (/[\s，。！？、；：]/.test(c)) return c;
+    if (Math.random() < resolveRatio) return c;
+    return GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+  }).join("");
 }
 
 export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
@@ -119,6 +129,8 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
   const [typingSegIdx, setTypingSegIdx] = useState(0);
   const [typingCharIdx, setTypingCharIdx] = useState(0);
   const [typingDone, setTypingDone] = useState(false);
+  const [glitchFrame, setGlitchFrame] = useState(-1);
+  const [glitchDisplay, setGlitchDisplay] = useState("");
 
   // Story 切换时重置
   useEffect(() => {
@@ -130,6 +142,8 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
     setTypingSegIdx(0);
     setTypingCharIdx(0);
     setTypingDone(false);
+    setGlitchFrame(-1);
+    setGlitchDisplay("");
   }, [gameState?.currentNodeId]);
 
   // 打字机驱动
@@ -152,9 +166,27 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
       return;
     }
 
-    // 对白段落：逐字输出
+    // Glitch 段落：乱码逐帧解析
+    if (seg.effect === "glitch") {
+      if (glitchFrame < GLITCH_FRAMES) {
+        const ratio = Math.max(0, glitchFrame) / GLITCH_FRAMES;
+        setGlitchDisplay(scrambleText(seg.text, ratio));
+        const t = setTimeout(() => setGlitchFrame(f => f + 1), 80);
+        return () => clearTimeout(t);
+      } else {
+        setGlitchDisplay(seg.text);
+        const t = setTimeout(() => {
+          setGlitchFrame(-1);
+          setGlitchDisplay("");
+          setTypingSegIdx(i => i + 1);
+          setTypingCharIdx(0);
+        }, 400);
+        return () => clearTimeout(t);
+      }
+    }
+
+    // 普通对白段落：逐字输出
     if (typingCharIdx >= seg.text.length) {
-      // 当前段落输出完毕，短暂停顿后推进下一段
       const t = setTimeout(() => {
         setTypingSegIdx(i => i + 1);
         setTypingCharIdx(0);
@@ -164,7 +196,7 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
 
     const id = setInterval(() => setTypingCharIdx(i => i + 1), 35);
     return () => clearInterval(id);
-  }, [typingSegIdx, typingCharIdx, typingDone, gameState?.currentNodeId]);
+  }, [typingSegIdx, typingCharIdx, typingDone, glitchFrame, gameState?.currentNodeId]);
 
   // 重要 flag 浮动提示
   useEffect(() => {
@@ -426,9 +458,22 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
               {(currentNode.segments ?? []).map((seg, i) => {
                 if (i > typingSegIdx) return null;
                 const isNarrator = isNarratorSeg(seg.speaker);
-                const isTyping = i === typingSegIdx && !isNarrator;
-                const displayText = isTyping ? seg.text.slice(0, typingCharIdx) : seg.text;
-                const showCursor = isTyping && typingCharIdx < seg.text.length;
+                const isCurrent = i === typingSegIdx;
+                const isGlitch = seg.effect === "glitch";
+
+                let displayText: string;
+                let showCursor = false;
+                let isGlitching = false;
+
+                if (isCurrent && isGlitch) {
+                  isGlitching = glitchFrame >= 0 && glitchFrame < GLITCH_FRAMES;
+                  displayText = glitchDisplay || "";
+                } else if (isCurrent && !isNarrator) {
+                  displayText = seg.text.slice(0, typingCharIdx);
+                  showCursor = typingCharIdx < seg.text.length;
+                } else {
+                  displayText = seg.text;
+                }
 
                 return (
                   <div key={i} className={isNarrator ? "" : "pl-4 border-l-2 border-zinc-700"}>
@@ -437,10 +482,12 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
                         {seg.speaker}
                       </span>
                     )}
-                    <p className={`leading-[1.75] tracking-wide ${
+                    <p className={`leading-[1.75] tracking-wide font-mono ${
                       isNarrator
-                        ? "text-zinc-200 text-sm md:text-base font-light italic"
-                        : "text-zinc-100 text-sm"
+                        ? "text-zinc-200 text-sm md:text-base font-light italic font-sans"
+                        : isGlitch
+                          ? `text-sm transition-colors ${isGlitching ? "text-emerald-400/90" : "text-zinc-100"}`
+                          : "text-zinc-100 text-sm"
                     } ${seg.speaker === "系统" || seg.speaker === "旁白" ? "text-zinc-400 text-xs" : ""}`}>
                       {isNarrator && !seg.speaker ? `"${displayText}"` : displayText}
                       {showCursor && (
