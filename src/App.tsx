@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft, Terminal, Github, X } from "lucide-react";
+import { ArrowLeft, Github, X, Terminal } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import StoryPlayer from "./components/StoryPlayer";
 import StoryEditor from "./components/StoryEditor";
@@ -90,14 +90,16 @@ export default function App() {
             </span>
           )}
 
-          {/* Right: skill workshop toggle */}
-          <button
-            onClick={() => setShowSkill(true)}
-            title="技能工坊"
-            className="p-2 text-zinc-500 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg border border-transparent hover:border-amber-500/20 transition-all shrink-0"
+          {/* Right: GitHub link */}
+          <a
+            href="https://github.com/cnmzsjbz199328/storytogame"
+            target="_blank"
+            rel="noreferrer"
+            title="GitHub"
+            className="p-2 text-zinc-500 hover:text-zinc-300 transition-colors shrink-0"
           >
-            <Terminal className="w-4 h-4" />
-          </button>
+            <Github className="w-4 h-4" />
+          </a>
         </div>
       </header>
 
@@ -129,24 +131,15 @@ export default function App() {
       <footer className="bg-zinc-950 border-t border-zinc-900 py-5 px-6 text-center text-zinc-600 text-xs">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 select-none">
           <p>© 2026 Story-to-Game · Skill 核心由 Shanyin-ai/Story-to-game 提供</p>
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setShowSkill(true)}
-              className="flex items-center gap-1.5 hover:text-zinc-300 transition-colors"
-            >
-              <Terminal className="w-3.5 h-3.5" />
-              <span>技能工坊</span>
-            </button>
-            <a
-              href="https://github.com/Shanyin-ai/Story-to-game"
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-1.5 hover:text-zinc-300 transition-colors"
-            >
-              <Github className="w-3.5 h-3.5" />
-              <span>Shanyin-ai / Story-to-game</span>
-            </a>
-          </div>
+          <a
+            href="https://github.com/cnmzsjbz199328/storytogame"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-1.5 hover:text-zinc-300 transition-colors"
+          >
+            <Github className="w-3.5 h-3.5" />
+            <span>cnmzsjbz199328 / storytogame</span>
+          </a>
         </div>
       </footer>
 
