@@ -129,6 +129,7 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
   const [typingSegIdx, setTypingSegIdx] = useState(0);
   const [typingCharIdx, setTypingCharIdx] = useState(0);
   const [typingDone, setTypingDone] = useState(false);
+  const [typingReady, setTypingReady] = useState(false);
   const [glitchFrame, setGlitchFrame] = useState(-1);
   const [glitchDisplay, setGlitchDisplay] = useState("");
 
@@ -137,18 +138,21 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
     if (story) setGameState(initState(story));
   }, [story]);
 
-  // 节点切换时重置打字机
+  // 节点切换时重置打字机，延迟 1s 后开始
   useEffect(() => {
     setTypingSegIdx(0);
     setTypingCharIdx(0);
     setTypingDone(false);
+    setTypingReady(false);
     setGlitchFrame(-1);
     setGlitchDisplay("");
+    const t = setTimeout(() => setTypingReady(true), 1000);
+    return () => clearTimeout(t);
   }, [gameState?.currentNodeId]);
 
   // 打字机驱动
   useEffect(() => {
-    if (!gameState || !story || typingDone) return;
+    if (!gameState || !story || typingDone || !typingReady) return;
     const node = story.nodes[gameState.currentNodeId];
     const segments = node?.segments ?? [];
 
@@ -196,7 +200,7 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
 
     const id = setInterval(() => setTypingCharIdx(i => i + 1), 35);
     return () => clearInterval(id);
-  }, [typingSegIdx, typingCharIdx, typingDone, glitchFrame, gameState?.currentNodeId]);
+  }, [typingSegIdx, typingCharIdx, typingDone, typingReady, glitchFrame, gameState?.currentNodeId]);
 
   // 重要 flag 浮动提示
   useEffect(() => {
