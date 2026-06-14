@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import {
   RotateCcw, ArrowLeft, Terminal, Settings, Sparkles, Trophy, ChevronRight
 } from "lucide-react";
@@ -15,14 +15,12 @@ function evalCondition(cond: string | undefined, state: GameState): boolean {
   if (!cond || cond === "default") return true;
   const s = cond.trim();
 
-  // hasFlag / !hasFlag
   const flagMatch = s.match(/^(!?)hasFlag\s+'([^']+)'$/);
   if (flagMatch) {
     const has = state.flags.has(flagMatch[2]);
     return flagMatch[1] === "!" ? !has : has;
   }
 
-  // numeric / var comparisons: "val >= 60", "trust < 2"
   const cmpMatch = s.match(/^(\w+)\s*(>=|<=|>|<|==|!=)\s*(.+)$/);
   if (cmpMatch) {
     const [, varName, op, rawVal] = cmpMatch;
@@ -38,7 +36,6 @@ function evalCondition(cond: string | undefined, state: GameState): boolean {
     }
   }
 
-  // variable == 'string' : route == 'true'
   const strMatch = s.match(/^(\w+)\s*==\s*'([^']*)'$/);
   if (strMatch) return String(state.variables[strMatch[1]]) === strMatch[2];
 
@@ -106,25 +103,88 @@ function initState(story: Story): GameState {
   };
 }
 
+const NARRATOR_SPEAKERS = ["系统", "旁白", "System", "Narrator"];
+
+function isNarratorSeg(speaker: string | undefined) {
+  return !speaker || NARRATOR_SPEAKERS.includes(speaker);
+}
+
 export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [showConsole, setShowConsole] = useState(false);
   const [importantToast, setImportantToast] = useState<string | null>(null);
+  const [achToast, setAchToast] = useState<{ title: string; description: string } | null>(null);
+
+  // 打字机状态
+  const [typingSegIdx, setTypingSegIdx] = useState(0);
+  const [typingCharIdx, setTypingCharIdx] = useState(0);
+  const [typingDone, setTypingDone] = useState(false);
 
   // Story 切换时重置
   useEffect(() => {
     if (story) setGameState(initState(story));
   }, [story]);
 
+  // 节点切换时重置打字机
+  useEffect(() => {
+    setTypingSegIdx(0);
+    setTypingCharIdx(0);
+    setTypingDone(false);
+  }, [gameState?.currentNodeId]);
+
+  // 打字机驱动
+  useEffect(() => {
+    if (!gameState || !story || typingDone) return;
+    const node = story.nodes[gameState.currentNodeId];
+    const segments = node?.segments ?? [];
+
+    if (typingSegIdx >= segments.length) {
+      setTypingDone(true);
+      return;
+    }
+
+    const seg = segments[typingSegIdx];
+
+    // 旁白段落：瞬间跳过，立即推进
+    if (isNarratorSeg(seg.speaker)) {
+      setTypingSegIdx(i => i + 1);
+      setTypingCharIdx(0);
+      return;
+    }
+
+    // 对白段落：逐字输出
+    if (typingCharIdx >= seg.text.length) {
+      // 当前段落输出完毕，短暂停顿后推进下一段
+      const t = setTimeout(() => {
+        setTypingSegIdx(i => i + 1);
+        setTypingCharIdx(0);
+      }, 250);
+      return () => clearTimeout(t);
+    }
+
+    const id = setInterval(() => setTypingCharIdx(i => i + 1), 35);
+    return () => clearInterval(id);
+  }, [typingSegIdx, typingCharIdx, typingDone, gameState?.currentNodeId]);
+
   // 重要 flag 浮动提示
   useEffect(() => {
     if (!gameState?.importantFlags.length) return;
     const latest = gameState.importantFlags[gameState.importantFlags.length - 1];
-    const label = latest.label ?? `记录了关键决定`;
-    setImportantToast(label);
+    setImportantToast(latest.label ?? "记录了关键决定");
     const t = setTimeout(() => setImportantToast(null), 3000);
     return () => clearTimeout(t);
   }, [gameState?.importantFlags.length]);
+
+  // 成就解锁 toast
+  useEffect(() => {
+    if (!gameState?.unlockedAchievements.length || !story) return;
+    const lastId = gameState.unlockedAchievements[gameState.unlockedAchievements.length - 1];
+    const ach = story.achievements?.[lastId];
+    if (!ach) return;
+    setAchToast({ title: ach.title, description: ach.description });
+    const t = setTimeout(() => setAchToast(null), 3500);
+    return () => clearTimeout(t);
+  }, [gameState?.unlockedAchievements.length]);
 
   if (!story || !gameState) {
     return (
@@ -148,7 +208,6 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
     );
   }
 
-  // 求解自动路由 routes（优先级高于 choices）
   const resolveRoutes = (node: StoryNode): string | null => {
     if (!node.routes?.length) return null;
     for (const route of node.routes) {
@@ -157,7 +216,6 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
     return null;
   };
 
-  // 选择或路由跳转
   const goToNode = (nextId: string, changes?: Changes) => {
     const updates = applyChanges(gameState, changes);
     const snapshot: HistorySnapshot = {
@@ -174,14 +232,12 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
     }));
   };
 
-  // 路由自动前进（有 routes 且有明确 next）
   const autoNext = resolveRoutes(currentNode);
   const handleAutoAdvance = () => {
     if (autoNext) goToNode(autoNext);
     else if (currentNode.next) goToNode(currentNode.next);
   };
 
-  // 回溯
   const handleBacktrack = () => {
     if (!gameState.history.length) return;
     const snap = gameState.history[gameState.history.length - 1];
@@ -195,7 +251,6 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
     }));
   };
 
-  // 重置
   const handleReset = () => setGameState(initState(story));
 
   const isEnding = currentNode.isEnding;
@@ -213,9 +268,31 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
             initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
-            className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-amber-950/95 border border-amber-500/40 text-amber-300 text-xs font-mono px-4 py-2 rounded-xl shadow-xl backdrop-blur-sm"
+            className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-amber-950/95 border border-amber-500/40 text-amber-300 text-xs font-mono px-4 py-2 rounded-xl shadow-xl backdrop-blur-sm whitespace-nowrap"
           >
             重要决定已记录：{importantToast}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 成就解锁 toast */}
+      <AnimatePresence>
+        {achToast && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.96 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-zinc-900/98 border border-amber-500/50 rounded-2xl px-5 py-3.5 flex items-center gap-3 shadow-2xl backdrop-blur-sm"
+          >
+            <div className="w-8 h-8 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-center justify-center shrink-0">
+              <Trophy className="w-4 h-4 text-amber-400" />
+            </div>
+            <div>
+              <p className="text-[10px] text-amber-500 font-mono uppercase tracking-widest">成就解锁</p>
+              <p className="text-sm font-bold text-zinc-100 leading-tight">{achToast.title}</p>
+              <p className="text-[11px] text-zinc-400 mt-0.5">{achToast.description}</p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -347,7 +424,12 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
               className="space-y-3 max-h-64 overflow-y-auto pr-1"
             >
               {(currentNode.segments ?? []).map((seg, i) => {
-                const isNarrator = !seg.speaker || ["系统", "旁白", "System", "Narrator"].includes(seg.speaker);
+                if (i > typingSegIdx) return null;
+                const isNarrator = isNarratorSeg(seg.speaker);
+                const isTyping = i === typingSegIdx && !isNarrator;
+                const displayText = isTyping ? seg.text.slice(0, typingCharIdx) : seg.text;
+                const showCursor = isTyping && typingCharIdx < seg.text.length;
+
                 return (
                   <div key={i} className={isNarrator ? "" : "pl-4 border-l-2 border-zinc-700"}>
                     {seg.speaker && !isNarrator && (
@@ -360,7 +442,10 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
                         ? "text-zinc-200 text-sm md:text-base font-light italic"
                         : "text-zinc-100 text-sm"
                     } ${seg.speaker === "系统" || seg.speaker === "旁白" ? "text-zinc-400 text-xs" : ""}`}>
-                      {isNarrator && !seg.speaker ? `"${seg.text}"` : seg.text}
+                      {isNarrator && !seg.speaker ? `"${displayText}"` : displayText}
+                      {showCursor && (
+                        <span className="animate-pulse text-amber-400 ml-0.5">▋</span>
+                      )}
                     </p>
                   </div>
                 );
@@ -392,57 +477,93 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
             </motion.div>
           </AnimatePresence>
 
-          {/* Auto-advance / routes */}
-          {hasAuto && !isEnding && (
-            <button
-              onClick={handleAutoAdvance}
-              className="flex items-center gap-2 text-xs text-zinc-400 hover:text-amber-400 border border-zinc-800 hover:border-amber-500/30 rounded-xl px-4 py-2.5 transition-all self-start font-mono"
-            >
-              <ChevronRight className="w-4 h-4" />
-              继续
-            </button>
-          )}
+          {/* Auto-advance / routes — 仅在打字完成后显示 */}
+          <AnimatePresence>
+            {hasAuto && !isEnding && typingDone && (
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                onClick={handleAutoAdvance}
+                className="flex items-center gap-2 text-xs text-zinc-400 hover:text-amber-400 border border-zinc-800 hover:border-amber-500/30 rounded-xl px-4 py-2.5 transition-all self-start font-mono"
+              >
+                <ChevronRight className="w-4 h-4" />
+                继续
+              </motion.button>
+            )}
+          </AnimatePresence>
 
-          {/* Choices */}
-          {hasChoices && !isEnding && (
-            <div className="flex flex-col gap-2.5">
-              {currentNode.choices!.map((choice, idx) => {
-                const enabled = evalCondition(choice.condition as ConditionString, gameState);
-                return (
-                  <button
-                    key={idx}
-                    disabled={!enabled}
-                    onClick={() => goToNode(choice.next, choice.changes)}
-                    className={`group flex items-center justify-between border p-4 text-left transition-all relative ${
-                      enabled
-                        ? "bg-zinc-950 hover:bg-zinc-900 border-zinc-800 hover:border-amber-500/50 text-zinc-100 cursor-pointer active:scale-[0.99]"
-                        : "bg-zinc-950/40 border-zinc-900 text-zinc-700 cursor-not-allowed opacity-40"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3 w-full">
-                      <span className={`text-[10px] uppercase tracking-widest font-mono shrink-0 px-2 py-0.5 border leading-none ${
-                        enabled ? "border-amber-500/30 text-amber-500 group-hover:bg-amber-500 group-hover:text-zinc-950" : "border-zinc-800 text-zinc-700"
-                      } transition-colors`}>
-                        {String.fromCharCode(65 + idx)}
-                      </span>
-                      <span className="text-xs md:text-sm font-light tracking-wide">{choice.text}</span>
-                    </div>
-                    {choice.condition && !enabled && (
-                      <span className="text-[9px] font-mono text-zinc-600 shrink-0 pr-2">🔒 {choice.condition}</span>
-                    )}
-                    {enabled && (
-                      <span className="opacity-0 group-hover:opacity-100 transition-all text-amber-500 font-mono">→</span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          )}
+          {/* Choices — 仅在打字完成后显示 */}
+          <AnimatePresence>
+            {hasChoices && !isEnding && typingDone && (
+              <motion.div
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25 }}
+                className="flex flex-col gap-2.5"
+              >
+                {currentNode.choices!.map((choice, idx) => {
+                  const enabled = evalCondition(choice.condition as ConditionString, gameState);
+                  return (
+                    <button
+                      key={idx}
+                      disabled={!enabled}
+                      onClick={() => goToNode(choice.next, choice.changes)}
+                      className={`group flex items-center justify-between border p-4 text-left transition-all relative ${
+                        enabled
+                          ? "bg-zinc-950 hover:bg-zinc-900 border-zinc-800 hover:border-amber-500/50 text-zinc-100 cursor-pointer active:scale-[0.99]"
+                          : "bg-zinc-950/40 border-zinc-900 text-zinc-700 cursor-not-allowed opacity-40"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3 w-full">
+                        <span className={`text-[10px] uppercase tracking-widest font-mono shrink-0 px-2 py-0.5 border leading-none ${
+                          enabled ? "border-amber-500/30 text-amber-500 group-hover:bg-amber-500 group-hover:text-zinc-950" : "border-zinc-800 text-zinc-700"
+                        } transition-colors`}>
+                          {String.fromCharCode(65 + idx)}
+                        </span>
+                        <span className="text-xs md:text-sm font-light tracking-wide">{choice.text}</span>
+                      </div>
+                      {choice.condition && !enabled && (
+                        <span className="text-[9px] font-mono text-zinc-600 shrink-0 pr-2">🔒 {choice.condition}</span>
+                      )}
+                      {enabled && (
+                        <span className="opacity-0 group-hover:opacity-100 transition-all text-amber-500 font-mono">→</span>
+                      )}
+                    </button>
+                  );
+                })}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
       {/* Side HUD (1 col) */}
       <div className="flex flex-col gap-4">
+
+        {/* Achievements — 有成就时显示在顶部 */}
+        <AnimatePresence>
+          {gameState.unlockedAchievements.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-zinc-900 border border-amber-500/20 rounded-2xl p-5 space-y-3"
+            >
+              <p className="text-[9px] text-zinc-600 uppercase tracking-widest font-mono flex items-center gap-1.5">
+                <Trophy className="w-3 h-3 text-amber-500" />
+                已解锁成就
+              </p>
+              {gameState.unlockedAchievements.map(id => {
+                const ach = story.achievements?.[id];
+                return ach ? (
+                  <div key={id} className="bg-amber-950/10 border border-amber-500/20 rounded-xl p-2.5 space-y-0.5">
+                    <p className="text-[10px] font-bold text-amber-400">{ach.title}</p>
+                    <p className="text-[9px] text-zinc-500">{ach.description}</p>
+                  </div>
+                ) : null;
+              })}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Manuscript info */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 space-y-3">
@@ -491,24 +612,6 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
           </div>
         </div>
 
-        {/* Achievements */}
-        {gameState.unlockedAchievements.length > 0 && (
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 space-y-3">
-            <p className="text-[9px] text-zinc-600 uppercase tracking-widest font-mono flex items-center gap-1.5">
-              <Trophy className="w-3 h-3 text-amber-500" />
-              已解锁成就
-            </p>
-            {gameState.unlockedAchievements.map(id => {
-              const ach = story.achievements?.[id];
-              return ach ? (
-                <div key={id} className="bg-amber-950/10 border border-amber-500/20 rounded-xl p-2.5 space-y-0.5">
-                  <p className="text-[10px] font-bold text-amber-400">{ach.title}</p>
-                  <p className="text-[9px] text-zinc-500">{ach.description}</p>
-                </div>
-              ) : null;
-            })}
-          </div>
-        )}
       </div>
     </div>
   );
