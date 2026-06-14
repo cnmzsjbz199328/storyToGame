@@ -90,16 +90,6 @@ export default function App() {
             </span>
           )}
 
-          {/* Right: GitHub link */}
-          <a
-            href="https://github.com/cnmzsjbz199328/storytogame"
-            target="_blank"
-            rel="noreferrer"
-            title="GitHub"
-            className="p-2 text-zinc-500 hover:text-zinc-300 transition-colors shrink-0"
-          >
-            <Github className="w-4 h-4" />
-          </a>
         </div>
       </header>
 
