@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Story, StoryNode } from "../types";
+import { isValidStory } from "../utils/story";
 
 interface StoryEditorProps {
   story: Story | null;
@@ -83,6 +84,18 @@ export default function StoryEditor({ story, onStorySaved, activeNodeId }: Story
     }
   }, [story, activeNodeId]);
 
+  useEffect(() => {
+    if (!copied) return;
+    const t = setTimeout(() => setCopied(false), 2000);
+    return () => clearTimeout(t);
+  }, [copied]);
+
+  useEffect(() => {
+    if (!saveOk) return;
+    const t = setTimeout(() => setSaveOk(false), 2000);
+    return () => clearTimeout(t);
+  }, [saveOk]);
+
   if (!local) {
     return (
       <div className="flex flex-col items-center justify-center p-16 text-zinc-500 gap-4 border border-zinc-800 rounded-2xl">
@@ -138,30 +151,27 @@ export default function StoryEditor({ story, onStorySaved, activeNodeId }: Story
   const copyJson = () => {
     navigator.clipboard.writeText(JSON.stringify(local, null, 2));
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
   };
 
   const save = () => {
     onStorySaved(local);
-    const rep = validateStory(local);
-    setValidation(rep);
+    setValidation(validateStory(local));
     setSaveOk(true);
-    setTimeout(() => setSaveOk(false), 2000);
   };
 
   const handleImport = () => {
     setImportError(null);
     try {
-      const parsed = JSON.parse(importText) as Story;
-      if (!parsed.meta || !parsed.startNodeId || !parsed.nodes) {
+      const parsed: unknown = JSON.parse(importText);
+      if (!isValidStory(parsed)) {
         throw new Error("缺少必要字段：meta / startNodeId / nodes");
       }
       update(parsed);
       setSelectedId(parsed.startNodeId);
       setShowImport(false);
       setImportText("");
-    } catch (e: any) {
-      setImportError(e.message);
+    } catch (e: unknown) {
+      setImportError(e instanceof Error ? e.message : String(e));
     }
   };
 

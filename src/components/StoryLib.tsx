@@ -1,10 +1,12 @@
-import { useState, useRef } from "react";
-import { BookOpen, Gamepad2, Settings, HelpCircle, Upload, Loader2, FileJson } from "lucide-react";
+import { useState, useEffect, useRef, type ChangeEvent } from "react";
+import { BookOpen, Gamepad2, Settings, HelpCircle, Upload, Loader2, FileJson, Terminal } from "lucide-react";
 import { Story } from "../types";
+import { isValidStory } from "../utils/story";
 
 interface StoryLibProps {
-  onSelectStory: (story: Story) => void;
-  onNavigateToTab: (tab: "play" | "edit" | "skill") => void;
+  onPlay: (story: Story) => void;
+  onEdit: (story: Story) => void;
+  onOpenSkillWorkshop: () => void;
 }
 
 const PRELOADED_MANIFESTS = [
@@ -16,41 +18,38 @@ const PRELOADED_MANIFESTS = [
   { id: "dorian-gray", path: "/stories/dorian-gray.json" },
 ];
 
-export default function StoryLib({ onSelectStory, onNavigateToTab }: StoryLibProps) {
+export default function StoryLib({ onPlay, onEdit, onOpenSkillWorkshop }: StoryLibProps) {
   const [preloaded, setPreloaded] = useState<Story[]>([]);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [importError, setImportError] = useState<string | null>(null);
+  const [retryKey, setRetryKey] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // 懒加载：首次展开大厅时才获取预置剧本
-  const loadPreloaded = async () => {
-    if (preloaded.length > 0 || loading) return;
+  useEffect(() => {
+    let cancelled = false;
     setLoading(true);
     setLoadError(null);
-    try {
-      const results = await Promise.all(
-        PRELOADED_MANIFESTS.map(async ({ path }) => {
-          const res = await fetch(path);
-          if (!res.ok) throw new Error(`Failed to load ${path}`);
-          return res.json() as Promise<Story>;
-        })
-      );
-      setPreloaded(results);
-    } catch (e: any) {
-      setLoadError("无法加载预置剧本：" + e.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+    Promise.all(
+      PRELOADED_MANIFESTS.map(async ({ path }) => {
+        const res = await fetch(path);
+        if (!res.ok) throw new Error(`Failed to load ${path}`);
+        return res.json() as Promise<Story>;
+      })
+    )
+      .then(results => {
+        if (!cancelled) { setPreloaded(results); setLoading(false); }
+      })
+      .catch((e: unknown) => {
+        if (!cancelled) {
+          setLoadError("无法加载预置剧本：" + (e instanceof Error ? e.message : String(e)));
+          setLoading(false);
+        }
+      });
+    return () => { cancelled = true; };
+  }, [retryKey]);
 
-  // 首次渲染就触发加载
-  if (preloaded.length === 0 && !loading && !loadError) {
-    loadPreloaded();
-  }
-
-  // 本地 JSON 文件导入
-  const handleFileImport = (e: import("react").ChangeEvent<HTMLInputElement>) => {
+  const handleFileImport = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setImportError(null);
@@ -58,24 +57,17 @@ export default function StoryLib({ onSelectStory, onNavigateToTab }: StoryLibPro
     const reader = new FileReader();
     reader.onload = (evt) => {
       try {
-        const parsed = JSON.parse(evt.target?.result as string) as Story;
-        if (!parsed.meta || !parsed.startNodeId || !parsed.nodes) {
+        const parsed: unknown = JSON.parse(evt.target?.result as string);
+        if (!isValidStory(parsed)) {
           throw new Error("缺少必要字段：meta / startNodeId / nodes");
         }
-        onSelectStory(parsed);
-        onNavigateToTab("play");
-      } catch (err: any) {
-        setImportError("JSON 解析失败：" + err.message);
+        onPlay(parsed);
+      } catch (e: unknown) {
+        setImportError("JSON 解析失败：" + (e instanceof Error ? e.message : String(e)));
       }
     };
     reader.readAsText(file);
-    // 重置 input，允许重复导入同名文件
     e.target.value = "";
-  };
-
-  const launch = (story: Story, tab: "play" | "edit") => {
-    onSelectStory(story);
-    onNavigateToTab(tab);
   };
 
   return (
@@ -145,7 +137,7 @@ export default function StoryLib({ onSelectStory, onNavigateToTab }: StoryLibPro
             <HelpCircle className="w-8 h-8 text-amber-500 mx-auto" />
             <p className="text-xs text-zinc-400">{loadError}</p>
             <button
-              onClick={loadPreloaded}
+              onClick={() => setRetryKey(k => k + 1)}
               className="px-4 py-1.5 bg-amber-600 hover:bg-amber-500 text-zinc-950 rounded-xl text-xs font-medium"
             >
               重试
@@ -198,14 +190,14 @@ export default function StoryLib({ onSelectStory, onNavigateToTab }: StoryLibPro
 
                   <div className="flex items-center gap-2 mt-5 border-t border-zinc-800 pt-4">
                     <button
-                      onClick={() => launch(story, "play")}
+                      onClick={() => onPlay(story)}
                       className="flex-1 py-2 bg-amber-600 hover:bg-amber-500 text-zinc-950 text-xs font-semibold rounded-xl flex items-center justify-center gap-1.5 transition-all active:scale-95"
                     >
                       <Gamepad2 className="w-4 h-4" />
                       直接游玩
                     </button>
                     <button
-                      onClick={() => launch(story, "edit")}
+                      onClick={() => onEdit(story)}
                       className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 border border-zinc-700 text-xs font-medium rounded-xl flex items-center gap-1.5 transition-all"
                     >
                       <Settings className="w-4 h-4" />
@@ -216,19 +208,19 @@ export default function StoryLib({ onSelectStory, onNavigateToTab }: StoryLibPro
               );
             })}
 
-            {/* 引导到技能工坊的占位卡 */}
+            {/* 技能工坊引导卡 */}
             <div
-              onClick={() => onNavigateToTab("skill")}
+              onClick={onOpenSkillWorkshop}
               className="bg-zinc-900/30 border border-dashed border-zinc-800 hover:border-amber-500/30 rounded-3xl p-6 flex flex-col items-center justify-center gap-3 text-center cursor-pointer transition-all group min-h-[160px]"
             >
               <div className="w-10 h-10 bg-amber-500/5 border border-amber-500/20 rounded-xl flex items-center justify-center group-hover:bg-amber-500/10 transition-colors">
-                <FileJson className="w-5 h-5 text-amber-500/50 group-hover:text-amber-400 transition-colors" />
+                <Terminal className="w-5 h-5 text-amber-500/50 group-hover:text-amber-400 transition-colors" />
               </div>
               <div>
                 <p className="text-sm font-medium text-zinc-400 group-hover:text-zinc-200 transition-colors">
                   使用 /story-to-game 生成
                 </p>
-                <p className="text-[11px] text-zinc-600 mt-0.5">前往技能工坊了解如何创作你的剧本</p>
+                <p className="text-[11px] text-zinc-600 mt-0.5">了解如何生成你的专属剧本</p>
               </div>
             </div>
           </div>
