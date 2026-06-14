@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, type ChangeEvent } from "react";
-import { BookOpen, Gamepad2, Settings, HelpCircle, Upload, Loader2, FileJson, Terminal } from "lucide-react";
+import { BookOpen, Gamepad2, Settings, HelpCircle, Upload, Loader2, FileJson } from "lucide-react";
 import { Story } from "../types";
 import { isValidStory } from "../utils/story";
 
@@ -217,15 +217,11 @@ export default function StoryLib({ onPlay, onEdit, onOpenSkillWorkshop }: StoryL
           {/* 技能工坊 */}
           <div
             onClick={onOpenSkillWorkshop}
-            className="border border-dashed border-zinc-800 hover:border-amber-500/30 rounded-2xl p-6 flex flex-col items-center gap-3 text-center cursor-pointer transition-colors group"
+            className="border border-dashed border-zinc-800 hover:border-amber-500/30 rounded-2xl p-6 flex items-center justify-center cursor-pointer transition-colors group"
           >
-            <div className="w-10 h-10 bg-amber-500/5 border border-amber-500/20 rounded-xl flex items-center justify-center group-hover:bg-amber-500/10 transition-colors">
-              <Terminal className="w-5 h-5 text-amber-500/50 group-hover:text-amber-400 transition-colors" />
-            </div>
-            <div>
-              <p className="text-sm font-medium text-zinc-400 group-hover:text-zinc-200 transition-colors">使用 /story-to-game 生成</p>
-              <p className="text-[11px] text-zinc-600 mt-0.5">了解如何生成你的专属剧本</p>
-            </div>
+            <code className="text-sm font-mono text-amber-500/60 group-hover:text-amber-400 transition-colors">
+              /story-to-game
+            </code>
           </div>
 
           {/* 本地导入 */}
