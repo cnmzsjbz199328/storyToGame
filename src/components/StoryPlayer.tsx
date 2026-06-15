@@ -144,6 +144,73 @@ function buildAmbientText(ambient: string | undefined, nodeId: string): string {
   ).join('\n');
 }
 
+// ─── 节点图 BFS 布局 ──────────────────────────────────────────────────────────
+interface GNode { id: string; x: number; y: number; isEnding: boolean }
+interface GEdge { x1: number; y1: number; x2: number; y2: number }
+
+function computeGraphLayout(story: Story): { nodes: GNode[]; edges: GEdge[] } {
+  const sNodes = story.nodes;
+  const W = 1000, H = 580;
+
+  // BFS: assign depth to each reachable node
+  const depth: Record<string, number> = { [story.startNodeId]: 0 };
+  const queue = [story.startNodeId];
+  let maxDepth = 0;
+
+  while (queue.length) {
+    const id = queue.shift()!;
+    const node = sNodes[id];
+    if (!node) continue;
+    const nexts = [
+      node.next,
+      ...(node.choices?.map(c => c.next) ?? []),
+      ...(node.routes?.map(r => r.next) ?? []),
+    ].filter((n): n is string => !!n && n in sNodes && !(n in depth));
+    for (const nid of nexts) {
+      depth[nid] = depth[id] + 1;
+      if (depth[nid] > maxDepth) maxDepth = depth[nid];
+      queue.push(nid);
+    }
+  }
+
+  if (maxDepth === 0) return { nodes: [], edges: [] };
+
+  // Group by depth, compute positions
+  const byDepth: Record<number, string[]> = {};
+  for (const [id, d] of Object.entries(depth)) (byDepth[d] ??= []).push(id);
+
+  const pos: Record<string, { x: number; y: number }> = {};
+  for (const [dStr, ids] of Object.entries(byDepth)) {
+    const d = Number(dStr);
+    const y = 20 + (d / maxDepth) * (H - 40);
+    ids.forEach((id, i) => { pos[id] = { x: ((i + 1) / (ids.length + 1)) * W, y }; });
+  }
+
+  const nodes: GNode[] = Object.entries(pos).map(([id, { x, y }]) => ({
+    id, x, y, isEnding: !!sNodes[id]?.isEnding,
+  }));
+
+  const seen = new Set<string>();
+  const edges: GEdge[] = [];
+  for (const [id, node] of Object.entries(sNodes)) {
+    const from = pos[id];
+    if (!from) continue;
+    const nexts = [
+      node.next,
+      ...(node.choices?.map(c => c.next) ?? []),
+      ...(node.routes?.map(r => r.next) ?? []),
+    ].filter((n): n is string => !!n);
+    for (const nid of nexts) {
+      const to = pos[nid];
+      if (!to || seen.has(`${id}>${nid}`)) continue;
+      seen.add(`${id}>${nid}`);
+      edges.push({ x1: from.x, y1: from.y, x2: to.x, y2: to.y });
+    }
+  }
+
+  return { nodes, edges };
+}
+
 function scrambleText(text: string, resolveRatio: number): string {
   return Array.from(text).map(c => {
     if (/[\s，。！？、；：]/.test(c)) return c;
@@ -170,6 +237,11 @@ export default function StoryPlayer({ story, onEditNode, initialState, onGameSta
   const ambientText = useMemo(
     () => buildAmbientText(story?.meta.ambient, gameState?.currentNodeId ?? ''),
     [story?.meta.ambient, gameState?.currentNodeId]
+  );
+
+  const graphLayout = useMemo(
+    () => story ? computeGraphLayout(story) : null,
+    [story]
   );
 
   // 向上报告 gameState（用于存档），onGameStateChange 是稳定 callback，不会引起额外渲染
@@ -514,9 +586,34 @@ export default function StoryPlayer({ story, onEditNode, initialState, onGameSta
         {/* Narrative pane — flex-1 keeps height stable; justify-end anchors text to bottom */}
         <div className="flex-1 bg-zinc-950/98 border-t border-zinc-800 flex flex-col min-h-0 relative overflow-hidden">
 
+          {/* Story node graph — structural background, keyed to story only */}
+          {graphLayout && (
+            <svg
+              viewBox="0 0 1000 580"
+              preserveAspectRatio="xMidYMid slice"
+              className="absolute inset-0 w-full h-full pointer-events-none select-none"
+              aria-hidden="true"
+            >
+              {graphLayout.edges.map((e, i) => (
+                <line key={i} x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2}
+                  stroke="#71717a" strokeWidth="0.7" opacity="0.07" />
+              ))}
+              {graphLayout.nodes.map(n => {
+                const isCurrent = n.id === gameState?.currentNodeId;
+                return (
+                  <circle key={n.id} cx={n.x} cy={n.y}
+                    r={isCurrent ? 5 : n.isEnding ? 3.5 : 2}
+                    fill={isCurrent ? "#f59e0b" : n.isEnding ? "#10b981" : "#a1a1aa"}
+                    opacity={isCurrent ? 0.55 : n.isEnding ? 0.14 : 0.09}
+                  />
+                );
+              })}
+            </svg>
+          )}
+
           {/* Ambient character background */}
           <pre
-            className="absolute inset-0 font-mono text-[10px] leading-[1.5rem] text-zinc-300 opacity-[0.055] pointer-events-none select-none overflow-hidden whitespace-pre"
+            className="absolute inset-0 font-mono text-[10px] leading-[1.5rem] text-zinc-300 opacity-[0.04] pointer-events-none select-none overflow-hidden whitespace-pre"
             aria-hidden="true"
           >{ambientText}</pre>
 
