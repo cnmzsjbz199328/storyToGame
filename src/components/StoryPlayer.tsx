@@ -389,16 +389,29 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
           </div>
         </div>
 
-        {/* Progress bar */}
-        {currentNode.progress !== undefined && (
-          <div className="h-[2px] bg-zinc-800/60 shrink-0">
-            <motion.div
-              className="h-full bg-amber-500/50"
-              animate={{ width: `${currentNode.progress}%` }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            />
+        {/* 双向对冲进度线：左=故事进度，右=主状态值 */}
+        <div className="shrink-0 px-5 pt-2 pb-1.5">
+          <div className="flex justify-between text-[9px] font-mono text-zinc-600 mb-1 select-none">
+            <span>进度</span>
+            {story.meta.variableName && <span>{story.meta.variableName}</span>}
           </div>
-        )}
+          <div className="relative h-[2px] bg-zinc-800/50 rounded-full overflow-hidden">
+            {currentNode.progress !== undefined && (
+              <motion.div
+                className="absolute left-0 top-0 h-full bg-amber-500/60 rounded-full"
+                animate={{ width: `${currentNode.progress}%` }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+              />
+            )}
+            {story.meta.variableName && (
+              <motion.div
+                className="absolute right-0 top-0 h-full bg-zinc-300/40 rounded-full"
+                animate={{ width: `${valPct}%` }}
+                transition={{ duration: 0.5 }}
+              />
+            )}
+          </div>
+        </div>
 
         {/* Debug console */}
         <AnimatePresence>
@@ -645,43 +658,6 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
           {story.meta.description && (
             <p className="text-[11px] text-zinc-500 leading-relaxed font-serif italic line-clamp-3">{story.meta.description}</p>
           )}
-        </div>
-
-        {/* Val meter */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 space-y-4">
-          <p className="text-[9px] text-zinc-600 uppercase tracking-widest font-mono">状态量规</p>
-          <div className="space-y-1.5">
-            <div className="flex justify-between text-[10px] font-mono">
-              <span className="text-zinc-400">{story.meta.variableName ?? "val"}</span>
-              <span className="text-amber-400 font-bold">{gameState.val}</span>
-            </div>
-            <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-              <motion.div
-                className="h-full bg-amber-500 rounded-full"
-                animate={{ width: `${valPct}%` }}
-                transition={{ duration: 0.5 }}
-              />
-            </div>
-          </div>
-
-          {Object.entries(gameState.variables).map(([k, v]) => (
-            <div key={k} className="space-y-1">
-              <div className="flex justify-between text-[10px] font-mono">
-                <span className="text-zinc-500">{k}</span>
-                <span className="text-zinc-300 font-bold">{String(v)}</span>
-              </div>
-              {typeof v === "number" && (
-                <div className="h-0.5 bg-zinc-800">
-                  <div className="h-full bg-zinc-500 transition-all" style={{ width: `${Math.min(100, Math.max(0, v as number))}%` }} />
-                </div>
-              )}
-            </div>
-          ))}
-
-          <div className="pt-2 border-t border-zinc-800 flex justify-between text-[10px] font-mono text-zinc-600">
-            <span>步数</span>
-            <span className="text-amber-500/70">{gameState.history.length + 1}</span>
-          </div>
         </div>
 
       </div>
