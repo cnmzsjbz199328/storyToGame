@@ -4,6 +4,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Story, StoryNode, GameState, HistorySnapshot, Changes, ConditionString } from "../types";
+import { evalCondition, applyChanges, initState } from "../utils/gameEngine";
 
 interface StoryPlayerProps {
   story: Story | null;
@@ -13,98 +14,6 @@ interface StoryPlayerProps {
   onGameReset?: () => void;
 }
 
-// ─── 条件求值 ──────────────────────────────────────────────────────────────
-function evalCondition(cond: string | undefined, state: GameState): boolean {
-  if (!cond || cond === "default") return true;
-  const s = cond.trim();
-
-  const flagMatch = s.match(/^(!?)hasFlag\s+'([^']+)'$/);
-  if (flagMatch) {
-    const has = state.flags.has(flagMatch[2]);
-    return flagMatch[1] === "!" ? !has : has;
-  }
-
-  const cmpMatch = s.match(/^(\w+)\s*(>=|<=|>|<|==|!=)\s*(.+)$/);
-  if (cmpMatch) {
-    const [, varName, op, rawVal] = cmpMatch;
-    const lhs = varName === "val" ? state.val : Number(state.variables[varName] ?? 0);
-    const rhs = isNaN(Number(rawVal)) ? rawVal.replace(/'/g, "") : Number(rawVal);
-    switch (op) {
-      case ">=": return lhs >= (rhs as number);
-      case "<=": return lhs <= (rhs as number);
-      case ">":  return lhs > (rhs as number);
-      case "<":  return lhs < (rhs as number);
-      case "==": return lhs == rhs;
-      case "!=": return lhs != rhs;
-    }
-  }
-
-  const strMatch = s.match(/^(\w+)\s*==\s*'([^']*)'$/);
-  if (strMatch) return String(state.variables[strMatch[1]]) === strMatch[2];
-
-  return true;
-}
-
-// ─── 应用 changes ──────────────────────────────────────────────────────────
-function applyChanges(state: GameState, changes: Changes | undefined): Partial<GameState> {
-  if (!changes) return {};
-  const next: Partial<GameState> = {};
-
-  let newVal = state.val;
-  if (changes.val !== undefined) newVal = Math.max(0, Math.min(100, newVal + changes.val));
-  if (changes.valSet !== undefined) newVal = Math.max(0, Math.min(100, changes.valSet));
-  next.val = newVal;
-
-  const vars = { ...state.variables };
-  if (changes.set) Object.assign(vars, changes.set);
-  next.variables = vars;
-
-  const flags = new Set(state.flags);
-  if (changes.addFlag) flags.add(changes.addFlag);
-  if (changes.addFlags) changes.addFlags.forEach(f => flags.add(f));
-  if (changes.removeFlag) flags.delete(changes.removeFlag);
-  next.flags = flags;
-
-  const achievements = [...state.unlockedAchievements];
-  if (changes.unlockAchievement && !achievements.includes(changes.unlockAchievement))
-    achievements.push(changes.unlockAchievement);
-  if (changes.unlockAchievements)
-    changes.unlockAchievements.forEach(a => { if (!achievements.includes(a)) achievements.push(a); });
-  next.unlockedAchievements = achievements;
-
-  const importantFlags = [...state.importantFlags];
-  if (changes.importantFlag) {
-    const imp = typeof changes.importantFlag === "string"
-      ? { flag: changes.importantFlag }
-      : changes.importantFlag;
-    if (!importantFlags.some(f => f.flag === imp.flag)) importantFlags.push(imp);
-    flags.add(imp.flag);
-    next.flags = flags;
-  }
-  if (changes.importantFlags) {
-    changes.importantFlags.forEach(f => {
-      if (!importantFlags.some(x => x.flag === f)) importantFlags.push({ flag: f });
-      flags.add(f);
-    });
-    next.flags = flags;
-  }
-  next.importantFlags = importantFlags;
-
-  return next;
-}
-
-// ─── 初始化游戏状态 ────────────────────────────────────────────────────────
-function initState(story: Story): GameState {
-  return {
-    currentNodeId: story.startNodeId,
-    val: story.meta.initialVariable ?? 50,
-    variables: { ...(story.variables ?? {}) },
-    flags: new Set(),
-    unlockedAchievements: [],
-    history: [],
-    importantFlags: [],
-  };
-}
 
 const NARRATOR_SPEAKERS = ["系统", "旁白", "System", "Narrator"];
 const GLITCH_CHARS = "!@#%&░▒▓│█▌◆●□▪╫╪";

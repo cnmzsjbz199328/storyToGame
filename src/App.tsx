@@ -5,6 +5,7 @@ import StoryPlayer from "./components/StoryPlayer";
 import StoryEditor from "./components/StoryEditor";
 import StoryLib from "./components/StoryLib";
 import SkillWorkshop from "./components/SkillWorkshop";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 import { Story, GameState, HistorySnapshot } from "./types";
 
 type Mode = "library" | "play" | "edit";
@@ -189,29 +190,31 @@ export default function App() {
 
       {/* Main */}
       <main className="flex-1 w-full max-w-7xl mx-auto px-6 py-8">
-        {mode === "library" && (
-          <StoryLib
-            onPlay={handlePlay}
-            onEdit={handleEdit}
-            onOpenSkillWorkshop={() => setShowSkill(true)}
-          />
-        )}
-        {mode === "play" && (
-          <StoryPlayer
-            story={activeStory}
-            initialState={initialGameState}
-            onGameStateChange={handleGameStateChange}
-            onGameReset={handleGameReset}
-            onEditNode={handleEditNodeContext}
-          />
-        )}
-        {mode === "edit" && (
-          <StoryEditor
-            story={activeStory}
-            onStorySaved={handleStorySaved}
-            activeNodeId={editorNodeContext}
-          />
-        )}
+        <ErrorBoundary>
+          {mode === "library" && (
+            <StoryLib
+              onPlay={handlePlay}
+              onEdit={handleEdit}
+              onOpenSkillWorkshop={() => setShowSkill(true)}
+            />
+          )}
+          {mode === "play" && (
+            <StoryPlayer
+              story={activeStory}
+              initialState={initialGameState}
+              onGameStateChange={handleGameStateChange}
+              onGameReset={handleGameReset}
+              onEditNode={handleEditNodeContext}
+            />
+          )}
+          {mode === "edit" && (
+            <StoryEditor
+              story={activeStory}
+              onStorySaved={handleStorySaved}
+              activeNodeId={editorNodeContext}
+            />
+          )}
+        </ErrorBoundary>
       </main>
 
       {/* Footer */}
