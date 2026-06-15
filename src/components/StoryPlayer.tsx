@@ -486,9 +486,9 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
           <AnimatePresence mode="wait">
             <motion.div
               key={gameState.currentNodeId}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.35 }}
               ref={segmentsRef}
               className="space-y-3 max-h-80 overflow-y-auto pr-1 scroll-smooth"
