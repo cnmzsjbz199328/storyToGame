@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   RotateCcw, ArrowLeft, Terminal, Settings, Sparkles, Trophy, ChevronRight
 } from "lucide-react";
@@ -132,6 +132,7 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
   const [typingReady, setTypingReady] = useState(false);
   const [glitchFrame, setGlitchFrame] = useState(-1);
   const [glitchDisplay, setGlitchDisplay] = useState("");
+  const segmentsRef = useRef<HTMLDivElement>(null);
 
   // Story 切换时重置
   useEffect(() => {
@@ -146,9 +147,17 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
     setTypingReady(false);
     setGlitchFrame(-1);
     setGlitchDisplay("");
+    if (segmentsRef.current) segmentsRef.current.scrollTop = 0;
     const t = setTimeout(() => setTypingReady(true), 1000);
     return () => clearTimeout(t);
   }, [gameState?.currentNodeId]);
+
+  // 新段落出现时滚到底部，始终跟随最新内容
+  useEffect(() => {
+    const el = segmentsRef.current;
+    if (!el) return;
+    el.scrollTop = el.scrollHeight;
+  }, [typingSegIdx]);
 
   // 打字机驱动
   useEffect(() => {
@@ -380,6 +389,17 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
           </div>
         </div>
 
+        {/* Progress bar */}
+        {currentNode.progress !== undefined && (
+          <div className="h-[2px] bg-zinc-800/60 shrink-0">
+            <motion.div
+              className="h-full bg-amber-500/50"
+              animate={{ width: `${currentNode.progress}%` }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            />
+          </div>
+        )}
+
         {/* Debug console */}
         <AnimatePresence>
           {showConsole && (
@@ -457,7 +477,8 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
               transition={{ duration: 0.35 }}
-              className="space-y-3 max-h-64 overflow-y-auto pr-1"
+              ref={segmentsRef}
+              className="space-y-3 max-h-80 overflow-y-auto pr-1 scroll-smooth"
             >
               {(currentNode.segments ?? []).map((seg, i) => {
                 if (i > typingSegIdx) return null;
