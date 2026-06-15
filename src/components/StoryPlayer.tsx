@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import {
   RotateCcw, ArrowLeft, Terminal, Settings, Sparkles, Trophy, ChevronRight
 } from "lucide-react";
@@ -111,6 +111,36 @@ function isNarratorSeg(speaker: string | undefined) {
   return !speaker || NARRATOR_SPEAKERS.includes(speaker);
 }
 
+// ─── 环境字符背景 ──────────────────────────────────────────────────────────
+const AMBIENT_CHAR_MAP: Record<string, string[]> = {
+  rain:    ['│','╎','·','˙','⋮'],
+  wind:    ['╱','╲','─','～','╴'],
+  static:  ['░','▒','▓','▪','·'],
+  heat:    ['▲','△','˄','·','▵'],
+  sea:     ['～','≈','∿','≀','·'],
+  blood:   ['▓','█','│','▪','·'],
+  silence: ['·','∙','·'],
+};
+
+function seededRand(n: number): number {
+  const x = Math.sin(n + 1) * 10000;
+  return x - Math.floor(x);
+}
+
+function buildAmbientText(ambient: string | undefined, nodeId: string): string {
+  const chars = AMBIENT_CHAR_MAP[ambient ?? ''] ?? ['·','∙','▪'];
+  const seed = [...nodeId].reduce((a, c) => a + c.charCodeAt(0), 0);
+  const COLS = 58, ROWS = 24;
+  return Array.from({ length: ROWS }, (_, row) =>
+    Array.from({ length: COLS }, (_, col) => {
+      const i = row * COLS + col;
+      return seededRand(seed + i * 11) < 0.2
+        ? chars[Math.floor(seededRand(seed + i * 7) * chars.length)]
+        : ' ';
+    }).join('')
+  ).join('\n');
+}
+
 function scrambleText(text: string, resolveRatio: number): string {
   return Array.from(text).map(c => {
     if (/[\s，。！？、；：]/.test(c)) return c;
@@ -133,6 +163,11 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
   const [glitchFrame, setGlitchFrame] = useState(-1);
   const [glitchDisplay, setGlitchDisplay] = useState("");
   const segmentsRef = useRef<HTMLDivElement>(null);
+
+  const ambientText = useMemo(
+    () => buildAmbientText(story?.meta.ambient, gameState?.currentNodeId ?? ''),
+    [story?.meta.ambient, gameState?.currentNodeId]
+  );
 
   // Story 切换时重置
   useEffect(() => {
@@ -468,7 +503,16 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
         </AnimatePresence>
 
         {/* Narrative pane — flex-1 keeps height stable; justify-end anchors text to bottom */}
-        <div className="flex-1 bg-zinc-950/98 border-t border-zinc-800 p-6 md:p-8 flex flex-col justify-end gap-5 min-h-0">
+        <div className="flex-1 bg-zinc-950/98 border-t border-zinc-800 flex flex-col min-h-0 relative overflow-hidden">
+
+          {/* Ambient character background */}
+          <pre
+            className="absolute inset-0 font-mono text-[10px] leading-[1.5rem] text-zinc-300 opacity-[0.055] pointer-events-none select-none overflow-hidden whitespace-pre"
+            aria-hidden="true"
+          >{ambientText}</pre>
+
+          {/* Content */}
+          <div className="relative z-10 flex-1 flex flex-col justify-end gap-5 p-6 md:p-8 min-h-0">
 
           {/* Chapter title */}
           <AnimatePresence mode="wait">
@@ -623,6 +667,7 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
               </motion.div>
             )}
           </AnimatePresence>
+          </div>{/* end content */}
         </div>
       </div>
 
