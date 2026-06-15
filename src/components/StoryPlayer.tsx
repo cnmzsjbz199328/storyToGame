@@ -57,9 +57,11 @@ function buildAmbientText(ambient: string | undefined, nodeId: string): string {
 interface GNode { id: string; x: number; y: number; isEnding: boolean }
 interface GEdge { fromId: string; toId: string; x1: number; y1: number; x2: number; y2: number }
 
+const DEPTH_STEP = 80; // fixed pixels per depth level — keeps edge angles dramatic
+
 function computeGraphLayout(story: Story): { nodes: GNode[]; edges: GEdge[] } {
   const sNodes = story.nodes;
-  const W = 1000, H = 580;
+  const W = 1000;
 
   // BFS: assign depth to each reachable node
   const depth: Record<string, number> = { [story.startNodeId]: 0 };
@@ -84,14 +86,14 @@ function computeGraphLayout(story: Story): { nodes: GNode[]; edges: GEdge[] } {
 
   if (maxDepth === 0) return { nodes: [], edges: [] };
 
-  // Group by depth, compute positions
+  // Group by depth; fixed vertical spacing keeps angles large regardless of total depth
   const byDepth: Record<number, string[]> = {};
   for (const [id, d] of Object.entries(depth)) (byDepth[d] ??= []).push(id);
 
   const pos: Record<string, { x: number; y: number }> = {};
   for (const [dStr, ids] of Object.entries(byDepth)) {
     const d = Number(dStr);
-    const y = 20 + (d / maxDepth) * (H - 40);
+    const y = 20 + d * DEPTH_STEP;
     ids.forEach((id, i) => { pos[id] = { x: ((i + 1) / (ids.length + 1)) * W, y }; });
   }
 
@@ -503,10 +505,13 @@ export default function StoryPlayer({ story, onEditNode, initialState, onGameSta
         {/* Narrative pane — flex-1 keeps height stable; justify-end anchors text to bottom */}
         <div className="flex-1 bg-zinc-950/98 border-t border-zinc-800 flex flex-col min-h-0 relative overflow-hidden">
 
-          {/* Story node graph — structural background, keyed to story only */}
-          {graphLayout && (
+          {/* Story node graph — structural background, camera follows current node */}
+          {graphLayout && (() => {
+            const curGNode = graphLayout.nodes.find(n => n.id === gameState?.currentNodeId);
+            const viewY = curGNode ? Math.max(0, curGNode.y - 200) : 0;
+            return (
             <svg
-              viewBox="0 0 1000 580"
+              viewBox={`0 ${viewY} 1000 580`}
               preserveAspectRatio="xMidYMid slice"
               className="absolute inset-0 w-full h-full pointer-events-none select-none"
               aria-hidden="true"
@@ -530,7 +535,8 @@ export default function StoryPlayer({ story, onEditNode, initialState, onGameSta
                   );
                 })}
             </svg>
-          )}
+            );
+          })()}
 
           {/* Ambient character background */}
           <pre
