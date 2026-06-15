@@ -460,11 +460,8 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
           )}
         </AnimatePresence>
 
-        {/* Spacer */}
-        <div className="flex-1" />
-
-        {/* Narrative pane */}
-        <div className="bg-zinc-950/98 border-t border-zinc-800 p-6 md:p-8 flex flex-col gap-5">
+        {/* Narrative pane — flex-1 keeps height stable; justify-end anchors text to bottom */}
+        <div className="flex-1 bg-zinc-950/98 border-t border-zinc-800 p-6 md:p-8 flex flex-col justify-end gap-5 min-h-0">
 
           {/* Chapter title */}
           <AnimatePresence mode="wait">
