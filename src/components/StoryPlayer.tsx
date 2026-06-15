@@ -518,20 +518,31 @@ export default function StoryPlayer({ story, onEditNode, initialState, onGameSta
             >
               {graphLayout.edges
                 .filter(e => visitedIds.has(e.fromId) && visitedIds.has(e.toId))
-                .map((e, i) => (
-                  <line key={i} x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2}
-                    stroke="#71717a" strokeWidth="0.7" opacity="0.07" />
-                ))}
+                .map((e, i) => {
+                  const isHot = e.toId === gameState?.currentNodeId;
+                  return (
+                    <line key={i} x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2}
+                      stroke={isHot ? "#f59e0b" : "#a1a1aa"}
+                      strokeWidth={isHot ? 1.5 : 1.2}
+                      opacity={isHot ? 0.28 : 0.13} />
+                  );
+                })}
               {graphLayout.nodes
                 .filter(n => visitedIds.has(n.id))
                 .map(n => {
                   const isCurrent = n.id === gameState?.currentNodeId;
                   return (
-                    <circle key={n.id} cx={n.x} cy={n.y}
-                      r={isCurrent ? 5 : n.isEnding ? 3.5 : 2}
-                      fill={isCurrent ? "#f59e0b" : n.isEnding ? "#10b981" : "#a1a1aa"}
-                      opacity={isCurrent ? 0.55 : n.isEnding ? 0.14 : 0.09}
-                    />
+                    <g key={n.id}>
+                      {isCurrent && (
+                        <circle cx={n.x} cy={n.y} r={12}
+                          fill="#f59e0b" opacity="0.08" />
+                      )}
+                      <circle cx={n.x} cy={n.y}
+                        r={isCurrent ? 5 : n.isEnding ? 3.5 : 2}
+                        fill={isCurrent ? "#f59e0b" : n.isEnding ? "#10b981" : "#a1a1aa"}
+                        opacity={isCurrent ? 0.65 : n.isEnding ? 0.22 : 0.15}
+                      />
+                    </g>
                   );
                 })}
             </svg>
