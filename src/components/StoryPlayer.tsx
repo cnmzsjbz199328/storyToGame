@@ -139,11 +139,18 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
     if (story) setGameState(initState(story));
   }, [story]);
 
-  // 节点切换时重置打字机，延迟 1s 后开始
+  // 节点切换时重置打字机：旁白段落预渲染，延迟 1s 后门控首个对话段落
   useEffect(() => {
-    setTypingSegIdx(0);
+    if (!gameState || !story) return;
+    const segs = story.nodes[gameState.currentNodeId]?.segments ?? [];
+    // Pre-skip leading narrator segments so they appear with the fade-in, not after the delay
+    let startIdx = 0;
+    while (startIdx < segs.length && isNarratorSeg(segs[startIdx].speaker) && segs[startIdx].effect !== "glitch") {
+      startIdx++;
+    }
+    setTypingSegIdx(startIdx);
     setTypingCharIdx(0);
-    setTypingDone(false);
+    setTypingDone(startIdx >= segs.length);
     setTypingReady(false);
     setGlitchFrame(-1);
     setGlitchDisplay("");
