@@ -55,7 +55,7 @@ function buildAmbientText(ambient: string | undefined, nodeId: string): string {
 
 // ─── 节点图 BFS 布局 ──────────────────────────────────────────────────────────
 interface GNode { id: string; x: number; y: number; isEnding: boolean }
-interface GEdge { x1: number; y1: number; x2: number; y2: number }
+interface GEdge { fromId: string; toId: string; x1: number; y1: number; x2: number; y2: number }
 
 function computeGraphLayout(story: Story): { nodes: GNode[]; edges: GEdge[] } {
   const sNodes = story.nodes;
@@ -113,7 +113,7 @@ function computeGraphLayout(story: Story): { nodes: GNode[]; edges: GEdge[] } {
       const to = pos[nid];
       if (!to || seen.has(`${id}>${nid}`)) continue;
       seen.add(`${id}>${nid}`);
-      edges.push({ x1: from.x, y1: from.y, x2: to.x, y2: to.y });
+      edges.push({ fromId: id, toId: nid, x1: from.x, y1: from.y, x2: to.x, y2: to.y });
     }
   }
 
@@ -152,6 +152,14 @@ export default function StoryPlayer({ story, onEditNode, initialState, onGameSta
     () => story ? computeGraphLayout(story) : null,
     [story]
   );
+
+  // 战争迷雾：只渲染已访问的节点和双端均已访问的边
+  const visitedIds = useMemo(() => {
+    const ids = new Set<string>();
+    gameState?.history.forEach(h => ids.add(h.nodeId));
+    if (gameState?.currentNodeId) ids.add(gameState.currentNodeId);
+    return ids;
+  }, [gameState?.history, gameState?.currentNodeId]);
 
   // 向上报告 gameState（用于存档），onGameStateChange 是稳定 callback，不会引起额外渲染
   useEffect(() => {
@@ -503,20 +511,24 @@ export default function StoryPlayer({ story, onEditNode, initialState, onGameSta
               className="absolute inset-0 w-full h-full pointer-events-none select-none"
               aria-hidden="true"
             >
-              {graphLayout.edges.map((e, i) => (
-                <line key={i} x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2}
-                  stroke="#71717a" strokeWidth="0.7" opacity="0.07" />
-              ))}
-              {graphLayout.nodes.map(n => {
-                const isCurrent = n.id === gameState?.currentNodeId;
-                return (
-                  <circle key={n.id} cx={n.x} cy={n.y}
-                    r={isCurrent ? 5 : n.isEnding ? 3.5 : 2}
-                    fill={isCurrent ? "#f59e0b" : n.isEnding ? "#10b981" : "#a1a1aa"}
-                    opacity={isCurrent ? 0.55 : n.isEnding ? 0.14 : 0.09}
-                  />
-                );
-              })}
+              {graphLayout.edges
+                .filter(e => visitedIds.has(e.fromId) && visitedIds.has(e.toId))
+                .map((e, i) => (
+                  <line key={i} x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2}
+                    stroke="#71717a" strokeWidth="0.7" opacity="0.07" />
+                ))}
+              {graphLayout.nodes
+                .filter(n => visitedIds.has(n.id))
+                .map(n => {
+                  const isCurrent = n.id === gameState?.currentNodeId;
+                  return (
+                    <circle key={n.id} cx={n.x} cy={n.y}
+                      r={isCurrent ? 5 : n.isEnding ? 3.5 : 2}
+                      fill={isCurrent ? "#f59e0b" : n.isEnding ? "#10b981" : "#a1a1aa"}
+                      opacity={isCurrent ? 0.55 : n.isEnding ? 0.14 : 0.09}
+                    />
+                  );
+                })}
             </svg>
           )}
 
