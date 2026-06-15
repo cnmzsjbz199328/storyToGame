@@ -8,6 +8,9 @@ import { Story, StoryNode, GameState, HistorySnapshot, Changes, ConditionString 
 interface StoryPlayerProps {
   story: Story | null;
   onEditNode?: (nodeId: string) => void;
+  initialState?: GameState | null;
+  onGameStateChange?: (state: GameState | null) => void;
+  onGameReset?: () => void;
 }
 
 // ─── 条件求值 ──────────────────────────────────────────────────────────────
@@ -149,7 +152,7 @@ function scrambleText(text: string, resolveRatio: number): string {
   }).join("");
 }
 
-export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
+export default function StoryPlayer({ story, onEditNode, initialState, onGameStateChange, onGameReset }: StoryPlayerProps) {
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [showConsole, setShowConsole] = useState(false);
   const [importantToast, setImportantToast] = useState<string | null>(null);
@@ -169,9 +172,15 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
     [story?.meta.ambient, gameState?.currentNodeId]
   );
 
-  // Story 切换时重置
+  // 向上报告 gameState（用于存档），onGameStateChange 是稳定 callback，不会引起额外渲染
   useEffect(() => {
-    if (story) setGameState(initState(story));
+    onGameStateChange?.(gameState);
+  }, [gameState, onGameStateChange]);
+
+  // Story 切换时重置（key 保证每次新游戏都是全新实例）
+  useEffect(() => {
+    if (story) setGameState(initialState ?? initState(story));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [story]);
 
   // 节点切换时重置打字机：旁白段落预渲染，延迟 1s 后门控首个对话段落
@@ -338,7 +347,7 @@ export default function StoryPlayer({ story, onEditNode }: StoryPlayerProps) {
     }));
   };
 
-  const handleReset = () => setGameState(initState(story));
+  const handleReset = () => { setGameState(initState(story)); onGameReset?.(); };
 
   const isEnding = currentNode.isEnding;
   const hasChoices = (currentNode.choices?.length ?? 0) > 0;
