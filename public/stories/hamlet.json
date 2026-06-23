@@ -18,1073 +18,2094 @@
     "polonius_remorse": false
   },
   "achievements": {
-    "ach_oath":    { "title": "午夜誓约",   "description": "在城墙上听完了父亲鬼魂的话，并发誓复仇。" },
-    "ach_play":    { "title": "演员之镜",   "description": "用一出戏揭露了凶手的良心。" },
-    "ach_nunnery": { "title": "去修道院",   "description": "向奥菲利娅说出了那句话。" },
-    "ach_prayer":  { "title": "错失一瞬",   "description": "在祈祷的克劳狄斯身边，做出了一个选择。" },
-    "ach_yorick":  { "title": "可怜的约里克", "description": "在墓地里捡起了那个头骨，想起了一个人。" },
-    "ach_revenge": { "title": "终局之刺",   "description": "完成了复仇。代价是一切。" },
-    "ach_escape":  { "title": "离开丹麦",   "description": "选择了不复仇，离开了这座宫殿。" },
-    "ach_horatio": { "title": "我来讲述",   "description": "霍拉旭活了下来，带着这个故事。" }
+    "ach_oath": {
+      "title": "午夜誓约",
+      "description": "在城墙上听完了父亲鬼魂的话，并发誓复仇。"
+    },
+    "ach_play": {
+      "title": "演员之镜",
+      "description": "用一出戏揭露了凶手的良心。"
+    },
+    "ach_nunnery": {
+      "title": "去修道院",
+      "description": "向奥菲利娅说出了那句话。"
+    },
+    "ach_prayer": {
+      "title": "错失一瞬",
+      "description": "在祈祷的克劳狄斯身边，做出了一个选择。"
+    },
+    "ach_yorick": {
+      "title": "可怜的约里克",
+      "description": "在墓地里捡起了那个头骨，想起了一个人。"
+    },
+    "ach_revenge": {
+      "title": "终局之刺",
+      "description": "完成了复仇。代价是一切。"
+    },
+    "ach_escape": {
+      "title": "离开丹麦",
+      "description": "选择了不复仇，离开了这座宫殿。"
+    },
+    "ach_horatio": {
+      "title": "我来讲述",
+      "description": "霍拉旭活了下来，带着这个故事。"
+    }
   },
   "nodes": {
-
     "h_start": {
       "chapterTitle": "第一幕：幽灵",
-      "scene": { "id": "elsinore_court", "name": "艾尔西诺城堡，王廷大厅", "type": "major", "description": "烛光，锦旗，庆典的残骸。丧礼的气味还没有散尽，婚礼的鲜花已经摆上来了。", "arrival": "你穿着黑色丧服，站在欢庆的人群里。" },
+      "scene": {
+        "id": "elsinore_court",
+        "name": "艾尔西诺城堡，王廷大厅",
+        "type": "major",
+        "description": "烛光，锦旗，庆典的残骸。丧礼的气味还没有散尽，婚礼的鲜花已经摆上来了。",
+        "arrival": "你穿着黑色丧服，站在欢庆的人群里。"
+      },
       "progress": 2,
       "segments": [
-        { "text": "丹麦，艾尔西诺城堡。你的父亲死了还不到两个月，你的叔父克劳狄斯已经成了国王，还娶了你的母亲。" },
-        { "text": "宴会厅里灯火通明。克劳狄斯正在发表演说，旁边坐着葛特鲁德王后——你的母亲，他的新妻。" }
+        {
+          "text": "丹麦，艾尔西诺城堡。你的父亲死了还不到两个月，你的叔父克劳狄斯已经成了国王，还娶了你的母亲。"
+        },
+        {
+          "text": "宴会厅里灯火通明。克劳狄斯正在发表演说，旁边坐着葛特鲁德王后——你的母亲，他的新妻。"
+        }
       ],
       "choices": [
-        { "text": "听他说完", "next": "h_claudius_speech" },
-        { "text": "转身，找个没人的角落", "next": "h_claudius_speech" }
-      ]
+        {
+          "text": "听他说完",
+          "next": "h_claudius_speech"
+        },
+        {
+          "text": "转身，找个没人的角落",
+          "next": "h_claudius_speech"
+        }
+      ],
+      "ambient": "night"
     },
-
     "h_claudius_speech": {
       "progress": 3,
       "segments": [
-        { "speaker": "克劳狄斯", "text": "虽然先王之死让我们心怀哀痛，但丹麦需要一位国王。我们既要守丧，也要治国。诸位——为丹麦干杯。" },
-        { "text": "满厅的人举起了杯子。你没有动。" },
-        { "speaker": "克劳狄斯", "text": "哈姆雷特，我的侄儿，我的儿子——" }
+        {
+          "speaker": "克劳狄斯",
+          "text": "虽然先王之死让我们心怀哀痛，但丹麦需要一位国王。我们既要守丧，也要治国。诸位——为丹麦干杯。"
+        },
+        {
+          "text": "满厅的人举起了杯子。你没有动。"
+        },
+        {
+          "speaker": "克劳狄斯",
+          "text": "哈姆雷特，我的侄儿，我的儿子——"
+        }
       ],
       "choices": [
-        { "text": "\"比亲属更近，但远非父子。\"", "next": "h_hamlet_aside", "changes": { "val": 5 } },
-        { "text": "沉默着看他", "next": "h_hamlet_aside" }
-      ]
+        {
+          "text": "\"比亲属更近，但远非父子。\"",
+          "next": "h_hamlet_aside",
+          "changes": {
+            "val": 5
+          }
+        },
+        {
+          "text": "沉默着看他",
+          "next": "h_hamlet_aside"
+        }
+      ],
+      "ambient": "night"
     },
-
     "h_hamlet_aside": {
       "progress": 3,
       "segments": [
-        { "speaker": "克劳狄斯", "text": "哈姆雷特，你为何还沉浸在丧父的阴云里？好父亲的死是自然规律，悲伤太久是不孝。" },
-        { "text": "你母亲也看向你，眼里有一种说不清的恳求。" }
+        {
+          "speaker": "克劳狄斯",
+          "text": "哈姆雷特，你为何还沉浸在丧父的阴云里？好父亲的死是自然规律，悲伤太久是不孝。"
+        },
+        {
+          "text": "你母亲也看向你，眼里有一种说不清的恳求。"
+        }
       ],
       "choices": [
-        { "text": "\"我会尽力，母亲。\"——表面顺从", "next": "h_hamlet_yields", "changes": { "val": 5 } },
-        { "text": "什么都不说，低下头", "next": "h_hamlet_silent" }
-      ]
+        {
+          "text": "\"我会尽力，母亲。\"——表面顺从",
+          "next": "h_hamlet_yields",
+          "changes": {
+            "val": 5
+          }
+        },
+        {
+          "text": "什么都不说，低下头",
+          "next": "h_hamlet_silent"
+        }
+      ],
+      "ambient": "night"
     },
-
     "h_hamlet_yields": {
       "progress": 4,
       "segments": [
-        { "speaker": "葛特鲁德", "text": "谢谢你，哈姆雷特。" },
-        { "text": "克劳狄斯满意地点了点头，继续他的宴会。你在人群里站着，等待这个夜晚结束。" }
+        {
+          "speaker": "葛特鲁德",
+          "text": "谢谢你，哈姆雷特。"
+        },
+        {
+          "text": "克劳狄斯满意地点了点头，继续他的宴会。你在人群里站着，等待这个夜晚结束。"
+        }
       ],
-      "next": "h_first_soliloquy"
+      "next": "h_first_soliloquy",
+      "ambient": "night"
     },
-
     "h_hamlet_silent": {
       "progress": 4,
       "segments": [
-        { "text": "沉默本身就是一种回答。克劳狄斯清了清嗓子，把目光移开。" },
-        { "text": "你母亲的眼睛在你脸上停留了一秒，然后也移开了。" }
+        {
+          "text": "沉默本身就是一种回答。克劳狄斯清了清嗓子，把目光移开。"
+        },
+        {
+          "text": "你母亲的眼睛在你脸上停留了一秒，然后也移开了。"
+        }
       ],
       "next": "h_first_soliloquy",
-      "changes": { "val": -3 }
+      "changes": {
+        "val": -3
+      },
+      "ambient": "night"
     },
-
     "h_first_soliloquy": {
       "progress": 5,
       "segments": [
-        { "text": "宴会结束了，大厅终于空了。你一个人站在烛光里。" },
-        { "text": "但愿这具肉体能够融化、消散，化成一滴露水。或者上帝未曾禁止自我了断……" },
-        { "text": "不到两个月。父亲才死了不到两个月。而她——嫁给了他的弟弟。" }
+        {
+          "text": "宴会结束了，大厅终于空了。你一个人站在烛光里。"
+        },
+        {
+          "text": "但愿这具肉体能够融化、消散，化成一滴露水。或者上帝未曾禁止自我了断……"
+        },
+        {
+          "text": "不到两个月。父亲才死了不到两个月。而她——嫁给了他的弟弟。"
+        }
       ],
       "choices": [
-        { "text": "任由怒火烧下去", "next": "h_soliloquy_rage", "changes": { "val": -5 } },
-        { "text": "把一切压进心底，「我必须沉默」", "next": "h_soliloquy_contain", "changes": { "val": 5 } }
-      ]
+        {
+          "text": "任由怒火烧下去",
+          "next": "h_soliloquy_rage",
+          "changes": {
+            "val": -5
+          }
+        },
+        {
+          "text": "把一切压进心底，「我必须沉默」",
+          "next": "h_soliloquy_contain",
+          "changes": {
+            "val": 5
+          }
+        }
+      ],
+      "ambient": "night"
     },
-
     "h_soliloquy_rage": {
       "progress": 5,
       "segments": [
-        { "text": "她急着嫁给他，连眼泪都没擦干。那双脚刚刚踏进棺材送葬，就踏上了婚礼的台阶。" }
+        {
+          "text": "她急着嫁给他，连眼泪都没擦干。那双脚刚刚踏进棺材送葬，就踏上了婚礼的台阶。"
+        }
       ],
-      "next": "h_horatio_01"
+      "next": "h_horatio_01",
+      "ambient": "night"
     },
-
     "h_soliloquy_contain": {
       "progress": 5,
       "segments": [
-        { "text": "克制。要克制。在真相大白之前，任何轻举妄动都是愚蠢的。" },
-        { "text": "你把所有的话压进去，它们在你胸口像一块烧热的石头。" }
+        {
+          "text": "克制。要克制。在真相大白之前，任何轻举妄动都是愚蠢的。"
+        },
+        {
+          "text": "你把所有的话压进去，它们在你胸口像一块烧热的石头。"
+        }
       ],
-      "next": "h_horatio_01"
+      "next": "h_horatio_01",
+      "ambient": "night"
     },
-
     "h_horatio_01": {
       "progress": 6,
       "segments": [
-        { "text": "霍拉旭来了。你们是学生时代的老朋友，他比任何人都更让你信任。" },
-        { "speaker": "霍拉旭", "text": "殿下，我从威登堡赶来——是为了先王的葬礼。" },
-        { "speaker": "你", "text": "我以为是来参加我母亲的婚礼。" },
-        { "speaker": "霍拉旭", "text": "葬礼之后，婚礼来得确实太快了。殿下，我有话要说——关于今晚，关于城墙上看见的东西。" }
+        {
+          "text": "霍拉旭来了。你们是学生时代的老朋友，他比任何人都更让你信任。"
+        },
+        {
+          "speaker": "霍拉旭",
+          "text": "殿下，我从威登堡赶来——是为了先王的葬礼。"
+        },
+        {
+          "speaker": "你",
+          "text": "我以为是来参加我母亲的婚礼。"
+        },
+        {
+          "speaker": "霍拉旭",
+          "text": "葬礼之后，婚礼来得确实太快了。殿下，我有话要说——关于今晚，关于城墙上看见的东西。"
+        }
       ],
       "choices": [
-        { "text": "\"说。\"", "next": "h_ghost_news" },
-        { "text": "\"什么东西？\"", "next": "h_ghost_news" }
-      ]
+        {
+          "text": "\"说。\"",
+          "next": "h_ghost_news"
+        },
+        {
+          "text": "\"什么东西？\"",
+          "next": "h_ghost_news"
+        }
+      ],
+      "ambient": "night"
     },
-
     "h_ghost_news": {
       "progress": 7,
       "segments": [
-        { "speaker": "霍拉旭", "text": "昨晚换班的卫兵——还有我——看见了先王的鬼魂。就在城墙上，全副武装，一模一样的脸。" },
-        { "text": "霍拉旭从来不说谎。" }
+        {
+          "speaker": "霍拉旭",
+          "text": "昨晚换班的卫兵——还有我——看见了先王的鬼魂。就在城墙上，全副武装，一模一样的脸。"
+        },
+        {
+          "text": "霍拉旭从来不说谎。"
+        }
       ],
       "choices": [
-        { "text": "\"今晚我去。你们随我同去。\"", "next": "h_walls_tonight", "changes": { "val": -5 } },
-        { "text": "\"先说清楚你们看见了什么。\"", "next": "h_ghost_details" }
-      ]
+        {
+          "text": "\"今晚我去。你们随我同去。\"",
+          "next": "h_walls_tonight",
+          "changes": {
+            "val": -5
+          }
+        },
+        {
+          "text": "\"先说清楚你们看见了什么。\"",
+          "next": "h_ghost_details"
+        }
+      ],
+      "ambient": "night"
     },
-
     "h_ghost_details": {
       "progress": 7,
       "segments": [
-        { "speaker": "霍拉旭", "text": "它从头到脚穿着盔甲，步伐沉重，像一个有话要说但无法开口的人。在我们正要开口时，公鸡叫了，它消失了。" }
+        {
+          "speaker": "霍拉旭",
+          "text": "它从头到脚穿着盔甲，步伐沉重，像一个有话要说但无法开口的人。在我们正要开口时，公鸡叫了，它消失了。"
+        }
       ],
       "next": "h_walls_tonight",
-      "changes": { "val": 5 }
+      "changes": {
+        "val": 5
+      },
+      "ambient": "night"
     },
-
     "h_walls_tonight": {
       "progress": 8,
-      "scene": { "id": "elsinore_walls", "name": "艾尔西诺城堡，城墙", "type": "major", "description": "深夜，石头城垛，波罗的海的寒风。星星在云层后面若隐若现。" },
+      "scene": {
+        "id": "elsinore_walls",
+        "name": "艾尔西诺城堡，城墙",
+        "type": "major",
+        "description": "深夜，石头城垛，波罗的海的寒风。星星在云层后面若隐若现。"
+      },
       "segments": [
-        { "text": "深夜，城墙。风很大，衣袍的边缘在黑暗里拍打。" },
-        { "text": "霍拉旭和两个卫兵站在你左右，没有人说话。你们等待着。" }
+        {
+          "text": "深夜，城墙。风很大，衣袍的边缘在黑暗里拍打。"
+        },
+        {
+          "text": "霍拉旭和两个卫兵站在你左右，没有人说话。你们等待着。"
+        }
       ],
       "choices": [
-        { "text": "继续等", "next": "h_ghost_appears" }
-      ]
+        {
+          "text": "继续等",
+          "next": "h_ghost_appears"
+        }
+      ],
+      "ambient": "night"
     },
-
     "h_ghost_appears": {
       "progress": 9,
       "effect": "shake",
       "segments": [
-        { "text": "它来了。" },
-        { "text": "和你父亲一模一样的面孔，和你父亲一模一样的盔甲。它站在城垛旁，看着你，一动不动。" },
-        { "speaker": "霍拉旭", "text": "殿下——" }
+        {
+          "text": "它来了。"
+        },
+        {
+          "text": "和你父亲一模一样的面孔，和你父亲一模一样的盔甲。它站在城垛旁，看着你，一动不动。"
+        },
+        {
+          "speaker": "霍拉旭",
+          "text": "殿下——"
+        }
       ],
       "choices": [
-        { "text": "走上前，\"我要跟它说话。\"", "next": "h_ghost_follows", "changes": { "val": -5 } },
-        { "text": "站在原地，等它先开口", "next": "h_ghost_speaks_01", "changes": { "val": 5 } }
-      ]
+        {
+          "text": "走上前，\"我要跟它说话。\"",
+          "next": "h_ghost_follows",
+          "changes": {
+            "val": -5
+          }
+        },
+        {
+          "text": "站在原地，等它先开口",
+          "next": "h_ghost_speaks_01",
+          "changes": {
+            "val": 5
+          }
+        }
+      ],
+      "ambient": "night"
     },
-
     "h_ghost_follows": {
       "progress": 9,
       "segments": [
-        { "speaker": "霍拉旭", "text": "殿下，不要跟着它走，万一它把你引向悬崖——" },
-        { "speaker": "你", "text": "我不怕死。放开我。" },
-        { "text": "幽灵回头，示意你跟随。" }
+        {
+          "speaker": "霍拉旭",
+          "text": "殿下，不要跟着它走，万一它把你引向悬崖——"
+        },
+        {
+          "speaker": "你",
+          "text": "我不怕死。放开我。"
+        },
+        {
+          "text": "幽灵回头，示意你跟随。"
+        }
       ],
-      "next": "h_ghost_speaks_01"
+      "next": "h_ghost_speaks_01",
+      "ambient": "night"
     },
-
     "h_ghost_speaks_01": {
       "progress": 10,
       "segments": [
-        { "speaker": "幽灵", "text": "哈姆雷特，我的儿子，听好了。" },
-        { "text": "那个声音像从地底传来，像秋风穿过空屋。" },
-        { "speaker": "幽灵", "text": "我是你父亲的灵魂，被迫在夜间游荡，白天在火焰里煎熬，直到我生前的罪孽烧尽为止。" }
+        {
+          "speaker": "幽灵",
+          "text": "哈姆雷特，我的儿子，听好了。"
+        },
+        {
+          "text": "那个声音像从地底传来，像秋风穿过空屋。"
+        },
+        {
+          "speaker": "幽灵",
+          "text": "我是你父亲的灵魂，被迫在夜间游荡，白天在火焰里煎熬，直到我生前的罪孽烧尽为止。"
+        }
       ],
       "choices": [
-        { "text": "\"父亲——\"", "next": "h_ghost_truth" },
-        { "text": "不说话，听下去", "next": "h_ghost_truth" }
-      ]
+        {
+          "text": "\"父亲——\"",
+          "next": "h_ghost_truth"
+        },
+        {
+          "text": "不说话，听下去",
+          "next": "h_ghost_truth"
+        }
+      ],
+      "ambient": "night"
     },
-
     "h_ghost_truth": {
       "progress": 11,
       "segments": [
-        { "speaker": "幽灵", "text": "如果你曾经爱过你的父亲——为他复仇。" },
-        { "speaker": "幽灵", "text": "是克劳狄斯杀了我。我在花园里睡着，他把毒药倒进了我的耳朵。" },
-        { "speaker": "幽灵", "text": "我就这样死去了，没有最后的圣礼，没有悔罪的机会，带着所有的罪业走入了审判。" }
+        {
+          "speaker": "幽灵",
+          "text": "如果你曾经爱过你的父亲——为他复仇。"
+        },
+        {
+          "speaker": "幽灵",
+          "text": "是克劳狄斯杀了我。我在花园里睡着，他把毒药倒进了我的耳朵。"
+        },
+        {
+          "speaker": "幽灵",
+          "text": "我就这样死去了，没有最后的圣礼，没有悔罪的机会，带着所有的罪业走入了审判。"
+        }
       ],
       "choices": [
-        { "text": "\"我会为你报仇。\"", "next": "h_truth_vow", "changes": { "val": -5, "addFlag": "revenge_sworn" } },
-        { "text": "不先开口——你需要更多证据", "next": "h_truth_doubt", "changes": { "val": 8 } }
-      ]
+        {
+          "text": "\"我会为你报仇。\"",
+          "next": "h_truth_vow",
+          "changes": {
+            "val": -5,
+            "addFlag": "revenge_sworn"
+          }
+        },
+        {
+          "text": "不先开口——你需要更多证据",
+          "next": "h_truth_doubt",
+          "changes": {
+            "val": 8
+          }
+        }
+      ],
+      "ambient": "night"
     },
-
     "h_truth_vow": {
       "progress": 12,
       "segments": [
-        { "speaker": "幽灵", "text": "记住我。" },
-        { "text": "它消失了，像一片雾散入黑暗。你站在原地，手在颤抖。" }
+        {
+          "speaker": "幽灵",
+          "text": "记住我。"
+        },
+        {
+          "text": "它消失了，像一片雾散入黑暗。你站在原地，手在颤抖。"
+        }
       ],
       "next": "h_oath_01",
-      "changes": { "unlockAchievement": "ach_oath" }
+      "changes": {
+        "unlockAchievement": "ach_oath"
+      },
+      "ambient": "night"
     },
-
     "h_truth_doubt": {
       "progress": 12,
       "segments": [
-        { "text": "幽灵看着你，眼里有一种沉重的悲哀。" },
-        { "speaker": "幽灵", "text": "不要让丹麦王室的婚床成为乱伦与谋杀的床榻。但无论你如何行动——不要伤害你的母亲。" },
-        { "text": "它消失了。" }
+        {
+          "text": "幽灵看着你，眼里有一种沉重的悲哀。"
+        },
+        {
+          "speaker": "幽灵",
+          "text": "不要让丹麦王室的婚床成为乱伦与谋杀的床榻。但无论你如何行动——不要伤害你的母亲。"
+        },
+        {
+          "text": "它消失了。"
+        }
       ],
       "next": "h_oath_01",
-      "changes": { "unlockAchievement": "ach_oath" }
+      "changes": {
+        "unlockAchievement": "ach_oath"
+      },
+      "ambient": "night"
     },
-
     "h_oath_01": {
       "progress": 13,
       "segments": [
-        { "text": "霍拉旭和卫兵们跑过来，你们站在黑暗的城墙上，风还是那么大。" },
-        { "speaker": "你", "text": "今晚你们看见的，绝口不提。无论我之后做什么，表现得多奇怪——你们不知道任何事。" }
+        {
+          "text": "霍拉旭和卫兵们跑过来，你们站在黑暗的城墙上，风还是那么大。"
+        },
+        {
+          "speaker": "你",
+          "text": "今晚你们看见的，绝口不提。无论我之后做什么，表现得多奇怪——你们不知道任何事。"
+        }
       ],
       "choices": [
-        { "text": "把真相告诉霍拉旭", "next": "h_tell_horatio", "changes": { "set": { "horatio_witness": true } } },
-        { "text": "只说「发誓保密」，其余不解释", "next": "h_oath_silent" }
-      ]
+        {
+          "text": "把真相告诉霍拉旭",
+          "next": "h_tell_horatio",
+          "changes": {
+            "set": {
+              "horatio_witness": true
+            }
+          }
+        },
+        {
+          "text": "只说「发誓保密」，其余不解释",
+          "next": "h_oath_silent"
+        }
+      ],
+      "ambient": "night"
     },
-
     "h_tell_horatio": {
       "progress": 13,
       "segments": [
-        { "text": "你压低声音，把幽灵说的话告诉了霍拉旭。他听完，沉默了很久。" },
-        { "speaker": "霍拉旭", "text": "我明白了。我会保密——但你要小心，殿下。" }
+        {
+          "text": "你压低声音，把幽灵说的话告诉了霍拉旭。他听完，沉默了很久。"
+        },
+        {
+          "speaker": "霍拉旭",
+          "text": "我明白了。我会保密——但你要小心，殿下。"
+        }
       ],
-      "next": "h_mad_plan"
+      "next": "h_mad_plan",
+      "ambient": "night"
     },
-
     "h_oath_silent": {
       "progress": 13,
       "segments": [
-        { "text": "他们发了誓。霍拉旭没有追问，但他的眼睛里有担忧。" }
+        {
+          "text": "他们发了誓。霍拉旭没有追问，但他的眼睛里有担忧。"
+        }
       ],
-      "next": "h_mad_plan"
+      "next": "h_mad_plan",
+      "ambient": "night"
     },
-
     "h_mad_plan": {
       "progress": 14,
       "segments": [
-        { "text": "你需要时间。你需要确认幽灵说的是真的，你需要等一个合适的机会。在那之前，你需要一层保护。" }
+        {
+          "text": "你需要时间。你需要确认幽灵说的是真的，你需要等一个合适的机会。在那之前，你需要一层保护。"
+        }
       ],
       "choices": [
-        { "text": "假装发疯——彻底的、让人信服的疯狂", "next": "h_mad_intense", "changes": { "val": -3, "addFlag": "mad_active" } },
-        { "text": "只是显得古怪，不那么彻底", "next": "h_mad_subtle", "changes": { "val": 3 } }
-      ]
+        {
+          "text": "假装发疯——彻底的、让人信服的疯狂",
+          "next": "h_mad_intense",
+          "changes": {
+            "val": -3,
+            "addFlag": "mad_active"
+          }
+        },
+        {
+          "text": "只是显得古怪，不那么彻底",
+          "next": "h_mad_subtle",
+          "changes": {
+            "val": 3
+          }
+        }
+      ],
+      "ambient": "night"
     },
-
     "h_mad_intense": {
       "progress": 14,
       "segments": [
-        { "text": "如果他们以为你疯了，他们就不会把你当威胁。你把这件事想得很透彻。" }
+        {
+          "text": "如果他们以为你疯了，他们就不会把你当威胁。你把这件事想得很透彻。"
+        }
       ],
-      "next": "h_act2_start"
+      "next": "h_act2_start",
+      "ambient": "night"
     },
-
     "h_mad_subtle": {
       "progress": 14,
       "segments": [
-        { "text": "完全的表演会让你迷失。你决定只在必要的时候展示那种「不正常」。" }
+        {
+          "text": "完全的表演会让你迷失。你决定只在必要的时候展示那种「不正常」。"
+        }
       ],
-      "next": "h_act2_start"
+      "next": "h_act2_start",
+      "ambient": "night"
     },
-
     "h_act2_start": {
       "chapterTitle": "第二幕：捕鼠器",
       "progress": 16,
       "segments": [
-        { "text": "几周过去了。宫廷里开始流传你失常的消息——你对奥菲利娅行为古怪，你在走廊里独自喃喃自语，你的眼神让人不安。" },
-        { "text": "波洛涅斯大臣认为，这是爱情疯狂。克劳狄斯认为，这需要监视。" }
+        {
+          "text": "几周过去了。宫廷里开始流传你失常的消息——你对奥菲利娅行为古怪，你在走廊里独自喃喃自语，你的眼神让人不安。"
+        },
+        {
+          "text": "波洛涅斯大臣认为，这是爱情疯狂。克劳狄斯认为，这需要监视。"
+        }
       ],
-      "next": "h_players_arrive"
+      "next": "h_players_arrive",
+      "ambient": "static"
     },
-
     "h_players_arrive": {
       "progress": 17,
       "segments": [
-        { "text": "一个剧团来到了艾尔西诺。" },
-        { "text": "你突然有了一个想法。" }
+        {
+          "text": "一个剧团来到了艾尔西诺。"
+        },
+        {
+          "text": "你突然有了一个想法。"
+        }
       ],
       "choices": [
-        { "text": "走过去，和演员们说话", "next": "h_players_01" }
-      ]
+        {
+          "text": "走过去，和演员们说话",
+          "next": "h_players_01"
+        }
+      ],
+      "ambient": "static"
     },
-
     "h_players_01": {
       "progress": 17,
       "segments": [
-        { "text": "演员们风尘仆仆，带着戏服和道具。领班见到你，鞠了一躬。" },
-        { "speaker": "你", "text": "你们能演《冈扎古之死》吗？我要加几行台词进去——就几行。" },
-        { "speaker": "演员领班", "text": "当然，殿下，我们可以一字不差地背诵。" }
+        {
+          "text": "演员们风尘仆仆，带着戏服和道具。领班见到你，鞠了一躬。"
+        },
+        {
+          "speaker": "你",
+          "text": "你们能演《冈扎古之死》吗？我要加几行台词进去——就几行。"
+        },
+        {
+          "speaker": "演员领班",
+          "text": "当然，殿下，我们可以一字不差地背诵。"
+        }
       ],
       "choices": [
-        { "text": "把需要加的内容告诉他", "next": "h_trap_plan" },
-        { "text": "\"明晚再说细节，先准备好。\"", "next": "h_trap_plan" }
-      ]
+        {
+          "text": "把需要加的内容告诉他",
+          "next": "h_trap_plan"
+        },
+        {
+          "text": "\"明晚再说细节，先准备好。\"",
+          "next": "h_trap_plan"
+        }
+      ],
+      "ambient": "static"
     },
-
     "h_trap_plan": {
       "progress": 18,
       "segments": [
-        { "text": "思路很清楚：在戏里重现父亲被毒杀的场景，看克劳狄斯的反应。" },
-        { "text": "如果他是凶手，良心会让他露出破绽。" },
-        { "speaker": "你", "text": "「戏剧是用来照出良心的镜子。」" }
+        {
+          "text": "思路很清楚：在戏里重现父亲被毒杀的场景，看克劳狄斯的反应。"
+        },
+        {
+          "text": "如果他是凶手，良心会让他露出破绽。"
+        },
+        {
+          "speaker": "你",
+          "text": "「戏剧是用来照出良心的镜子。」"
+        }
       ],
-      "next": "h_to_be_01"
+      "next": "h_to_be_01",
+      "ambient": "static"
     },
-
     "h_to_be_01": {
       "progress": 19,
-      "scene": { "id": "gallery", "name": "宫廷走廊", "type": "transient" },
+      "scene": {
+        "id": "gallery",
+        "name": "宫廷走廊",
+        "type": "transient"
+      },
       "segments": [
-        { "text": "你一个人在走廊里踱步，手里拿着一本书。" },
-        { "text": "生存还是毁灭——这是个问题。" },
-        { "text": "是默默忍受命运的毒箭，还是挺身对抗无边的苦难？" }
+        {
+          "text": "你一个人在走廊里踱步，手里拿着一本书。"
+        },
+        {
+          "text": "生存还是毁灭——这是个问题。"
+        },
+        {
+          "text": "是默默忍受命运的毒箭，还是挺身对抗无边的苦难？"
+        }
       ],
       "choices": [
-        { "text": "在心里把问题推得更远：死了，就是睡着了……", "next": "h_to_be_deep", "changes": { "val": 8 } },
-        { "text": "把书合上，想别的", "next": "h_to_be_break", "changes": { "val": -3 } }
-      ]
+        {
+          "text": "在心里把问题推得更远：死了，就是睡着了……",
+          "next": "h_to_be_deep",
+          "changes": {
+            "val": 8
+          }
+        },
+        {
+          "text": "把书合上，想别的",
+          "next": "h_to_be_break",
+          "changes": {
+            "val": -3
+          }
+        }
+      ],
+      "ambient": "static"
     },
-
     "h_to_be_deep": {
       "progress": 20,
       "segments": [
-        { "text": "死了——睡着了——也许还会做梦。那才是难处。" },
-        { "text": "谁愿意忍受世间的鞭打与讥嘲，压迫者的横暴，骄傲者的轻蔑……如果他自己能了断一切？" },
-        { "text": "只因为那未知的死后世界——让人踌躇，让行动的意志动摇。" }
+        {
+          "text": "死了——睡着了——也许还会做梦。那才是难处。"
+        },
+        {
+          "text": "谁愿意忍受世间的鞭打与讥嘲，压迫者的横暴，骄傲者的轻蔑……如果他自己能了断一切？"
+        },
+        {
+          "text": "只因为那未知的死后世界——让人踌躇，让行动的意志动摇。"
+        }
       ],
-      "next": "h_ophelia_gallery"
+      "next": "h_ophelia_gallery",
+      "ambient": "static"
     },
-
     "h_to_be_break": {
       "progress": 20,
       "segments": [
-        { "text": "不要想这些。现在需要的是行动，不是哲学。" }
+        {
+          "text": "不要想这些。现在需要的是行动，不是哲学。"
+        }
       ],
-      "next": "h_ophelia_gallery"
+      "next": "h_ophelia_gallery",
+      "ambient": "static"
     },
-
     "h_ophelia_gallery": {
       "progress": 21,
       "segments": [
-        { "text": "奥菲利娅从走廊另一头走过来。她手里捧着一些信件和礼物。" },
-        { "text": "你知道波洛涅斯就藏在幕布后面，克劳狄斯也在附近某处。这是一个试探。" }
+        {
+          "text": "奥菲利娅从走廊另一头走过来。她手里捧着一些信件和礼物。"
+        },
+        {
+          "text": "你知道波洛涅斯就藏在幕布后面，克劳狄斯也在附近某处。这是一个试探。"
+        }
       ],
       "choices": [
-        { "text": "温柔地对待她——她是无辜的", "next": "h_ophelia_warm", "changes": { "set": { "ophelia_trust": 2 } } },
-        { "text": "推开她——让她远离这一切的危险", "next": "h_ophelia_nunnery", "changes": { "val": -5 } }
-      ]
+        {
+          "text": "温柔地对待她——她是无辜的",
+          "next": "h_ophelia_warm",
+          "changes": {
+            "set": {
+              "ophelia_trust": 2
+            }
+          }
+        },
+        {
+          "text": "推开她——让她远离这一切的危险",
+          "next": "h_ophelia_nunnery",
+          "changes": {
+            "val": -5
+          }
+        }
+      ],
+      "ambient": "static"
     },
-
     "h_ophelia_warm": {
       "progress": 21,
       "segments": [
-        { "speaker": "奥菲利娅", "text": "殿下，您好。您之前赠给我的礼物，我要还给您。" },
-        { "speaker": "你", "text": "奥菲利娅，你不应该来这里。" },
-        { "text": "你说得很轻，但眼神投向幕布，她似乎明白了一点什么。" }
+        {
+          "speaker": "奥菲利娅",
+          "text": "殿下，您好。您之前赠给我的礼物，我要还给您。"
+        },
+        {
+          "speaker": "你",
+          "text": "奥菲利娅，你不应该来这里。"
+        },
+        {
+          "text": "你说得很轻，但眼神投向幕布，她似乎明白了一点什么。"
+        }
       ],
-      "next": "h_play_prep"
+      "next": "h_play_prep",
+      "ambient": "static"
     },
-
     "h_ophelia_nunnery": {
       "progress": 21,
       "segments": [
-        { "speaker": "奥菲利娅", "text": "殿下，您以前说过爱我——" },
-        { "speaker": "你", "text": "去修道院。快去修道院吧，为什么你要成为一个罪人的母亲？我很骄傲，报复心重，有野心——去修道院。" },
-        { "text": "她往后退了一步，眼里有什么东西破碎了。" }
+        {
+          "speaker": "奥菲利娅",
+          "text": "殿下，您以前说过爱我——"
+        },
+        {
+          "speaker": "你",
+          "text": "去修道院。快去修道院吧，为什么你要成为一个罪人的母亲？我很骄傲，报复心重，有野心——去修道院。"
+        },
+        {
+          "text": "她往后退了一步，眼里有什么东西破碎了。"
+        }
       ],
       "next": "h_play_prep",
-      "changes": { "unlockAchievement": "ach_nunnery" }
+      "changes": {
+        "unlockAchievement": "ach_nunnery"
+      },
+      "ambient": "static"
     },
-
     "h_play_prep": {
       "progress": 22,
       "segments": [
-        { "text": "今晚，戏要上演了。你找到霍拉旭，把计划说了一遍。" },
-        { "speaker": "你", "text": "戏演到毒杀那一幕，你死盯着克劳狄斯。他若变了脸色，我们就知道了。" },
-        { "speaker": "霍拉旭", "text": "好。我会盯着他。" }
+        {
+          "text": "今晚，戏要上演了。你找到霍拉旭，把计划说了一遍。"
+        },
+        {
+          "speaker": "你",
+          "text": "戏演到毒杀那一幕，你死盯着克劳狄斯。他若变了脸色，我们就知道了。"
+        },
+        {
+          "speaker": "霍拉旭",
+          "text": "好。我会盯着他。"
+        }
       ],
-      "next": "h_play_begins"
+      "next": "h_play_begins",
+      "ambient": "static"
     },
-
     "h_play_begins": {
       "chapterTitle": "第三幕：三道门",
-      "scene": { "id": "great_hall_theater", "name": "艾尔西诺大厅，临时剧场", "type": "major", "description": "观众席上摆满了蜡烛。克劳狄斯和葛特鲁德坐在上首。" },
+      "scene": {
+        "id": "great_hall_theater",
+        "name": "艾尔西诺大厅，临时剧场",
+        "type": "major",
+        "description": "观众席上摆满了蜡烛。克劳狄斯和葛特鲁德坐在上首。"
+      },
       "progress": 24,
       "segments": [
-        { "text": "整个宫廷都来看戏。克劳狄斯坐在上座，表情和往常一样平静。" },
-        { "text": "演出开始了。你坐在奥菲利娅旁边，眼睛却一直在克劳狄斯脸上。" }
+        {
+          "text": "整个宫廷都来看戏。克劳狄斯坐在上座，表情和往常一样平静。"
+        },
+        {
+          "text": "演出开始了。你坐在奥菲利娅旁边，眼睛却一直在克劳狄斯脸上。"
+        }
       ],
       "choices": [
-        { "text": "安静地看，等那一幕", "next": "h_play_murder" }
-      ]
+        {
+          "text": "安静地看，等那一幕",
+          "next": "h_play_murder"
+        }
+      ],
+      "ambient": "blood"
     },
-
     "h_play_murder": {
       "progress": 25,
       "segments": [
-        { "text": "演到了。舞台上，扮演凶手的演员弯腰，把毒药倒进了熟睡的国王耳朵里。" },
-        { "text": "你看向克劳狄斯。" }
+        {
+          "text": "演到了。舞台上，扮演凶手的演员弯腰，把毒药倒进了熟睡的国王耳朵里。"
+        },
+        {
+          "text": "你看向克劳狄斯。"
+        }
       ],
       "choices": [
-        { "text": "开口：\"这是《冈扎古之死》，接下来是毒药如何蔓延——\"点名揭露", "next": "h_play_point_out", "changes": { "val": -5 } },
-        { "text": "什么都不说，只是看他的脸", "next": "h_play_watch", "changes": { "val": 5 } }
-      ]
+        {
+          "text": "开口：\"这是《冈扎古之死》，接下来是毒药如何蔓延——\"点名揭露",
+          "next": "h_play_point_out",
+          "changes": {
+            "val": -5
+          }
+        },
+        {
+          "text": "什么都不说，只是看他的脸",
+          "next": "h_play_watch",
+          "changes": {
+            "val": 5
+          }
+        }
+      ],
+      "ambient": "blood"
     },
-
     "h_play_point_out": {
       "progress": 25,
       "segments": [
-        { "speaker": "你", "text": "陛下，您不舒服吗？戏里的毒药是在太写实——" },
-        { "text": "克劳狄斯猛地站起来。" }
+        {
+          "speaker": "你",
+          "text": "陛下，您不舒服吗？戏里的毒药是在太写实——"
+        },
+        {
+          "text": "克劳狄斯猛地站起来。"
+        }
       ],
-      "next": "h_claudius_leaves"
+      "next": "h_claudius_leaves",
+      "ambient": "blood"
     },
-
     "h_play_watch": {
       "progress": 25,
       "segments": [
-        { "text": "克劳狄斯的手指收紧了，扶手上出现了白色的指节。" },
-        { "text": "然后他站起来了。" }
+        {
+          "text": "克劳狄斯的手指收紧了，扶手上出现了白色的指节。"
+        },
+        {
+          "text": "然后他站起来了。"
+        }
       ],
-      "next": "h_claudius_leaves"
+      "next": "h_claudius_leaves",
+      "ambient": "blood"
     },
-
     "h_claudius_leaves": {
       "progress": 26,
       "effect": "noise",
       "segments": [
-        { "speaker": "克劳狄斯", "text": "点火把！给我火把！" },
-        { "text": "他离席了，步伐急促。整个大厅的人都跟着乱了。" },
-        { "text": "你留在原地，心跳得很快。" }
+        {
+          "speaker": "克劳狄斯",
+          "text": "点火把！给我火把！"
+        },
+        {
+          "text": "他离席了，步伐急促。整个大厅的人都跟着乱了。"
+        },
+        {
+          "text": "你留在原地，心跳得很快。"
+        }
       ],
       "choices": [
-        { "text": "找到霍拉旭：\"他动了。\"", "next": "h_verify_01" }
-      ]
+        {
+          "text": "找到霍拉旭：\"他动了。\"",
+          "next": "h_verify_01"
+        }
+      ],
+      "ambient": "blood"
     },
-
     "h_verify_01": {
       "progress": 27,
       "segments": [
-        { "speaker": "霍拉旭", "text": "我亲眼看见了。他起身的那一刻，脸全白了。" },
-        { "text": "证实了。" },
-        { "text": "幽灵说的是真的。克劳狄斯是凶手。" }
+        {
+          "speaker": "霍拉旭",
+          "text": "我亲眼看见了。他起身的那一刻，脸全白了。"
+        },
+        {
+          "text": "证实了。"
+        },
+        {
+          "text": "幽灵说的是真的。克劳狄斯是凶手。"
+        }
       ],
       "choices": [
-        { "text": "\"现在动手？\"", "next": "h_after_play_decide", "changes": { "val": -8, "set": { "horatio_witness": true }, "unlockAchievement": "ach_play" } },
-        { "text": "\"我需要时间想。\"", "next": "h_after_play_decide", "changes": { "val": 8, "set": { "horatio_witness": true }, "unlockAchievement": "ach_play" } }
-      ]
+        {
+          "text": "\"现在动手？\"",
+          "next": "h_after_play_decide",
+          "changes": {
+            "val": -8,
+            "set": {
+              "horatio_witness": true
+            },
+            "unlockAchievement": "ach_play"
+          }
+        },
+        {
+          "text": "\"我需要时间想。\"",
+          "next": "h_after_play_decide",
+          "changes": {
+            "val": 8,
+            "set": {
+              "horatio_witness": true
+            },
+            "unlockAchievement": "ach_play"
+          }
+        }
+      ],
+      "ambient": "blood"
     },
-
     "h_after_play_decide": {
       "progress": 28,
       "segments": [
-        { "text": "今晚，母亲派人来叫你去她的寝室。但在去之前，你路过了一扇半开的门。" }
+        {
+          "text": "今晚，母亲派人来叫你去她的寝室。但在去之前，你路过了一扇半开的门。"
+        }
       ],
-      "next": "h_prayer_corridor"
+      "next": "h_prayer_corridor",
+      "ambient": "blood"
     },
-
     "h_prayer_corridor": {
       "progress": 29,
-      "scene": { "id": "chapel", "name": "宫廷礼拜堂", "type": "transient" },
+      "scene": {
+        "id": "chapel",
+        "name": "宫廷礼拜堂",
+        "type": "transient"
+      },
       "segments": [
-        { "text": "克劳狄斯独自跪在礼拜堂里，双手合十，头低着。" },
-        { "text": "他在祈祷。" },
-        { "text": "你的剑在腰上，没人看见你。" }
+        {
+          "text": "克劳狄斯独自跪在礼拜堂里，双手合十，头低着。"
+        },
+        {
+          "text": "他在祈祷。"
+        },
+        {
+          "text": "你的剑在腰上，没人看见你。"
+        }
       ],
       "choices": [
-        { "text": "拔剑——现在是机会", "next": "h_prayer_kill_01", "changes": { "val": -15, "set": { "prayer_confronted": true }, "addFlag": "tried_prayer_kill" } },
-        { "text": "手放在剑柄上，但没有拔出——等一等", "next": "h_prayer_wait", "changes": { "val": 10, "set": { "prayer_confronted": true }, "unlockAchievement": "ach_prayer" } }
-      ]
+        {
+          "text": "拔剑——现在是机会",
+          "next": "h_prayer_kill_01",
+          "changes": {
+            "val": -15,
+            "set": {
+              "prayer_confronted": true
+            },
+            "addFlag": "tried_prayer_kill"
+          }
+        },
+        {
+          "text": "手放在剑柄上，但没有拔出——等一等",
+          "next": "h_prayer_wait",
+          "changes": {
+            "val": 10,
+            "set": {
+              "prayer_confronted": true
+            },
+            "unlockAchievement": "ach_prayer"
+          }
+        }
+      ],
+      "ambient": "blood"
     },
-
     "h_prayer_kill_01": {
       "progress": 30,
       "segments": [
-        { "text": "剑出鞘的声音很轻。克劳狄斯没有听见。" },
-        { "text": "你走上前——" },
-        { "text": "然后你停住了。" },
-        { "text": "他在祈祷。如果他祈祷中死去，他的灵魂会直接上天堂。父亲是在没有忏悔的情况下死去的，在炼狱里受苦。" }
+        {
+          "text": "剑出鞘的声音很轻。克劳狄斯没有听见。"
+        },
+        {
+          "text": "你走上前——"
+        },
+        {
+          "text": "然后你停住了。"
+        },
+        {
+          "text": "他在祈祷。如果他祈祷中死去，他的灵魂会直接上天堂。父亲是在没有忏悔的情况下死去的，在炼狱里受苦。"
+        }
       ],
       "choices": [
-        { "text": "管不了那么多，现在动手", "next": "h_prayer_stabs", "changes": { "val": -10 } },
-        { "text": "收剑。等他做完坏事再杀", "next": "h_prayer_wait", "changes": { "val": 15 } }
-      ]
+        {
+          "text": "管不了那么多，现在动手",
+          "next": "h_prayer_stabs",
+          "changes": {
+            "val": -10
+          }
+        },
+        {
+          "text": "收剑。等他做完坏事再杀",
+          "next": "h_prayer_wait",
+          "changes": {
+            "val": 15
+          }
+        }
+      ],
+      "ambient": "blood"
     },
-
     "h_prayer_stabs": {
       "progress": 31,
       "effect": "blood",
       "segments": [
-        { "text": "你刺进去了。" },
-        { "text": "克劳狄斯倒下了，祈祷的姿势没有来得及变化。" },
-        { "text": "你站在他身旁，听着血液的声音，等待着自己感觉到什么。" }
+        {
+          "text": "你刺进去了。"
+        },
+        {
+          "text": "克劳狄斯倒下了，祈祷的姿势没有来得及变化。"
+        },
+        {
+          "text": "你站在他身旁，听着血液的声音，等待着自己感觉到什么。"
+        }
       ],
-      "next": "h_prayer_aftermath"
+      "next": "h_prayer_aftermath",
+      "ambient": "blood"
     },
-
     "h_prayer_aftermath": {
       "progress": 32,
       "segments": [
-        { "text": "宫里的人冲进来了。" },
-        { "text": "国王死在礼拜堂，王子手握染血的剑。" },
-        { "text": "没有证人，没有证据，没有前因后果——只有一个发疯的王子和一具尸体。" }
+        {
+          "text": "宫里的人冲进来了。"
+        },
+        {
+          "text": "国王死在礼拜堂，王子手握染血的剑。"
+        },
+        {
+          "text": "没有证人，没有证据，没有前因后果——只有一个发疯的王子和一具尸体。"
+        }
       ],
-      "next": "h_prayer_condemned"
+      "next": "h_prayer_condemned",
+      "ambient": "blood"
     },
-
     "h_prayer_condemned": {
       "progress": 33,
       "segments": [
-        { "text": "审判很快。" },
-        { "text": "你没有办法解释。父亲的鬼魂无法在证人席上作证。幽灵的话只有你听见过。" },
-        { "text": "你以弑君罪被判处死刑。执行是在三天后的黎明。" },
-        { "text": "霍拉旭来见你，你告诉了他一切。他会讲述这个故事。" }
+        {
+          "text": "审判很快。"
+        },
+        {
+          "text": "你没有办法解释。父亲的鬼魂无法在证人席上作证。幽灵的话只有你听见过。"
+        },
+        {
+          "text": "你以弑君罪被判处死刑。执行是在三天后的黎明。"
+        },
+        {
+          "text": "霍拉旭来见你，你告诉了他一切。他会讲述这个故事。"
+        }
       ],
-      "next": "ending_early_kill"
+      "next": "ending_early_kill",
+      "ambient": "blood"
     },
-
     "h_prayer_wait": {
       "progress": 30,
       "segments": [
-        { "text": "你把剑收回去，离开了礼拜堂。" },
-        { "text": "不是现在。他在忏悔，如果此刻死去，会直升天堂。等他腐烂时再动手——" },
-        { "text": "一个声音在你心里说：这只是借口。" },
-        { "text": "你没有回答那个声音。" }
+        {
+          "text": "你把剑收回去，离开了礼拜堂。"
+        },
+        {
+          "text": "不是现在。他在忏悔，如果此刻死去，会直升天堂。等他腐烂时再动手——"
+        },
+        {
+          "text": "一个声音在你心里说：这只是借口。"
+        },
+        {
+          "text": "你没有回答那个声音。"
+        }
       ],
-      "next": "h_bedroom_arrive"
+      "next": "h_bedroom_arrive",
+      "ambient": "blood"
     },
-
     "h_bedroom_arrive": {
       "progress": 31,
-      "scene": { "id": "queen_chamber", "name": "葛特鲁德王后的寝室", "type": "transient" },
+      "scene": {
+        "id": "queen_chamber",
+        "name": "葛特鲁德王后的寝室",
+        "type": "transient"
+      },
       "segments": [
-        { "text": "母亲的寝室，厚重的帷幕，摇曳的烛光。" },
-        { "speaker": "葛特鲁德", "text": "哈姆雷特，你给父王带来了很大的困扰。" },
-        { "speaker": "你", "text": "母亲，你给父王带来了很大的困扰。" }
+        {
+          "text": "母亲的寝室，厚重的帷幕，摇曳的烛光。"
+        },
+        {
+          "speaker": "葛特鲁德",
+          "text": "哈姆雷特，你给父王带来了很大的困扰。"
+        },
+        {
+          "speaker": "你",
+          "text": "母亲，你给父王带来了很大的困扰。"
+        }
       ],
       "choices": [
-        { "text": "继续，把话说到底", "next": "h_bedroom_accuse", "changes": { "val": -5 } },
-        { "text": "压住话头，换个方式", "next": "h_bedroom_gentle", "changes": { "val": 5 } }
-      ]
+        {
+          "text": "继续，把话说到底",
+          "next": "h_bedroom_accuse",
+          "changes": {
+            "val": -5
+          }
+        },
+        {
+          "text": "压住话头，换个方式",
+          "next": "h_bedroom_gentle",
+          "changes": {
+            "val": 5
+          }
+        }
+      ],
+      "ambient": "blood"
     },
-
     "h_bedroom_accuse": {
       "progress": 32,
       "segments": [
-        { "speaker": "葛特鲁德", "text": "哈姆雷特，你忘了我是你的母亲——" },
-        { "speaker": "你", "text": "你是国王的妻子，你嫁给了你丈夫的弟弟。" },
-        { "text": "她要叫人。" }
+        {
+          "speaker": "葛特鲁德",
+          "text": "哈姆雷特，你忘了我是你的母亲——"
+        },
+        {
+          "speaker": "你",
+          "text": "你是国王的妻子，你嫁给了你丈夫的弟弟。"
+        },
+        {
+          "text": "她要叫人。"
+        }
       ],
-      "next": "h_curtain_rustle"
+      "next": "h_curtain_rustle",
+      "ambient": "blood"
     },
-
     "h_bedroom_gentle": {
       "progress": 32,
       "segments": [
-        { "speaker": "你", "text": "母亲，坐下。我有话要说。" },
-        { "text": "幕布后面有动静。" }
+        {
+          "speaker": "你",
+          "text": "母亲，坐下。我有话要说。"
+        },
+        {
+          "text": "幕布后面有动静。"
+        }
       ],
-      "next": "h_curtain_rustle"
+      "next": "h_curtain_rustle",
+      "ambient": "blood"
     },
-
     "h_curtain_rustle": {
       "progress": 33,
       "segments": [
-        { "text": "幕布动了。" },
-        { "speaker": "葛特鲁德", "text": "帮帮我！" },
-        { "text": "有人在幕布后面。间谍。" }
+        {
+          "text": "幕布动了。"
+        },
+        {
+          "speaker": "葛特鲁德",
+          "text": "帮帮我！"
+        },
+        {
+          "text": "有人在幕布后面。间谍。"
+        }
       ],
       "choices": [
-        { "text": "拔剑刺向幕布", "next": "h_polonius_stab", "changes": { "val": -8 } },
-        { "text": "\"谁在那里？！\"先喝问", "next": "h_polonius_demand" }
-      ]
+        {
+          "text": "拔剑刺向幕布",
+          "next": "h_polonius_stab",
+          "changes": {
+            "val": -8
+          }
+        },
+        {
+          "text": "\"谁在那里？！\"先喝问",
+          "next": "h_polonius_demand"
+        }
+      ],
+      "ambient": "blood"
     },
-
     "h_polonius_demand": {
       "progress": 33,
       "segments": [
-        { "text": "幕布后面没有回答，只有慌乱移动的声音。" },
-        { "speaker": "你", "text": "是老鼠吗？" }
+        {
+          "text": "幕布后面没有回答，只有慌乱移动的声音。"
+        },
+        {
+          "speaker": "你",
+          "text": "是老鼠吗？"
+        }
       ],
       "next": "h_polonius_stab",
-      "changes": { "val": 3 }
+      "changes": {
+        "val": 3
+      },
+      "ambient": "blood"
     },
-
     "h_polonius_stab": {
       "progress": 34,
       "effect": "blood",
       "segments": [
-        { "text": "你刺穿了幕布。一声闷哼，然后是沉重的倒地声。" },
-        { "text": "你掀开幕布——是波洛涅斯。老大臣，眼睛已经闭上了。" }
+        {
+          "text": "你刺穿了幕布。一声闷哼，然后是沉重的倒地声。"
+        },
+        {
+          "text": "你掀开幕布——是波洛涅斯。老大臣，眼睛已经闭上了。"
+        }
       ],
       "choices": [
-        { "text": "\"这是个蠢老头的下场。\"", "next": "h_polonius_callous", "changes": { "val": -5 } },
-        { "text": "沉默片刻——你没有想到是他", "next": "h_polonius_regret", "changes": { "val": 5, "set": { "polonius_remorse": true } } }
-      ]
+        {
+          "text": "\"这是个蠢老头的下场。\"",
+          "next": "h_polonius_callous",
+          "changes": {
+            "val": -5
+          }
+        },
+        {
+          "text": "沉默片刻——你没有想到是他",
+          "next": "h_polonius_regret",
+          "changes": {
+            "val": 5,
+            "set": {
+              "polonius_remorse": true
+            }
+          }
+        }
+      ],
+      "ambient": "blood"
     },
-
     "h_polonius_callous": {
       "progress": 34,
       "segments": [
-        { "speaker": "葛特鲁德", "text": "哈姆雷特，你干了什么！" },
-        { "text": "你把尸体拖到旁边，转向母亲。" }
+        {
+          "speaker": "葛特鲁德",
+          "text": "哈姆雷特，你干了什么！"
+        },
+        {
+          "text": "你把尸体拖到旁边，转向母亲。"
+        }
       ],
-      "next": "h_bedroom_ghost"
+      "next": "h_bedroom_ghost",
+      "ambient": "blood"
     },
-
     "h_polonius_regret": {
       "progress": 34,
       "segments": [
-        { "speaker": "葛特鲁德", "text": "这是一桩血腥的、凶残的行为！" },
-        { "speaker": "你", "text": "一桩血腥的行为——是的，几乎和杀死一个国王、嫁给他的兄弟一样血腥。" }
+        {
+          "speaker": "葛特鲁德",
+          "text": "这是一桩血腥的、凶残的行为！"
+        },
+        {
+          "speaker": "你",
+          "text": "一桩血腥的行为——是的，几乎和杀死一个国王、嫁给他的兄弟一样血腥。"
+        }
       ],
-      "next": "h_bedroom_ghost"
+      "next": "h_bedroom_ghost",
+      "ambient": "blood"
     },
-
     "h_bedroom_ghost": {
       "progress": 35,
       "segments": [
-        { "text": "父亲的幽灵出现了，就在寝室里，无声地看着你。" },
-        { "text": "你母亲什么都看不见。" },
-        { "speaker": "葛特鲁德", "text": "你在看什么？那里什么都没有！" }
+        {
+          "text": "父亲的幽灵出现了，就在寝室里，无声地看着你。"
+        },
+        {
+          "text": "你母亲什么都看不见。"
+        },
+        {
+          "speaker": "葛特鲁德",
+          "text": "你在看什么？那里什么都没有！"
+        }
       ],
       "choices": [
-        { "text": "\"你看不见他吗——父亲，你的丈夫，他就站在那里——\"", "next": "h_gertrude_believe", "changes": { "val": 5 } },
-        { "text": "闭上眼睛，重新镇定下来", "next": "h_gertrude_quiet", "changes": { "val": -3 } }
-      ]
+        {
+          "text": "\"你看不见他吗——父亲，你的丈夫，他就站在那里——\"",
+          "next": "h_gertrude_believe",
+          "changes": {
+            "val": 5
+          }
+        },
+        {
+          "text": "闭上眼睛，重新镇定下来",
+          "next": "h_gertrude_quiet",
+          "changes": {
+            "val": -3
+          }
+        }
+      ],
+      "ambient": "blood"
     },
-
     "h_gertrude_believe": {
       "progress": 36,
       "segments": [
-        { "speaker": "葛特鲁德", "text": "这是你的幻觉，你病了——" },
-        { "speaker": "你", "text": "这不是幻觉。母亲，我求你——不要去克劳狄斯的床上，就算做不到，也不要让他知道我没有真的疯。" },
-        { "text": "她看着你，眼里有一种你看不透的东西。" }
+        {
+          "speaker": "葛特鲁德",
+          "text": "这是你的幻觉，你病了——"
+        },
+        {
+          "speaker": "你",
+          "text": "这不是幻觉。母亲，我求你——不要去克劳狄斯的床上，就算做不到，也不要让他知道我没有真的疯。"
+        },
+        {
+          "text": "她看着你，眼里有一种你看不透的东西。"
+        }
       ],
       "next": "h_bedroom_close",
-      "changes": { "set": { "gertrude_convinced": true } }
+      "changes": {
+        "set": {
+          "gertrude_convinced": true
+        }
+      },
+      "ambient": "blood"
     },
-
     "h_gertrude_quiet": {
       "progress": 36,
       "segments": [
-        { "speaker": "你", "text": "母亲，不要去克劳狄斯的床上——就算做不到，也别告诉他我没疯。" },
-        { "text": "她沉默着。这算是答应了吗？你不确定。" }
+        {
+          "speaker": "你",
+          "text": "母亲，不要去克劳狄斯的床上——就算做不到，也别告诉他我没疯。"
+        },
+        {
+          "text": "她沉默着。这算是答应了吗？你不确定。"
+        }
       ],
-      "next": "h_bedroom_close"
+      "next": "h_bedroom_close",
+      "ambient": "blood"
     },
-
     "h_bedroom_close": {
       "progress": 36,
       "segments": [
-        { "text": "你把波洛涅斯的尸体拖走了。夜晚还没有结束，但已经不可挽回地改变了。" }
+        {
+          "text": "你把波洛涅斯的尸体拖走了。夜晚还没有结束，但已经不可挽回地改变了。"
+        }
       ],
-      "next": "h_act4_start"
+      "next": "h_act4_start",
+      "ambient": "blood"
     },
-
     "h_act4_start": {
       "chapterTitle": "第四幕：代价",
       "progress": 38,
       "segments": [
-        { "text": "克劳狄斯很快知道了一切。波洛涅斯死了，你不能留在丹麦了。" },
-        { "speaker": "克劳狄斯", "text": "哈姆雷特，这件事很严重。为了你自己的安全，我要送你去英格兰。" }
+        {
+          "text": "克劳狄斯很快知道了一切。波洛涅斯死了，你不能留在丹麦了。"
+        },
+        {
+          "speaker": "克劳狄斯",
+          "text": "哈姆雷特，这件事很严重。为了你自己的安全，我要送你去英格兰。"
+        }
       ],
       "choices": [
-        { "text": "\"好，我去英格兰。\"表面服从", "next": "h_england_accept", "changes": { "val": 5 } },
-        { "text": "\"为了我的安全？还是为了你的？\"", "next": "h_england_resist", "changes": { "val": -8 } }
-      ]
+        {
+          "text": "\"好，我去英格兰。\"表面服从",
+          "next": "h_england_accept",
+          "changes": {
+            "val": 5
+          }
+        },
+        {
+          "text": "\"为了我的安全？还是为了你的？\"",
+          "next": "h_england_resist",
+          "changes": {
+            "val": -8
+          }
+        }
+      ],
+      "ambient": "wind"
     },
-
     "h_england_accept": {
       "progress": 39,
       "segments": [
-        { "text": "你知道这是把你踢出局。但你也知道，如果你留下，他会找到其他方法。" },
-        { "text": "在去英格兰的船上，你发现了克劳狄斯写给英格兰国王的密信——要求处决你。" },
-        { "text": "你改了信，把名字换成了押送你的两个侍从。" }
+        {
+          "text": "你知道这是把你踢出局。但你也知道，如果你留下，他会找到其他方法。"
+        },
+        {
+          "text": "在去英格兰的船上，你发现了克劳狄斯写给英格兰国王的密信——要求处决你。"
+        },
+        {
+          "text": "你改了信，把名字换成了押送你的两个侍从。"
+        }
       ],
-      "next": "h_ophelia_mad"
+      "next": "h_ophelia_mad",
+      "ambient": "wind"
     },
-
     "h_england_resist": {
       "progress": 39,
       "segments": [
-        { "speaker": "克劳狄斯", "text": "哈姆雷特，这不是商量，这是王命。" },
-        { "text": "卫兵已经在门口了。你没有选择。" }
+        {
+          "speaker": "克劳狄斯",
+          "text": "哈姆雷特，这不是商量，这是王命。"
+        },
+        {
+          "text": "卫兵已经在门口了。你没有选择。"
+        }
       ],
       "next": "h_ophelia_mad",
-      "changes": { "val": -3 }
+      "changes": {
+        "val": -3
+      },
+      "ambient": "wind"
     },
-
     "h_ophelia_mad": {
       "progress": 40,
-      "scene": { "id": "elsinore_corridor", "name": "艾尔西诺，走廊", "type": "transient" },
+      "scene": {
+        "id": "elsinore_corridor",
+        "name": "艾尔西诺，走廊",
+        "type": "transient"
+      },
       "segments": [
-        { "text": "在你离开前，你看见了奥菲利娅。" },
-        { "text": "她的头发散开着，手里捧着一把野花，在唱歌。" },
-        { "text": "是父亲死了。是你的所作所为。" }
+        {
+          "text": "在你离开前，你看见了奥菲利娅。"
+        },
+        {
+          "text": "她的头发散开着，手里捧着一把野花，在唱歌。"
+        },
+        {
+          "text": "是父亲死了。是你的所作所为。"
+        }
       ],
       "choices": [
-        { "text": "走过去，叫她的名字", "next": "h_ophelia_last", "changes": { "set": { "ophelia_trust": 3 } } },
-        { "text": "站在原地，没有动", "next": "h_ophelia_last" }
-      ]
+        {
+          "text": "走过去，叫她的名字",
+          "next": "h_ophelia_last",
+          "changes": {
+            "set": {
+              "ophelia_trust": 3
+            }
+          }
+        },
+        {
+          "text": "站在原地，没有动",
+          "next": "h_ophelia_last"
+        }
+      ],
+      "ambient": "wind"
     },
-
     "h_ophelia_last": {
       "progress": 41,
       "segments": [
-        { "text": "她唱着关于死亡和失去的歌谣，歌词里有一种扭曲的清醒。" },
-        { "text": "她已经认不出你了。" }
+        {
+          "text": "她唱着关于死亡和失去的歌谣，歌词里有一种扭曲的清醒。"
+        },
+        {
+          "text": "她已经认不出你了。"
+        }
       ],
-      "next": "h_laertes_01"
+      "next": "h_laertes_01",
+      "ambient": "wind"
     },
-
     "h_laertes_01": {
       "progress": 42,
       "segments": [
-        { "text": "雷欧提斯从法国回来了，带着一群人，要找凶手算账。克劳狄斯把他的愤怒引向了你。" },
-        { "text": "然后，奥菲利娅溺死的消息传来了。" },
-        { "text": "她掉进了一条溪流，没有挣扎。" }
+        {
+          "text": "雷欧提斯从法国回来了，带着一群人，要找凶手算账。克劳狄斯把他的愤怒引向了你。"
+        },
+        {
+          "text": "然后，奥菲利娅溺死的消息传来了。"
+        },
+        {
+          "text": "她掉进了一条溪流，没有挣扎。"
+        }
       ],
       "choices": [
-        { "text": "继续", "next": "h_returns" }
-      ]
+        {
+          "text": "继续",
+          "next": "h_returns"
+        }
+      ],
+      "ambient": "wind"
     },
-
     "h_returns": {
       "progress": 44,
       "segments": [
-        { "text": "你回来了。海盗在船上袭击了押送你的船，你借机逃脱，独自回到了丹麦。" },
-        { "text": "霍拉旭在城门等你，他的脸上有一种你不熟悉的沉重。" },
-        { "speaker": "霍拉旭", "text": "奥菲利娅死了。雷欧提斯回来了。殿下，你要小心。" }
+        {
+          "text": "你回来了。海盗在船上袭击了押送你的船，你借机逃脱，独自回到了丹麦。"
+        },
+        {
+          "text": "霍拉旭在城门等你，他的脸上有一种你不熟悉的沉重。"
+        },
+        {
+          "speaker": "霍拉旭",
+          "text": "奥菲利娅死了。雷欧提斯回来了。殿下，你要小心。"
+        }
       ],
-      "next": "h_graveyard_01"
+      "next": "h_graveyard_01",
+      "ambient": "wind"
     },
-
     "h_graveyard_01": {
       "chapterTitle": "第五幕：终局",
-      "scene": { "id": "graveyard", "name": "艾尔西诺城外墓地", "type": "major", "description": "晨光里的墓地，鸦鸦的叫声，新挖的泥土。", "arrival": "掘墓人正在干活，铁锹声很响。" },
+      "scene": {
+        "id": "graveyard",
+        "name": "艾尔西诺城外墓地",
+        "type": "major",
+        "description": "晨光里的墓地，鸦鸦的叫声，新挖的泥土。",
+        "arrival": "掘墓人正在干活，铁锹声很响。"
+      },
       "progress": 46,
       "segments": [
-        { "text": "早晨，城外的墓地。掘墓人在唱歌，一边唱一边挖。" },
-        { "text": "他们挖出来了一些旧骨头，随手丢在旁边。" }
+        {
+          "text": "早晨，城外的墓地。掘墓人在唱歌，一边唱一边挖。"
+        },
+        {
+          "text": "他们挖出来了一些旧骨头，随手丢在旁边。"
+        }
       ],
       "choices": [
-        { "text": "走过去和掘墓人说话", "next": "h_digger_01" },
-        { "text": "在远处看着", "next": "h_skull_found" }
-      ]
+        {
+          "text": "走过去和掘墓人说话",
+          "next": "h_digger_01"
+        },
+        {
+          "text": "在远处看着",
+          "next": "h_skull_found"
+        }
+      ],
+      "ambient": "sea"
     },
-
     "h_digger_01": {
       "progress": 47,
       "segments": [
-        { "speaker": "你", "text": "这是谁的墓？" },
-        { "speaker": "掘墓人", "text": "不是你的，也不是我的——是一个女人的。" },
-        { "text": "他挖起另一块骨头，随手扔到旁边，继续唱歌。" }
+        {
+          "speaker": "你",
+          "text": "这是谁的墓？"
+        },
+        {
+          "speaker": "掘墓人",
+          "text": "不是你的，也不是我的——是一个女人的。"
+        },
+        {
+          "text": "他挖起另一块骨头，随手扔到旁边，继续唱歌。"
+        }
       ],
-      "next": "h_skull_found"
+      "next": "h_skull_found",
+      "ambient": "sea"
     },
-
     "h_skull_found": {
       "progress": 48,
       "segments": [
-        { "text": "掘墓人挖出了一个头骨，扔在泥土上。" },
-        { "speaker": "你", "text": "这是谁的？" },
-        { "speaker": "掘墓人", "text": "约里克的——国王的弄臣，二十三年了。" }
+        {
+          "text": "掘墓人挖出了一个头骨，扔在泥土上。"
+        },
+        {
+          "speaker": "你",
+          "text": "这是谁的？"
+        },
+        {
+          "speaker": "掘墓人",
+          "text": "约里克的——国王的弄臣，二十三年了。"
+        }
       ],
       "choices": [
-        { "text": "捡起来", "next": "h_yorick", "changes": { "unlockAchievement": "ach_yorick" } },
-        { "text": "留在原地", "next": "h_yorick" }
-      ]
+        {
+          "text": "捡起来",
+          "next": "h_yorick",
+          "changes": {
+            "unlockAchievement": "ach_yorick"
+          }
+        },
+        {
+          "text": "留在原地",
+          "next": "h_yorick"
+        }
+      ],
+      "ambient": "sea"
     },
-
     "h_yorick": {
       "progress": 49,
       "segments": [
-        { "text": "可怜的约里克。你认识他，霍拉旭，一个无限幽默、充满奇思妙想的家伙。他背过我，让我骑在他肩上——" },
-        { "text": "然后是亚历山大大帝。他死了，被埋葬，化成泥土，泥土封住了酒桶的缝隙——" },
-        { "text": "帝国的尘埃堵住了风孔。" }
+        {
+          "text": "可怜的约里克。你认识他，霍拉旭，一个无限幽默、充满奇思妙想的家伙。他背过我，让我骑在他肩上——"
+        },
+        {
+          "text": "然后是亚历山大大帝。他死了，被埋葬，化成泥土，泥土封住了酒桶的缝隙——"
+        },
+        {
+          "text": "帝国的尘埃堵住了风孔。"
+        }
       ],
-      "next": "h_funeral_procession"
+      "next": "h_funeral_procession",
+      "ambient": "sea"
     },
-
     "h_funeral_procession": {
       "progress": 50,
       "segments": [
-        { "text": "有队伍来了。棺材，牧师，哭泣的人。" },
-        { "text": "然后你认出了那口棺材。" }
+        {
+          "text": "有队伍来了。棺材，牧师，哭泣的人。"
+        },
+        {
+          "text": "然后你认出了那口棺材。"
+        }
       ],
       "choices": [
-        { "text": "躲在树后，看着", "next": "h_ophelia_coffin" },
-        { "text": "走上前", "next": "h_ophelia_coffin" }
-      ]
+        {
+          "text": "躲在树后，看着",
+          "next": "h_ophelia_coffin"
+        },
+        {
+          "text": "走上前",
+          "next": "h_ophelia_coffin"
+        }
+      ],
+      "ambient": "sea"
     },
-
     "h_ophelia_coffin": {
       "progress": 51,
       "segments": [
-        { "text": "奥菲利娅。" },
-        { "text": "雷欧提斯跳进了墓穴，抱着棺材哭泣，声音很大，带着那种只有真正失去过什么的人才有的嘶哑。" }
+        {
+          "text": "奥菲利娅。"
+        },
+        {
+          "text": "雷欧提斯跳进了墓穴，抱着棺材哭泣，声音很大，带着那种只有真正失去过什么的人才有的嘶哑。"
+        }
       ],
       "choices": [
-        { "text": "走出来，\"这是哈姆雷特的爱。\"", "next": "h_hamlet_steps_out", "changes": { "val": -8 } },
-        { "text": "没有走出来，就这样看着", "next": "h_hamlet_watches", "changes": { "val": 5 } }
-      ]
+        {
+          "text": "走出来，\"这是哈姆雷特的爱。\"",
+          "next": "h_hamlet_steps_out",
+          "changes": {
+            "val": -8
+          }
+        },
+        {
+          "text": "没有走出来，就这样看着",
+          "next": "h_hamlet_watches",
+          "changes": {
+            "val": 5
+          }
+        }
+      ],
+      "ambient": "sea"
     },
-
     "h_hamlet_steps_out": {
       "progress": 52,
       "segments": [
-        { "speaker": "雷欧提斯", "text": "你！" },
-        { "text": "他从墓穴里跳出来，抓住你的衣领。" },
-        { "text": "卫兵们把你们分开了。克劳狄斯站在一旁，什么都没说，只是看着。" }
+        {
+          "speaker": "雷欧提斯",
+          "text": "你！"
+        },
+        {
+          "text": "他从墓穴里跳出来，抓住你的衣领。"
+        },
+        {
+          "text": "卫兵们把你们分开了。克劳狄斯站在一旁，什么都没说，只是看着。"
+        }
       ],
-      "next": "h_back_at_castle"
+      "next": "h_back_at_castle",
+      "ambient": "sea"
     },
-
     "h_hamlet_watches": {
       "progress": 52,
       "segments": [
-        { "text": "你没有走出来。这个悲痛属于他，你无权打扰。" },
-        { "text": "等送葬的人都离开了，你才从树后走出来，在她的墓前站了一会儿。" }
+        {
+          "text": "你没有走出来。这个悲痛属于他，你无权打扰。"
+        },
+        {
+          "text": "等送葬的人都离开了，你才从树后走出来，在她的墓前站了一会儿。"
+        }
       ],
-      "next": "h_back_at_castle"
+      "next": "h_back_at_castle",
+      "ambient": "sea"
     },
-
     "h_back_at_castle": {
       "progress": 53,
       "segments": [
-        { "text": "回到城堡，克劳狄斯的使者奥斯里克来传话：雷欧提斯要和你决斗，国王赌你赢。" }
+        {
+          "text": "回到城堡，克劳狄斯的使者奥斯里克来传话：雷欧提斯要和你决斗，国王赌你赢。"
+        }
       ],
-      "next": "h_horatio_warns"
+      "next": "h_horatio_warns",
+      "ambient": "sea"
     },
-
     "h_horatio_warns": {
       "progress": 54,
       "segments": [
-        { "speaker": "霍拉旭", "text": "殿下，我心里不安。请不要去。" },
-        { "text": "你知道这可能是陷阱。雷欧提斯的剑法比你好，而且他有理由恨你。" }
+        {
+          "speaker": "霍拉旭",
+          "text": "殿下，我心里不安。请不要去。"
+        },
+        {
+          "text": "你知道这可能是陷阱。雷欧提斯的剑法比你好，而且他有理由恨你。"
+        }
       ],
       "choices": [
-        { "text": "\"我不去。我们离开丹麦。\"", "next": "h_leave_01", "changes": { "val": 5 } },
-        { "text": "\"一只麻雀的死也是天命，准备好就是一切。\"", "next": "h_accept_duel", "changes": { "val": 8, "addFlag": "accepted_fate" } }
-      ]
+        {
+          "text": "\"我不去。我们离开丹麦。\"",
+          "next": "h_leave_01",
+          "changes": {
+            "val": 5
+          }
+        },
+        {
+          "text": "\"一只麻雀的死也是天命，准备好就是一切。\"",
+          "next": "h_accept_duel",
+          "changes": {
+            "val": 8,
+            "addFlag": "accepted_fate"
+          }
+        }
+      ],
+      "ambient": "sea"
     },
-
     "h_leave_01": {
       "progress": 55,
-      "scene": { "id": "harbor", "name": "艾尔西诺港口", "type": "transient" },
+      "scene": {
+        "id": "harbor",
+        "name": "艾尔西诺港口",
+        "type": "transient"
+      },
       "segments": [
-        { "speaker": "霍拉旭", "text": "我来安排船。殿下，去哪里？" },
-        { "speaker": "你", "text": "远一点的地方。" },
-        { "text": "你最后看了一眼艾尔西诺城堡的轮廓——父亲死在那里，奥菲利娅死在那里，还有你花了这么多年都没能做成的事。" }
+        {
+          "speaker": "霍拉旭",
+          "text": "我来安排船。殿下，去哪里？"
+        },
+        {
+          "speaker": "你",
+          "text": "远一点的地方。"
+        },
+        {
+          "text": "你最后看了一眼艾尔西诺城堡的轮廓——父亲死在那里，奥菲利娅死在那里，还有你花了这么多年都没能做成的事。"
+        }
       ],
       "choices": [
-        { "text": "上船", "next": "h_leave_02" }
-      ]
+        {
+          "text": "上船",
+          "next": "h_leave_02"
+        }
+      ],
+      "ambient": "sea"
     },
-
     "h_leave_02": {
       "progress": 56,
       "segments": [
-        { "text": "船离开了港口。丹麦的海岸慢慢变小，最后消失在雾里。" },
-        { "text": "霍拉旭站在你旁边，没有问你后不后悔。" },
-        { "text": "克劳狄斯还活着。雷欧提斯还没有得到真相。" },
-        { "text": "但你活着，霍拉旭活着。" }
+        {
+          "text": "船离开了港口。丹麦的海岸慢慢变小，最后消失在雾里。"
+        },
+        {
+          "text": "霍拉旭站在你旁边，没有问你后不后悔。"
+        },
+        {
+          "text": "克劳狄斯还活着。雷欧提斯还没有得到真相。"
+        },
+        {
+          "text": "但你活着，霍拉旭活着。"
+        }
       ],
-      "next": "ending_leave"
+      "next": "ending_leave",
+      "ambient": "sea"
     },
-
     "h_accept_duel": {
       "progress": 55,
       "segments": [
-        { "text": "「准备好就是一切。」" },
-        { "text": "你回到自己的房间，把剑擦了一遍。" }
+        {
+          "text": "「准备好就是一切。」"
+        },
+        {
+          "text": "你回到自己的房间，把剑擦了一遍。"
+        }
       ],
-      "next": "h_duel_hall"
+      "next": "h_duel_hall",
+      "ambient": "sea"
     },
-
     "h_duel_hall": {
       "progress": 57,
-      "scene": { "id": "great_hall_duel", "name": "艾尔西诺大厅，决斗场", "type": "major", "description": "两把剑，一张桌子上放着克劳狄斯备下的酒杯。人群围观。" },
+      "scene": {
+        "id": "great_hall_duel",
+        "name": "艾尔西诺大厅，决斗场",
+        "type": "major",
+        "description": "两把剑，一张桌子上放着克劳狄斯备下的酒杯。人群围观。"
+      },
       "segments": [
-        { "text": "克劳狄斯在上座，笑得很真诚，说他在这场决斗上赌了很多钱。" },
-        { "text": "雷欧提斯拿起了他的剑，走向你。" }
+        {
+          "text": "克劳狄斯在上座，笑得很真诚，说他在这场决斗上赌了很多钱。"
+        },
+        {
+          "text": "雷欧提斯拿起了他的剑，走向你。"
+        }
       ],
       "choices": [
-        { "text": "向雷欧提斯表示歉意", "next": "h_apology_01", "changes": { "val": 5 } },
-        { "text": "直接开始", "next": "h_duel_begins" }
-      ]
+        {
+          "text": "向雷欧提斯表示歉意",
+          "next": "h_apology_01",
+          "changes": {
+            "val": 5
+          }
+        },
+        {
+          "text": "直接开始",
+          "next": "h_duel_begins"
+        }
+      ],
+      "ambient": "sea"
     },
-
     "h_apology_01": {
       "progress": 57,
       "segments": [
-        { "speaker": "你", "text": "雷欧提斯，我向你道歉——我的疯狂造成了你的不幸，我的精神，而非哈姆雷特，伤害了波洛涅斯。" },
-        { "text": "他看着你，眼神复杂。" },
-        { "speaker": "雷欧提斯", "text": "我在荣誉上不接受，但在情感上——让我们决斗吧。" }
+        {
+          "speaker": "你",
+          "text": "雷欧提斯，我向你道歉——我的疯狂造成了你的不幸，我的精神，而非哈姆雷特，伤害了波洛涅斯。"
+        },
+        {
+          "text": "他看着你，眼神复杂。"
+        },
+        {
+          "speaker": "雷欧提斯",
+          "text": "我在荣誉上不接受，但在情感上——让我们决斗吧。"
+        }
       ],
-      "next": "h_duel_begins"
+      "next": "h_duel_begins",
+      "ambient": "sea"
     },
-
     "h_duel_begins": {
       "progress": 58,
       "segments": [
-        { "text": "第一局，你得了一分。" },
-        { "text": "克劳狄斯站起来，要祝贺你喝酒。" },
-        { "speaker": "葛特鲁德", "text": "让我替你喝，哈姆雷特。" },
-        { "text": "那杯酒——你记得克劳狄斯做过什么。" }
+        {
+          "text": "第一局，你得了一分。"
+        },
+        {
+          "text": "克劳狄斯站起来，要祝贺你喝酒。"
+        },
+        {
+          "speaker": "葛特鲁德",
+          "text": "让我替你喝，哈姆雷特。"
+        },
+        {
+          "text": "那杯酒——你记得克劳狄斯做过什么。"
+        }
       ],
       "choices": [
-        { "text": "\"母亲，别喝那杯酒！\"", "next": "h_warn_gertrude", "changes": { "val": 5 } },
-        { "text": "\"母亲，不——陛下，请先别——\"太迟了", "next": "h_gertrude_drinks_already" }
-      ]
+        {
+          "text": "\"母亲，别喝那杯酒！\"",
+          "next": "h_warn_gertrude",
+          "changes": {
+            "val": 5
+          }
+        },
+        {
+          "text": "\"母亲，不——陛下，请先别——\"太迟了",
+          "next": "h_gertrude_drinks_already"
+        }
+      ],
+      "ambient": "sea"
     },
-
     "h_warn_gertrude": {
       "progress": 59,
       "segments": [
-        { "speaker": "克劳狄斯", "text": "葛特鲁德，别喝。" },
-        { "speaker": "葛特鲁德", "text": "我要喝，陛下，请原谅我。" },
-        { "text": "她喝了。" }
+        {
+          "speaker": "克劳狄斯",
+          "text": "葛特鲁德，别喝。"
+        },
+        {
+          "speaker": "葛特鲁德",
+          "text": "我要喝，陛下，请原谅我。"
+        },
+        {
+          "text": "她喝了。"
+        }
       ],
-      "next": "h_second_bout"
+      "next": "h_second_bout",
+      "ambient": "sea"
     },
-
     "h_gertrude_drinks_already": {
       "progress": 59,
       "segments": [
-        { "text": "克劳狄斯没有阻止她。" },
-        { "text": "她喝了。" }
+        {
+          "text": "克劳狄斯没有阻止她。"
+        },
+        {
+          "text": "她喝了。"
+        }
       ],
-      "next": "h_second_bout"
+      "next": "h_second_bout",
+      "ambient": "sea"
     },
-
     "h_second_bout": {
       "progress": 60,
       "segments": [
-        { "text": "第二局开始了。" },
-        { "text": "雷欧提斯的剑刺到了你——划过你的手臂，一道浅伤，但他的剑上有毒。" },
-        { "text": "混乱中，剑掉落了，你们换了剑。现在你手里是他的剑，他手里是你的。" }
+        {
+          "text": "第二局开始了。"
+        },
+        {
+          "text": "雷欧提斯的剑刺到了你——划过你的手臂，一道浅伤，但他的剑上有毒。"
+        },
+        {
+          "text": "混乱中，剑掉落了，你们换了剑。现在你手里是他的剑，他手里是你的。"
+        }
       ],
       "choices": [
-        { "text": "继续战斗", "next": "h_laertes_wounded" }
-      ]
+        {
+          "text": "继续战斗",
+          "next": "h_laertes_wounded"
+        }
+      ],
+      "ambient": "sea"
     },
-
     "h_laertes_wounded": {
       "progress": 61,
       "segments": [
-        { "text": "你用他的剑刺中了他。毒剑伤了它的主人。" },
-        { "text": "葛特鲁德在上座摇晃着站起来。" },
-        { "speaker": "葛特鲁德", "text": "酒是毒的——哈姆雷特——我的儿子——" },
-        { "text": "她倒下了。" }
+        {
+          "text": "你用他的剑刺中了他。毒剑伤了它的主人。"
+        },
+        {
+          "text": "葛特鲁德在上座摇晃着站起来。"
+        },
+        {
+          "speaker": "葛特鲁德",
+          "text": "酒是毒的——哈姆雷特——我的儿子——"
+        },
+        {
+          "text": "她倒下了。"
+        }
       ],
-      "next": "h_gertrude_falls"
+      "next": "h_gertrude_falls",
+      "ambient": "sea"
     },
-
     "h_gertrude_falls": {
       "progress": 62,
       "effect": "blood",
       "segments": [
-        { "text": "混乱。人群四散。" },
-        { "text": "雷欧提斯也倒下了，他挣扎着抬起头。" },
-        { "speaker": "雷欧提斯", "text": "哈姆雷特，我们两个都要死了。是克劳狄斯——毒剑，毒酒，都是他的安排——" }
+        {
+          "text": "混乱。人群四散。"
+        },
+        {
+          "text": "雷欧提斯也倒下了，他挣扎着抬起头。"
+        },
+        {
+          "speaker": "雷欧提斯",
+          "text": "哈姆雷特，我们两个都要死了。是克劳狄斯——毒剑，毒酒，都是他的安排——"
+        }
       ],
-      "next": "h_final_moment"
+      "next": "h_final_moment",
+      "ambient": "sea"
     },
-
     "h_final_moment": {
       "progress": 63,
       "segments": [
-        { "text": "克劳狄斯坐在王座上，还没来得及逃。" },
-        { "text": "你手里握着那把毒剑，桌上还有那杯剩余的毒酒。" }
+        {
+          "text": "克劳狄斯坐在王座上，还没来得及逃。"
+        },
+        {
+          "text": "你手里握着那把毒剑，桌上还有那杯剩余的毒酒。"
+        }
       ],
       "choices": [
-        { "text": "用剑刺他", "next": "h_claudius_sword", "changes": { "val": -5 } },
-        { "text": "剑刺进去，再强迫他喝下毒酒", "next": "h_claudius_both", "changes": { "val": -8 } }
-      ]
+        {
+          "text": "用剑刺他",
+          "next": "h_claudius_sword",
+          "changes": {
+            "val": -5
+          }
+        },
+        {
+          "text": "剑刺进去，再强迫他喝下毒酒",
+          "next": "h_claudius_both",
+          "changes": {
+            "val": -8
+          }
+        }
+      ],
+      "ambient": "sea"
     },
-
     "h_claudius_sword": {
       "progress": 64,
       "segments": [
-        { "text": "剑刺进去，克劳狄斯倒下了。" },
-        { "text": "终于。" },
-        { "text": "你也倒下了。毒已经在你血液里了。" }
+        {
+          "text": "剑刺进去，克劳狄斯倒下了。"
+        },
+        {
+          "text": "终于。"
+        },
+        {
+          "text": "你也倒下了。毒已经在你血液里了。"
+        }
       ],
       "next": "h_hamlet_dying",
-      "changes": { "unlockAchievement": "ach_revenge" }
+      "changes": {
+        "unlockAchievement": "ach_revenge"
+      },
+      "ambient": "sea"
     },
-
     "h_claudius_both": {
       "progress": 64,
       "segments": [
-        { "text": "剑刺进去，你强迫他喝下了那杯毒酒。" },
-        { "speaker": "你", "text": "跟我的母亲去吧。" },
-        { "text": "然后你倒下了。" }
+        {
+          "text": "剑刺进去，你强迫他喝下了那杯毒酒。"
+        },
+        {
+          "speaker": "你",
+          "text": "跟我的母亲去吧。"
+        },
+        {
+          "text": "然后你倒下了。"
+        }
       ],
       "next": "h_hamlet_dying",
-      "changes": { "unlockAchievement": "ach_revenge" }
+      "changes": {
+        "unlockAchievement": "ach_revenge"
+      },
+      "ambient": "sea"
     },
-
     "h_hamlet_dying": {
       "progress": 65,
       "segments": [
-        { "text": "霍拉旭跑过来，跪在你身边。" },
-        { "speaker": "霍拉旭", "text": "我是个丹麦人，但心里是个罗马人——我也来喝这杯毒酒——" },
-        { "text": "他伸手去拿那杯酒。" }
+        {
+          "text": "霍拉旭跑过来，跪在你身边。"
+        },
+        {
+          "speaker": "霍拉旭",
+          "text": "我是个丹麦人，但心里是个罗马人——我也来喝这杯毒酒——"
+        },
+        {
+          "text": "他伸手去拿那杯酒。"
+        }
       ],
       "choices": [
-        { "text": "\"把它给我。你要活下去，讲述这个故事。\"", "next": "h_save_horatio", "changes": { "val": 5 } },
-        { "text": "任他去做", "next": "h_let_horatio" }
-      ]
+        {
+          "text": "\"把它给我。你要活下去，讲述这个故事。\"",
+          "next": "h_save_horatio",
+          "changes": {
+            "val": 5
+          }
+        },
+        {
+          "text": "任他去做",
+          "next": "h_let_horatio"
+        }
+      ],
+      "ambient": "sea"
     },
-
     "h_save_horatio": {
       "progress": 66,
       "segments": [
-        { "text": "你把酒杯推开了。" },
-        { "speaker": "你", "text": "霍拉旭，如果你真的爱我，就暂时放弃天堂的幸福，留在这残酷的世界里，替我讲述这个故事。" },
-        { "text": "他把酒杯放下了。眼泪落在你手上。" }
+        {
+          "text": "你把酒杯推开了。"
+        },
+        {
+          "speaker": "你",
+          "text": "霍拉旭，如果你真的爱我，就暂时放弃天堂的幸福，留在这残酷的世界里，替我讲述这个故事。"
+        },
+        {
+          "text": "他把酒杯放下了。眼泪落在你手上。"
+        }
       ],
-      "next": "h_last_words"
+      "next": "h_last_words",
+      "ambient": "sea"
     },
-
     "h_let_horatio": {
       "progress": 66,
       "segments": [
-        { "text": "你没有阻止他。如果他想走这条路——" },
-        { "text": "但他最终放下了酒杯。有些事情让他留了下来。" }
+        {
+          "text": "你没有阻止他。如果他想走这条路——"
+        },
+        {
+          "text": "但他最终放下了酒杯。有些事情让他留了下来。"
+        }
       ],
-      "next": "h_last_words"
+      "next": "h_last_words",
+      "ambient": "sea"
     },
-
     "h_last_words": {
       "progress": 67,
       "segments": [
-        { "text": "远处传来炮声——挪威的福丁布拉斯的军队进入了丹麦。" },
-        { "speaker": "你", "text": "我临死把选票投给他——其余的——是沉默。" }
+        {
+          "text": "远处传来炮声——挪威的福丁布拉斯的军队进入了丹麦。"
+        },
+        {
+          "speaker": "你",
+          "text": "我临死把选票投给他——其余的——是沉默。"
+        }
       ],
       "choices": [
-        { "text": "闭上眼睛", "next": "h_epilogue_routes" }
-      ]
+        {
+          "text": "闭上眼睛",
+          "next": "h_epilogue_routes"
+        }
+      ],
+      "ambient": "sea"
     },
-
     "h_epilogue_routes": {
       "progress": 68,
       "segments": [
-        { "text": "哈姆雷特死了。" }
+        {
+          "text": "哈姆雷特死了。"
+        }
       ],
       "routes": [
-        { "condition": "val >= 45", "next": "ending_true" },
-        { "condition": "default",   "next": "ending_incomplete" }
-      ]
+        {
+          "condition": "val >= 45",
+          "next": "ending_true"
+        },
+        {
+          "condition": "default",
+          "next": "ending_incomplete"
+        }
+      ],
+      "ambient": "sea"
     },
-
     "ending_true": {
       "isEnding": true,
       "title_end": "其余是沉默",
@@ -1092,27 +2113,27 @@
       "progress": 100,
       "description": "霍拉旭活了下来。\n\n福丁布拉斯进入大厅，看见的是四具尸体：葛特鲁德，雷欧提斯，克劳狄斯，哈姆雷特。\n\n霍拉旭说：「请你下令把这些尸体放到高台上，让我向还不知道的人讲述。你们将会听见充满淫欲与残忍的行为，意外的屠杀，借着奸计而来的死亡，以及陷入错误的计划落在策划者自己头上的结局。」\n\n最后，他说出了哈姆雷特的名字。",
       "closing": "晚安，温柔的王子。愿天使们用歌声送你安睡。",
-      "achievement": "ach_horatio"
+      "achievement": "ach_horatio",
+      "ambient": "sea"
     },
-
     "ending_incomplete": {
       "isEnding": true,
       "title_end": "空掉的王座",
       "type": "NORMAL ENDING",
       "progress": 100,
       "description": "克劳狄斯死了，哈姆雷特死了，葛特鲁德死了，雷欧提斯死了。\n\n福丁布拉斯进来，接管了丹麦。\n\n霍拉旭站在王座旁，不知道从何说起。这个故事太长，而能够理解它的人都死了。\n\n他最终沉默着走出了大厅。",
-      "closing": "有些故事没有讲述者。"
+      "closing": "有些故事没有讲述者。",
+      "ambient": "sea"
     },
-
     "ending_early_kill": {
       "isEnding": true,
       "title_end": "错误的时机",
       "type": "BRANCH ENDING",
       "progress": 100,
       "description": "克劳狄斯死了，是哈姆雷特杀的，没有任何人知道为什么。\n\n没有戏中戏，没有证人，没有关于毒药的公开指控。只有一个王子，一具尸体，和一把染血的剑。\n\n霍拉旭在狱中见了哈姆雷特最后一面，听完了一切。但他没有办法让任何人相信。\n\n哈姆雷特在黎明时被处决。霍拉旭带着这个秘密，独自活了下去。",
-      "closing": "太早的正义和不义一样沉重。"
+      "closing": "太早的正义和不义一样沉重。",
+      "ambient": "sea"
     },
-
     "ending_leave": {
       "isEnding": true,
       "title_end": "离开丹麦",
@@ -1120,17 +2141,17 @@
       "progress": 100,
       "description": "船在海上。丹麦的海岸消失了。\n\n克劳狄斯还活着，还坐在王座上。奥菲利娅死了，波洛涅斯死了，你父亲的鬼魂还在某处游荡。\n\n但你活着，霍拉旭活着。\n\n多年以后，你会在某个不知名的地方，向一个不认识你的人讲起这一切。他会问：「然后你做了什么？」\n\n你会想很久，才说：「我活下来了。」",
       "closing": "生存，这是个答案。",
-      "achievement": "ach_escape"
+      "achievement": "ach_escape",
+      "ambient": "sea"
     },
-
     "rash_refuse_duel": {
       "isEnding": true,
       "title_end": "逃跑的代价",
       "type": "RASH ENDING",
       "progress": 70,
       "description": "你拒绝了决斗，试图逃跑。\n\n克劳狄斯以懦怯罪和弑杀波洛涅斯罪将你下狱。雷欧提斯在牢门外要求处决你。\n\n霍拉旭什么都做不了。",
-      "closing": "有些时候，逃跑也是一种选择。只是这次选错了地方。"
+      "closing": "有些时候，逃跑也是一种选择。只是这次选错了地方。",
+      "ambient": "sea"
     }
-
   }
 }
