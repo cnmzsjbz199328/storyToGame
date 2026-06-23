@@ -5,6 +5,7 @@ import {
 import { motion, AnimatePresence } from "motion/react";
 import { Story, StoryNode, GameState, HistorySnapshot, Changes, ConditionString } from "../types";
 import { evalCondition, applyChanges, initState } from "../utils/gameEngine";
+import AmbientScene from "./AmbientScene";
 
 interface StoryPlayerProps {
   story: Story | null;
@@ -504,6 +505,12 @@ export default function StoryPlayer({ story, onEditNode, initialState, onGameSta
 
         {/* Narrative pane — flex-1 keeps height stable; justify-end anchors text to bottom */}
         <div className="flex-1 bg-zinc-950/98 border-t border-zinc-800 flex flex-col min-h-0 relative overflow-hidden">
+
+          {/* Dynamic SVG ambient scene — driven by node/meta ambient+theme, bottom-most layer */}
+          <AmbientScene
+            ambient={currentNode.ambient ?? story.meta.ambient}
+            theme={currentNode.theme ?? story.meta.theme}
+          />
 
           {/* Story node graph — structural background, camera follows current node */}
           {graphLayout && (() => {
